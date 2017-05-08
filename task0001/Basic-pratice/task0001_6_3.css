@@ -1,0 +1,74 @@
+body {
+  margin: 0px;/*解决两列间的gutter问题*/
+}
+
+/*float layout 这道题里因为有right部分
+*(right部分用了margin所以不用闭合浮动)
+*所以bottom可以不闭合浮动 */
+div.left {
+  float: left;
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
+div.right {
+  background-color: yellow;
+  margin-left: 100px;
+  height: 100px;
+}
+div.bottom {
+  background-color: red;
+  height: 100px;
+  clear: left;
+  zoom: 1;
+}
+
+/*table layout*/
+div.tableRow {
+  display: table-row;
+}
+div.left {
+  display: table-cell;
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
+div.right {
+  display: table-cell;
+  background-color: yellow;
+  margin-left: 100px;
+  width: 100vw;
+  height: 100px;
+}
+div.bottom { /*直接再加一行，不属于table layout*/
+  background-color: red;
+  width: 100vw;
+  height: 100px;
+}
+
+/*flex layout*/
+body {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;/*表示允许元素换行*/
+  flex-flow: row wrap;
+}
+div.left {
+  -webkit-flex-basis: 100px;/*set the initial length*/
+          flex-basis: 100px;
+  height: 100px;
+  background-color: blue;
+}
+div.right {
+  -webkit-flex: 1;
+          flex: 1;
+          height: 100px;
+  background-color: yellow;
+}
+div.bottom {
+  -webkit-flex-basis: 100%;
+          flex-basis: 100%;
+  height: 100px;
+  background-color: red;
+}
+

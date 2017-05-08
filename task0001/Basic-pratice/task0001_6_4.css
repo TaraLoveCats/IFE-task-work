@@ -1,0 +1,59 @@
+body {
+  margin: 0px;
+}
+
+/*flex layout*/
+div.container {
+  display:-webkit-flex;
+  display: flex;
+}
+div.left {
+  background-color: red;
+  -webkit-flex: none;
+          flex: none;
+  width:200px;
+}
+
+div.main {
+  background-color: navy;
+  -webkit-flex: 1;
+          flex: 1;
+}
+div.right {
+  background-color: yellow;
+  -webkit-flex: none;
+          flex: none;
+  width: 250px;
+}
+
+
+/*flying swing layout(实际就是float layout)*/
+div.container {
+  width: 100%;
+}
+div.main {
+  float: left;
+  width: 100%;
+  background: #fff;
+}
+div.main-wrap {
+  min-height: 50px;
+  margin-left: 200px;
+  margin-right: 250px;
+  background: #0f0;
+}
+div.left {
+  min-height: 50px;
+  float: left;
+  width:200px;
+  margin-left: -100%; /*负边距让div上移*/
+  background: #f00;
+}
+div.right {
+  min-height: 50px;
+  width: 250px;
+  float: left;
+  margin-left:-250px;
+  background: #00f;
+}
+

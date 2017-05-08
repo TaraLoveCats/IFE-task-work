@@ -1,0 +1,27 @@
+
+/*Flex 布局*/
+div.container {
+  height: 100vh; /*Make div 100% height of browser window*/
+  display: -webkit-flex;
+  display:         flex;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+div.content {
+  background-color: red;
+  width: 960px;
+  text-align: center;
+}
+
+/*static*/
+/*margin(50%) too large 会有垂直滚动条*/
+div.content {
+  width: 960px;
+  text-align: center;
+  background-color: red;
+  margin: 25% auto;
+}
+
+
