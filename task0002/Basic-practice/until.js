@@ -135,3 +135,162 @@ function isEmail(emailStr) {
 function isMobilePhone(phone) {
     return /^1\d{10}$/.test(phone);
 }
+
+// 为element增加一个样式名为newClassName的新样式
+function hasClass(element, className) {
+    var name = element.className.match(/\S+/g) || [];
+    if (name.indexOf(className) !== -1) {
+        return true;
+    }
+    return false;
+}
+
+function addClass(element, newClassName) {
+    if (!hasClass(element, newClassName)) {
+        element.className = trim(element.className + " " + newClassName);
+    }
+}
+
+// 移除element中的样式oldClassName
+function removeClass(element, oldClassName) {
+    if (hasClass(element, oldClassName)) {
+        element.className = trim(element.className.repalce(oldClassName, " "));
+    }
+}
+
+// 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
+function isSiblingNode(element, siblingNode) {
+    return element.parentNode === siblingNode.parentNode;
+}
+
+// 获取element相对于浏览器窗口的位置，返回一个对象{x, y} (我没有考虑滚动条)
+function getPosition(element) {
+    var x = 0;
+    var y = 0;
+    var current = element;
+
+    while (current !== null) {
+        x += current.offsetLeft;
+        y += current.offsetTop;
+        current = current.offsetParent;
+    }
+    return {
+        x: x,
+        y: y
+    };
+}
+
+// 实现一个简单的Query
+/*
+*这个方法只能处理一个selector
+*/
+function singleQuery(selector) {
+    var selector = trim(selector);
+    var element = null;
+    var symbol = selector[i].match(/\W/);
+
+    switch (symbol) {
+        case "#":
+            element = document.getElementById(selector.slice(1));
+            break;
+        case ".":
+            element = document.getElementsByClassName(selector.slice(1))[0];
+            break;
+        case "[":
+            var index = slector.indexOf("=");
+            var allElements = document.getElementsByTagName("*");
+            if (index !== -1) {
+                var key = selector.slice(1, index);
+                var value = selector.slice(index + 1);
+                for (var j = 0; j < allElements.length; j++) {
+                    if (allElements[j].getAttribute(key) === value) {
+                        element = allElements[j];
+                        break;
+                    }
+                }
+            } else if {
+                var key = selector.slice(1);
+                for (var j = 0; j < allElements.length; j++) {
+                    if (allElements.[j]) {
+                        element = allElements[j];
+                        break;
+                    }
+                }
+            }
+            break;
+            default:
+                element = document.getElementsByTagName(selector)[0];
+                break;
+        }
+    return element;
+}
+
+// 给一个element绑定一个针对event事件的响应，响应函数为listener
+function addEvent(element, event, listener) {
+    event = event.replace(/^on/i, '').toLowerCase();
+    if (element.addEventListener) {
+        element.addEventListener(event, listener, false);
+    }
+    else if (element.attachEvent) {
+        element.attachEvent("on" + event, listener);
+    }
+    else {
+        element["on" + event] = listener;
+    }
+}
+
+// 移除element对象对于event事件发生时执行listener的响应
+function removeEvent(element, event, listener) {
+    event = event.replace(/^on/i, '').toLowerCase();
+    if (element.removeEventListener) {
+        element.removeEventListener(event, listener, false);
+    }
+    else if (element.detachEvent) {
+        element.detachEvent("on" + event, listener);
+    }
+    else {
+        element["on" + type] = null;
+    }
+}
+
+// 实现对click事件的绑定
+function addClickEvent(element, listener) {
+    addEvent(element, "click", listener);
+}
+
+// 实现对于按Enter键时的事件绑定
+function addEnterEvent(element, listener) {
+    addEvent(element, "keydown", function(e) {
+        if (e.keyCode === 13) {
+            listener.call(element, event);
+        }
+    })
+}
+
+//事件代理 (element代理tag)
+function delegateEvent(element, tag, eventName, listener) {
+    addEvent(element, eventName, function(e) {
+        var event = e || window.event;
+        var target = e.target || e.srcElement;
+        if (target && target.tagName === tag.toUpperCase()) {
+            listener.call(target, event);
+        }
+    });
+}
+
+//估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：
+$.on(selector, event, listener) {
+    addEvent($(selector), event, listener);
+}
+
+$.click(selector, listener) {
+    addClickEvent($(selector), listener);
+}
+
+$.un(selector, event, listener) {
+    removeEventListener($(selector), event, listener);
+}
+
+$.delegate(selector, tag, event, listener) {
+    delegateEvent($(selector), tag, eventName, listener);
+}
