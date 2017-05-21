@@ -225,6 +225,163 @@ function singleQuery(selector) {
     return element;
 }
 
+/*
+*我看
+*不懂
+*/
+function $(selector) {
+    var idReg = /^#([\w_\-]+)/;
+    var classReg = /^\.([\w_\-]+)/;
+    var tagReg = /^\w+$/i;
+    //看不懂下面这个
+    var attrReg = /(\w+)?\[([^=\]]+)(?:=(["'])?([^\]"']+)\3?)?\]/;
+
+    var context = document;
+
+    function blank() {}
+
+    function direct(part, actions) {
+        actions = actions || {
+            id: blank;
+            className: blank;
+            tag: blank;
+            attribute: blank;
+        };
+        var fn, result;
+        //convert to array
+        var params = [].slice.call(arguments, 2);
+        //id
+        if (result = part.match(idReg)) {
+            fn = 'id';
+            //捕获分组下标从1开始
+            params.push(result[1]);
+        }
+        //class
+        else if (result = part.match(classReg)) {
+            fn = 'className';
+            params.push(result[1]);
+        }
+        //tag
+        else if (result = part.match(tagReg)) {
+            fn = 'tag';
+            params.push(result[0]);
+        }
+        //attribute
+        else if (result = part.match(attrReg)) {
+            fn = 'attribute';
+            var tag = result[1];
+            var key = result[2];
+            var value = result[4];
+            params.push(tag, key, value);
+        }
+        return actions[fn].apply(null, params);
+    }
+
+    function find(parts, context) {
+        // part 是 selector 中的最后一个
+        var part = parts.pop();
+        //这些函数返回的都是 array []
+        var actions = {
+            id: function (id) {
+                return [
+                    document.getElementById(id)
+                ];
+            },
+            className: function (className) {
+                var result = [];
+                if (context.getElementsByClassName) {
+                    result = context.getElementsByClassName(className);
+                }
+                //IE 9 之前的版本不支持 getElementsByClassName 方法
+                else {
+                    var temp = context.getElementsByTagName('*');
+                    for (var i = 0, len = temp.length; i < len; i++) {
+                        var node = temp[i];
+                        if (hasClass(node, className)) {
+                            result.push(node);
+                        }
+                    }
+                }
+                return result;
+            },
+            tag: function (tag) {
+                return context.getElementsByTagName(tag);
+            },
+            attribute: function (tag, key, value) {
+                var result = [];
+                var temp = context.getElementsByTagName(tag || '*');
+
+                for (var i = 0, len = temp.length; i < len; i++) {
+                    var node = temp[i];
+                    if (value) {
+                        var v = node.getAttribute(key);
+                        //这是个什么语法? if 代替语句？
+                        (v === value) && result.push(node);
+                    }
+                    else if (node.hasAttribute(key)) {
+                        result.push(node);
+                    }
+                }
+                return result;
+            }
+        };
+
+        var ret = direct(part, actions);
+        //convert to array
+        ret = [].slice.call(ret);
+
+        return parts[0] && ret[0] ? filterParents(parts, ret) : ret;
+    }
+
+    function filterParents(parts, ret) {
+        var parentPart = parts.pop();
+        var result = [];
+
+        for (var i = 0, len = ret.length; i < len; i++) {
+            var node = ret[i];
+            var p = node;
+            //向上遍历
+            while (p = p.parentNode) {
+                var actions = {
+                    id: function (el, id) {
+                        return (el.id === id);
+                    },
+                    className: function (el, className) {
+                        return hasClass(el,className);
+                    },
+                    tag: function (el ,tag) {
+                        return (el.tagName.toLowerCase() === tag);
+                    },
+                    attribute: function (el, tag, key, value) {
+                        var valid = true;
+                        if (tag) {
+                            valid = actions.tag(el, tag);
+                        }
+                        valid = valid && el.hasAttribute(key);
+                        if (value) {
+                            valid = valid && (value === el.getAttribute(key))
+                        }
+                        return valid;
+                    }
+                };
+                var matches = direct(filterPart, actions, p);
+                if (matches) {
+                    break;
+                }
+            }
+            //while 循环结束
+            if (matches) {
+                result.push(node);
+            }
+        }
+        //for 循环结束
+        return parts[0] && result[0] ? filterParents(parts, result) : result;
+    }
+
+    var result = find(selector.split(/\s+/), context);
+    return result;
+}
+
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
 function addEvent(element, event, listener) {
     event = event.replace(/^on/i, '').toLowerCase();
@@ -293,4 +450,128 @@ $.un(selector, event, listener) {
 
 $.delegate(selector, tag, event, listener) {
     delegateEvent($(selector), tag, eventName, listener);
+}
+
+// 判断是否为IE浏览器，返回-1或者版本号
+function isIE() {
+    return /MSIE ([^;]+)/.test(navigator.userAgent) ?
+        //正则表达式，\x24即是 $
+         (parseFloat(RegExp.$1) || document.documentMode) : -1;
+}
+/*
+*不是
+*很懂
+*cookie
+*/
+// 设置 cookie
+function setCookie(cookieName, cookieValue, expiredays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (expiredays*24*60*60*1000));
+    var expires = 'expires=' + d.toUTCString();
+    document.cookie = cookieName + '=' + cookieValue + ';' + expires + ';path=/';
+}
+
+//获取 cookie 值
+function getCookie(cookieName) {
+    var name = cookieName + '=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = trim(ca[i]);
+        if (c.indexOf(name) === 0) {
+            return c.slice(name.length, c.length);
+        }
+    }
+    return '';
+}
+
+//学习Ajax，并尝试自己封装一个Ajax方法
+function ajax(url, options) {
+    var options = options || [];
+    var data = stringifyData(options.data || {});
+    var type = (options.type || 'GET').toUpperCase();
+    var xhr;
+
+    try {
+        if (type === 'GET' && data) {
+            url += (url.indexof('?') === -1 ? '?' : '&') + data;
+            data = null;
+        }
+        xhr = createXHR();
+        xhr.open(type, url, true);
+        xhr.onreadystatechange = stateChangeHandler;
+
+        if (type === 'POST') {
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        }
+        //GET请求的setRequestHeader(书上没有)
+        xhr.setRequestHeader('X-Request-With', 'XMLHttpRequest');
+        xhr.send(data);
+    }
+    catch(ex) {
+        if (options.onfail) {
+            options.onfail();
+        }
+    }
+    return xhr;
+
+    //函数
+    function stringifyData(data) {
+        var param = [];
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                param.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+            }
+        }
+        return param.join('&');
+    }
+
+    function createXHR() {
+        if (window.XMLHttpRequest) {
+            return new XMLHttpRequest();
+        }
+        else {
+            //code for IE5 & IE6
+            return new ActiveXObject('Microsoft.XMLHTTP');
+        }
+    }
+
+    function stateChangeHandler() {
+        var stat;
+        if (xhr.readyState === 4) {
+            try {
+                stat = xhr.status;
+            }
+            catch(ex) {
+                if (options.onfail) {
+                    options.onfail();
+                }
+                return;
+            }
+
+            if ((stat >= 200 && stat < 300)
+                || stat === 304
+                || stat === 1223) {
+                    if (options.onsuccess) {
+                        options.onsuccess(xhr.responseText, xhr);
+                    }
+                }
+                else {
+                    if (options.onfail) {
+                        options.onfail();
+                    }
+                }
+                /*
+                *见Note
+                */
+                window.setTimeOut(
+                    function() {
+                        xhr.onreadystatechange = new Function();
+                        xhr = null;
+                    },
+                    0
+                );
+        }
+    }
+
 }
