@@ -30,12 +30,16 @@ function step1(e) {
 
     //不将未出现的新元素先写入ＨＴＭＬ结构中，而是动态创建
     var p = document.createElement('p');
-    p.innerHTML = 'Your hobbies: ' + output;
+    p.innerHTML ='Your hobbies: ' +  output;
     //在事件发生的元素（target）后插入新元素
     insertAfter(p, e.target);
 }
 
-$.on('.step1 .button', 'click', step1);
+//$.on('.step1 .button', 'click', step1);
+var button = document.getElementsByClassName('button')[0];
+button.addEventListener('click', function() {
+    alert("hi?");
+});
 
 //step2
 function step2(e) {
