@@ -1,3 +1,165 @@
+/*
+*我看
+*不懂
+*/
+function why() {
+    alert('why');
+}
+
+function $(selector) {
+    var idReg = /^#([\w_\-]+)/;
+    var classReg = /^\.([\w_\-]+)/;
+    var tagReg = /^\w+$/i;
+    //看不懂下面这个
+    var attrReg = /(\w+)?\[([^=\]]+)(?:=(["'])?([^\]"']+)\3?)?\]/;
+
+    var context = document;
+
+    function blank() {}
+
+    function direct(part, actions) {
+        actions = actions || {
+            id: blank,
+            className: blank,
+            tag: blank,
+            attribute: blank
+        };
+        var fn;
+        //convert to array
+        var params = [].slice.call(arguments, 2);
+        //id
+        if (result = part.match(idReg)) {
+            fn = 'id';
+            //捕获分组下标从1开始
+            params.push(result[1]);
+        }
+        //class
+        else if (result = part.match(classReg)) {
+            fn = 'className';
+            params.push(result[1]);
+        }
+        //tag
+        else if (result = part.match(tagReg)) {
+            fn = 'tag';
+            params.push(result[0]);
+        }
+        //attribute
+        else if (result = part.match(attrReg)) {
+            fn = 'attribute';
+            var tag = result[1];
+            var key = result[2];
+            var value = result[4];
+            params.push(tag, key, value);
+        }
+        return actions[fn].apply(null, params);
+    }
+
+    function find(parts, context) {
+        // part 是 selector 中的最后一个
+        var part = parts.pop();
+        //这些函数返回的都是 array []
+        var actions = {
+            id: function (id) {
+                return [
+                    document.getElementById(id)
+                ];
+            },
+            className: function (className) {
+                var result = [];
+                if (context.getElementsByClassName) {
+                    result = context.getElementsByClassName(className);
+                }
+                //IE 9 之前的版本不支持 getElementsByClassName 方法
+                else {
+                    var temp = context.getElementsByTagName('*');
+                    for (var i = 0, len = temp.length; i < len; i++) {
+                        var node = temp[i];
+                        if (hasClass(node, className)) {
+                            result.push(node);
+                        }
+                    }
+                }
+                return result;
+            },
+            tag: function (tag) {
+                return context.getElementsByTagName(tag);
+            },
+            attribute: function (tag, key, value) {
+                var result = [];
+                var temp = context.getElementsByTagName(tag || '*');
+
+                for (var i = 0, len = temp.length; i < len; i++) {
+                    var node = temp[i];
+                    if (value) {
+                        var v = node.getAttribute(key);
+                        //这是个什么语法? if 代替语句？
+                        (v === value) && result.push(node);
+                    }
+                    else if (node.hasAttribute(key)) {
+                        result.push(node);
+                    }
+                }
+                return result;
+            }
+        };
+
+        var ret = direct(part, actions);
+        //convert to array
+        ret = [].slice.call(ret);
+
+        return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
+    }
+
+    function filterParents(parts, ret) {
+        var parentPart = parts.pop();
+        var result = [];
+
+        for (var i = 0, len = ret.length; i < len; i++) {
+            var node = ret[i];
+            var p = node;
+            //向上遍历
+            while (p = p.parentNode) {
+                var actions = {
+                    id: function (el, id) {
+                        return (el.id === id);
+                    },
+                    className: function (el, className) {
+                        return hasClass(el, className);
+                    },
+                    tag: function (el, tag) {
+                        return (el.tagName.toLowerCase() === tag);
+                    },
+                    attribute: function (el, tag, key, value) {
+                        var valid = true;
+                        if (tag) {
+                            valid = actions.tag(el, tag);
+                        }
+                        valid = valid && el.hasAttribute(key);
+                        if (value) {
+                            valid = valid && (value === el.getAttribute(key))
+                        }
+                        return valid;
+                    }
+                };
+                var matches = direct(parentPart, actions, p);
+                if (matches) {
+                    break;
+                }
+            }
+            //while 循环结束
+            if (matches) {
+                result.push(node);
+            }
+        }
+        //for 循环结束
+        return parts[0] && result[0] ? filterParents(parts, result) : result;
+    }
+
+    var result = find(selector.split(/\s+/), context);
+    return result;
+}
+
+
 // 判断arr是否为一个数组，返回一个bool值
 function isArray(arr) {
     return Object.prototype.toString.call(arg) === "[Object Array]";
@@ -28,9 +190,9 @@ function isPlain(obj) {
 
     // 下面两个 暂时还没看懂
 
-    if (obj.constructor
-        && !hasOwnProperty.call(obj, "constructor"))
-        && !hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf")) {
+    if (obj.constructor &&
+        !hasOwnProperty.call(obj, "constructor") &&
+        !hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf")) {
         return false;
     }
     //空循环，目的是使key到最后一项，如果有继承属性，这一项一定是继承属性
@@ -138,9 +300,15 @@ function isMobilePhone(phone) {
 
 // 为element增加一个样式名为newClassName的新样式
 function hasClass(element, className) {
-    var name = element.className.match(/\S+/g) || [];
-    if (name.indexOf(className) !== -1) {
-        return true;
+    var names = element.className;
+    if (!names) {
+        return false;
+    }
+    names = names.split(/\s+/);
+    for (var i = 0, len = names.length; i < len; i++) {
+        if (names[i] === className) {
+            return true;
+        }
     }
     return false;
 }
@@ -184,203 +352,48 @@ function getPosition(element) {
 /*
 *这个方法只能处理一个selector
 */
-function singleQuery(selector) {
-    var selector = trim(selector);
-    var element = null;
-    var symbol = selector[i].match(/\W/);
+// function singleQuery(selector) {
+//     var selector = trim(selector);
+//     var element = null;
+//     var symbol = selector[i].match(/\W/);
+//
+//     switch (symbol) {
+//         case "#":
+//             element = document.getElementById(selector.slice(1));
+//             break;
+//         case ".":
+//             element = document.getElementsByClassName(selector.slice(1))[0];
+//             break;
+//         case "[":
+//             var index = slector.indexOf("=");
+//             var allElements = document.getElementsByTagName("*");
+//             if (index !== -1) {
+//                 var key = selector.slice(1, index);
+//                 var value = selector.slice(index + 1);
+//                 for (var j = 0; j < allElements.length; j++) {
+//                     if (allElements[j].getAttribute(key) === value) {
+//                         element = allElements[j];
+//                         break;
+//                     }
+//                 }
+//             }
+//             else {
+//                 var key = selector.slice(1);
+//                 for (var j = 0; j < allElements.length; j++) {
+//                     if (allElements[j]) {
+//                         element = allElements[j];
+//                         break;
+//                     }
+//                 }
+//             }
+//             break;
+//             default:
+//                 element = document.getElementsByTagName(selector)[0];
+//                 break;
+//         }
+//     return element;
+// }
 
-    switch (symbol) {
-        case "#":
-            element = document.getElementById(selector.slice(1));
-            break;
-        case ".":
-            element = document.getElementsByClassName(selector.slice(1))[0];
-            break;
-        case "[":
-            var index = slector.indexOf("=");
-            var allElements = document.getElementsByTagName("*");
-            if (index !== -1) {
-                var key = selector.slice(1, index);
-                var value = selector.slice(index + 1);
-                for (var j = 0; j < allElements.length; j++) {
-                    if (allElements[j].getAttribute(key) === value) {
-                        element = allElements[j];
-                        break;
-                    }
-                }
-            } else if {
-                var key = selector.slice(1);
-                for (var j = 0; j < allElements.length; j++) {
-                    if (allElements.[j]) {
-                        element = allElements[j];
-                        break;
-                    }
-                }
-            }
-            break;
-            default:
-                element = document.getElementsByTagName(selector)[0];
-                break;
-        }
-    return element;
-}
-
-/*
-*我看
-*不懂
-*/
-function $(selector) {
-    var idReg = /^#([\w_\-]+)/;
-    var classReg = /^\.([\w_\-]+)/;
-    var tagReg = /^\w+$/i;
-    //看不懂下面这个
-    var attrReg = /(\w+)?\[([^=\]]+)(?:=(["'])?([^\]"']+)\3?)?\]/;
-
-    var context = document;
-
-    function blank() {}
-
-    function direct(part, actions) {
-        actions = actions || {
-            id: blank;
-            className: blank;
-            tag: blank;
-            attribute: blank;
-        };
-        var fn, result;
-        //convert to array
-        var params = [].slice.call(arguments, 2);
-        //id
-        if (result = part.match(idReg)) {
-            fn = 'id';
-            //捕获分组下标从1开始
-            params.push(result[1]);
-        }
-        //class
-        else if (result = part.match(classReg)) {
-            fn = 'className';
-            params.push(result[1]);
-        }
-        //tag
-        else if (result = part.match(tagReg)) {
-            fn = 'tag';
-            params.push(result[0]);
-        }
-        //attribute
-        else if (result = part.match(attrReg)) {
-            fn = 'attribute';
-            var tag = result[1];
-            var key = result[2];
-            var value = result[4];
-            params.push(tag, key, value);
-        }
-        return actions[fn].apply(null, params);
-    }
-
-    function find(parts, context) {
-        // part 是 selector 中的最后一个
-        var part = parts.pop();
-        //这些函数返回的都是 array []
-        var actions = {
-            id: function (id) {
-                return [
-                    document.getElementById(id)
-                ];
-            },
-            className: function (className) {
-                var result = [];
-                if (context.getElementsByClassName) {
-                    result = context.getElementsByClassName(className);
-                }
-                //IE 9 之前的版本不支持 getElementsByClassName 方法
-                else {
-                    var temp = context.getElementsByTagName('*');
-                    for (var i = 0, len = temp.length; i < len; i++) {
-                        var node = temp[i];
-                        if (hasClass(node, className)) {
-                            result.push(node);
-                        }
-                    }
-                }
-                return result;
-            },
-            tag: function (tag) {
-                return context.getElementsByTagName(tag);
-            },
-            attribute: function (tag, key, value) {
-                var result = [];
-                var temp = context.getElementsByTagName(tag || '*');
-
-                for (var i = 0, len = temp.length; i < len; i++) {
-                    var node = temp[i];
-                    if (value) {
-                        var v = node.getAttribute(key);
-                        //这是个什么语法? if 代替语句？
-                        (v === value) && result.push(node);
-                    }
-                    else if (node.hasAttribute(key)) {
-                        result.push(node);
-                    }
-                }
-                return result;
-            }
-        };
-
-        var ret = direct(part, actions);
-        //convert to array
-        ret = [].slice.call(ret);
-
-        return parts[0] && ret[0] ? filterParents(parts, ret) : ret;
-    }
-
-    function filterParents(parts, ret) {
-        var parentPart = parts.pop();
-        var result = [];
-
-        for (var i = 0, len = ret.length; i < len; i++) {
-            var node = ret[i];
-            var p = node;
-            //向上遍历
-            while (p = p.parentNode) {
-                var actions = {
-                    id: function (el, id) {
-                        return (el.id === id);
-                    },
-                    className: function (el, className) {
-                        return hasClass(el,className);
-                    },
-                    tag: function (el ,tag) {
-                        return (el.tagName.toLowerCase() === tag);
-                    },
-                    attribute: function (el, tag, key, value) {
-                        var valid = true;
-                        if (tag) {
-                            valid = actions.tag(el, tag);
-                        }
-                        valid = valid && el.hasAttribute(key);
-                        if (value) {
-                            valid = valid && (value === el.getAttribute(key))
-                        }
-                        return valid;
-                    }
-                };
-                var matches = direct(filterPart, actions, p);
-                if (matches) {
-                    break;
-                }
-            }
-            //while 循环结束
-            if (matches) {
-                result.push(node);
-            }
-        }
-        //for 循环结束
-        return parts[0] && result[0] ? filterParents(parts, result) : result;
-    }
-
-    var result = find(selector.split(/\s+/), context);
-    return result;
-}
 
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
 function addEvent(element, event, listener) {
@@ -436,19 +449,20 @@ function delegateEvent(element, tag, eventName, listener) {
 }
 
 //估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：
-$.on(selector, event, listener) {
+$.on = function(selector, event, listener) {
     addEvent($(selector), event, listener);
+    alert('wwhy');
 }
 
-$.click(selector, listener) {
+$.click = function(selector, listener) {
     addClickEvent($(selector), listener);
 }
 
-$.un(selector, event, listener) {
+$.un = function(selector, event, listener) {
     removeEventListener($(selector), event, listener);
 }
 
-$.delegate(selector, tag, event, listener) {
+$.delegate = function(selector, tag, event, listener) {
     delegateEvent($(selector), tag, eventName, listener);
 }
 

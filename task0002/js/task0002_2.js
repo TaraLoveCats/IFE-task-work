@@ -29,7 +29,7 @@ function countdown() {
     var year = targetTime.getFullYear();
     var month = targetTime.getMonth() + 1;
     var day = targetTime.getDate();
-    
+
     if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
 
         if (now < targetTime) {

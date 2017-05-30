@@ -35,11 +35,7 @@ function step1(e) {
     insertAfter(p, e.target);
 }
 
-//$.on('.step1 .button', 'click', step1);
-var button = document.getElementsByClassName('button')[0];
-button.addEventListener('click', function() {
-    alert("hi?");
-});
+$.on('.step1 .button', 'click', step1);
 
 //step2
 function step2(e) {
@@ -58,7 +54,9 @@ function step2(e) {
     insertAfter(p, e.target);
 }
 
-$.on('.step2 .button', 'click', step2);
+$.on('.step2 .button', 'click', function() {
+    alert('hii');
+});
 
 //step3
 function step3(e) {
@@ -71,7 +69,7 @@ function step3(e) {
     arr = uniqArray(arr);
     arr = filterArray(arr);
     if (arr.length > 10) {
-        return $('.err').innerHTML = '输入的爱好数量不能超过10个'；
+        return $('.err').innerHTML = '输入的爱好数量不能超过10个';
     }
 
     var output = arr.join(',');
