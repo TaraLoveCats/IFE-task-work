@@ -167,7 +167,7 @@ function isArray(arr) {
 
 // 判断fn是否为一个函数，返回一个bool值
 function isFunction(fn) {
-    return typeof fn === "function";
+    return Object.prototype.toString.call(fn) === "[Object Function]";
 }
 
 // 使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
@@ -451,7 +451,6 @@ function delegateEvent(element, tag, eventName, listener) {
 //估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：
 $.on = function(selector, event, listener) {
     addEvent($(selector), event, listener);
-    alert('wwhy');
 }
 
 $.click = function(selector, listener) {
