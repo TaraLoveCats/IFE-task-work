@@ -108,7 +108,7 @@ function $(selector) {
         // to array
         ret = [].slice.call(ret);
 
-        return parts[0] && ret[0] ? filterParents(parts, ret) : ret;
+        return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
     }
 
     function filterParents(parts, ret) {

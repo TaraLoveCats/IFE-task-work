@@ -103,17 +103,8 @@ function $(selector) {
         var ret = direct(part, actions);
         //convert to array
         ret = [].slice.call(ret);
-        // if (parts[0] && ret[0]) {
-        //
-        //     var r_ele = filterParents(parts, ret);
-        //     alert('this is 1 ' + r_ele.tagName);
-        //     return r_ele;
-        // } else {
-        //     var r_ele = ret[0];
-        //     alert('this is 2 ' + r_ele.tagName);
-        //     return r_ele;
-        // }
-        return parts[0] && ret[0] ? filterParents(parts, ret) : ret;
+        //ret[0] 不是 ret, ret is an array, while ret[0] is the true element!!!(demo中有错)
+        return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
     }
 
     function filterParents(parts, ret) {
