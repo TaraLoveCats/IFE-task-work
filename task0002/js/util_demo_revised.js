@@ -154,7 +154,7 @@ function $(selector) {
             }
         }
 
-        return parts[0] && result[0] ? filterParents(parts, result) : result;
+        return parts[0] && result[0] ? filterParents(parts, result) : result[0];
     }
 
     var result = find(selector.split(/\s+/), context);
