@@ -17,7 +17,7 @@ function $(selector) {
     var attrReg = /(\w+)?\[([^=\]]+)(?:=(["'])?([^\]"']+)\3?)?\]/;
 
     // 不考虑'>' 、`~`等嵌套关系
-    // 父子选择器之间用空格相隔54
+    // 父子选择器之间用空格相隔
     var context = document;
 
     function blank() {}
@@ -376,7 +376,7 @@ function isArray(arr) {
  * @return {boolean}        判断结果
  */
 function isFunction(fn) {
-    // chrome下,'function' == typeof /a/ 为true.  现在已经没有这个bug了！
+    // chrome下,'function' == typeof /a/ 为true.
     return '[object Function]' === Object.prototype.toString.call(fn);
 }
 
@@ -765,9 +765,9 @@ function getPosition(element) {
 
 
 // mini selector
-function $(selector) {
-    return document.querySelector(selector);
-}
+// function $(selector) {
+//     return document.querySelector(selector);
+// }
 
 
 

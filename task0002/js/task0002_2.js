@@ -5,6 +5,7 @@ var timer;
 var targetTime;
 
 function start() {
+    // var input = $('.input').value;
     var input = trim($('.input').value);
     if (!input) {
         alert('输入不能为空！');

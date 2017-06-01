@@ -2,9 +2,6 @@
 *我看
 *不懂
 */
-function why() {
-    alert('why');
-}
 
 function $(selector) {
     var idReg = /^#([\w_\-]+)/;
@@ -106,8 +103,17 @@ function $(selector) {
         var ret = direct(part, actions);
         //convert to array
         ret = [].slice.call(ret);
-
-        return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
+        // if (parts[0] && ret[0]) {
+        //
+        //     var r_ele = filterParents(parts, ret);
+        //     alert('this is 1 ' + r_ele.tagName);
+        //     return r_ele;
+        // } else {
+        //     var r_ele = ret[0];
+        //     alert('this is 2 ' + r_ele.tagName);
+        //     return r_ele;
+        // }
+        return parts[0] && ret[0] ? filterParents(parts, ret) : ret;
     }
 
     function filterParents(parts, ret) {
@@ -158,6 +164,10 @@ function $(selector) {
     var result = find(selector.split(/\s+/), context);
     return result;
 }
+
+// function $(selector) {
+//     return document.querySelector(selector);
+// }
 
 
 // 判断arr是否为一个数组，返回一个bool值
@@ -246,6 +256,8 @@ function uniqArray(arr) {
     return arr;
 }
 
+
+
 // 实现一个简单的trim函数，用于去除一个字符串，头部和尾部的空白字符,假定空白字符只有半角空格、Tab
 // 练习通过循环，以及字符串的一些基本方法，分别扫描字符串str头部和尾部是否有连续的空白字符，并且删掉他们，最后返回一个完成去除的字符串
 function simpleTrim(str) {
@@ -264,8 +276,16 @@ function simpleTrim(str) {
 
 // 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串
 // 尝试使用一行简洁的正则表达式完成该题目
+// function trim(str) {
+//     return str.match(/\S\w*(?:\s\w*)*\S/);
+// }
+
 function trim(str) {
-    return str.match(/\S\w*(?:\s\w*)*\S/);
+
+    var trimer = new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+\x24)", "g");
+
+    return String(str).replace(trimer, "");
+
 }
 
 // 实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
@@ -451,19 +471,19 @@ function delegateEvent(element, tag, eventName, listener) {
 //估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：
 $.on = function(selector, event, listener) {
     addEvent($(selector), event, listener);
-}
+};
 
 $.click = function(selector, listener) {
     addClickEvent($(selector), listener);
-}
+};
 
 $.un = function(selector, event, listener) {
     removeEventListener($(selector), event, listener);
-}
+};
 
 $.delegate = function(selector, tag, event, listener) {
     delegateEvent($(selector), tag, eventName, listener);
-}
+};
 
 // 判断是否为IE浏览器，返回-1或者版本号
 function isIE() {

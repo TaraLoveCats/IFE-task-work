@@ -54,9 +54,7 @@ function step2(e) {
     insertAfter(p, e.target);
 }
 
-$.on('.step2 .button', 'click', function() {
-    alert('hii');
-});
+$.on('.step2 .button', 'click', step2);
 
 //step3
 function step3(e) {
