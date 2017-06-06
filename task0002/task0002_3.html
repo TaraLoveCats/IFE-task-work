@@ -9,17 +9,30 @@
     <script src="js/util.js"></script>
 </head>
 <body>
-    <div class="images" style="z-index: 3;">
-        <img src="img/slider-1.jpg" alt="slider-image"  style="width: 800px; height: 460px;">
-    </div>
-    <div class="images" style="z-index: 2;">
-        <img src="img/slider-2.jpg" alt="slider-image"  style="width: 800px; height: 460px;">
-    </div>
-    <div class="images" style="z-index: 1;">
-        <img src="img/slider-3.jpg" alt="slider-image"  style="width: 800px; height: 460px;">
-    </div>
-    <div class="images" style="z-index: 0;">
-        <img src="img/slider-4.jpg" alt="slider-image"  style="width: 800px; height: 460px;">
+    <h1>Task0002_3</h1>
+    <pre>
+实现轮播图功能。
+        
+图片数量及URL均在HTML中写好
+可以配置轮播的顺序（正序、逆序）、是否循环、间隔时长
+图片切换的动画要流畅
+在轮播图下方自动生成对应图片的小点，点击小点，轮播图自动动画切换到对应的图片
+    </pre>
+    <div id="contentContainer">
+        <div id="wrapper">
+            <div id="item-1" class="image-div">
+                <img src="img/slider-1.jpg" alt="slider-image"  style="width: 600px; height: 360px;">
+            </div>
+            <div id="item-2" class="image-div">
+                <img src="img/slider-2.jpg" alt="slider-image"  style="width: 600px; height: 360px;">
+            </div>
+            <div id="item-3" class="image-div">
+                <img src="img/slider-3.jpg" alt="slider-image"  style="width: 600px; height: 360px;">
+            </div>
+            <div id="item-4" class="image-div">
+                <img src="img/slider-4.jpg" alt="slider-image"  style="width: 600px; height: 360px;">
+            </div>
+        </div>
     </div>
 
     <script src="js/task0002_3.js">

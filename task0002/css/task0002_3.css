@@ -1,16 +1,23 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: Microsoft Yahei, sans-serif;
-}
-
 body {
     background: #eee;
 }
 
-.images {
-    position: absolute;
-    left: 200px;
-    top: 50px;
+#contentContainer {
+    width: 600px;
+    height: 360px;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    border: 2px solid #ccc;
+}
+
+#wrapper {
+    width: 2400px;
+    /*relative to its parent position !!!*/
+    transform: translate3d(0, 0, 0);
+}
+
+.image-div { 
+    float: left;
+    white-space: normal;
     font-size: 0;
 }

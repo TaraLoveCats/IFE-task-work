@@ -4,7 +4,6 @@
 */
 
 function $(selector) {
-    alert('hello ');
     var idReg = /^#([\w_\-]+)/;
     var classReg = /^\.([\w_\-]+)/;
     var tagReg = /^\w+$/i;
@@ -105,17 +104,17 @@ function $(selector) {
         //convert to array
         ret = [].slice.call(ret);
         //ret[0] 不是 ret, ret is an array, while ret[0] is the true element!!!(demo中有错)
-        if (parts[0] && ret[0]) {
-
-            var r_ele = filterParents(parts, ret);
-            alert('this is 1 ' + r_ele.tagName);
-            return r_ele;
-        } else {
-            var r_ele = ret[0];
-            alert('this is 2 ' + r_ele.tagName);
-            return r_ele;
-        }
-        //return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
+        // if (parts[0] && ret[0]) {
+        //
+        //     var r_ele = filterParents(parts, ret);
+        //     alert('this is 1 ' + r_ele.tagName);
+        //     return r_ele;
+        // } else {
+        //     var r_ele = ret[0];
+        //     alert('this is 2 ' + r_ele.tagName);
+        //     return r_ele;
+        // }
+        return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
     }
 
     function filterParents(parts, ret) {
@@ -472,7 +471,6 @@ function delegateEvent(element, tag, eventName, listener) {
 
 //估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：
 $.on = function(selector, event, listener) {
-    alert('in on');
     addEvent($(selector), event, listener);
 };
 
