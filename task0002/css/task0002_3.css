@@ -1,23 +1,51 @@
 body {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     background: #eee;
 }
 
-#contentContainer {
+.contentContainer {
+    position: relative;
     width: 600px;
     height: 360px;
     overflow: hidden;
-    transform: translate3d(0, 0, 0);
-    border: 2px solid #ccc;
 }
 
-#wrapper {
+.wrapper {
+    position: absolute;
     width: 2400px;
     /*relative to its parent position !!!*/
     transform: translate3d(0, 0, 0);
+    transition: transform 1s ease-in-out;
+    font-size: 0;
 }
 
-.image-div { 
-    float: left;
-    white-space: normal;
-    font-size: 0;
+.wrapper img {
+    width: 600px;
+    height: 360px;
+}
+
+.links {
+    position: absolute;
+    left: 50%;
+    bottom: 4px;
+    margin-left: -26px;
+}
+
+.links a {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.links a:hover {
+    border: 3px solid #fff;
+}
+
+.active {
+    background: #fff;
 }

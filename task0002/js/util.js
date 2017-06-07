@@ -2,7 +2,6 @@
 *我看
 *不懂
 */
-
 function $(selector) {
     var idReg = /^#([\w_\-]+)/;
     var classReg = /^\.([\w_\-]+)/;
@@ -418,8 +417,11 @@ function getPosition(element) {
 
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
 function addEvent(element, event, listener) {
+    console.log('at addEvent');
+    console.log(element.className);
     event = event.replace(/^on/i, '').toLowerCase();
     if (element.addEventListener) {
+        console.log('here');
         element.addEventListener(event, listener, false);
     }
     else if (element.attachEvent) {
@@ -464,6 +466,7 @@ function delegateEvent(element, tag, eventName, listener) {
         var event = e || window.event;
         var target = e.target || e.srcElement;
         if (target && target.tagName === tag.toUpperCase()) {
+            console.log('if right');
             listener.call(target, event);
         }
     });
@@ -483,7 +486,7 @@ $.un = function(selector, event, listener) {
 };
 
 $.delegate = function(selector, tag, event, listener) {
-    delegateEvent($(selector), tag, eventName, listener);
+    delegateEvent($(selector), tag, event, listener);
 };
 
 // 判断是否为IE浏览器，返回-1或者版本号
