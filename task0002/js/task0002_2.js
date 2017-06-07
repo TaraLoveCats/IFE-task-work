@@ -4,7 +4,7 @@
 var timer;
 var targetTime;
 
-function start() {
+function startTimer() {
     // var input = $('.input').value;
     var input = trim($('.input').value);
     if (!input) {
@@ -65,4 +65,4 @@ function dateDiff(date1, date2, year, month, day) {
 
 }
 
-$.on('.button', 'click', start);
+$.on('.button', 'click', startTimer);
