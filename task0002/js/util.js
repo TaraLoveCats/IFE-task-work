@@ -417,11 +417,10 @@ function getPosition(element) {
 
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
 function addEvent(element, event, listener) {
-    console.log('at addEvent');
     console.log(element.className);
+
     event = event.replace(/^on/i, '').toLowerCase();
     if (element.addEventListener) {
-        console.log('here');
         element.addEventListener(event, listener, false);
     }
     else if (element.attachEvent) {
@@ -466,7 +465,6 @@ function delegateEvent(element, tag, eventName, listener) {
         var event = e || window.event;
         var target = e.target || e.srcElement;
         if (target && target.tagName === tag.toUpperCase()) {
-            console.log('if right');
             listener.call(target, event);
         }
     });
