@@ -6,7 +6,7 @@ var activeLink = 0;
 
 links[activeLink].classList.add('active');
 
-// 'click' has odd behavior that I can not understand
+// 'click' has very odd behavior that I can not understand
  $.delegate('.links', 'a', 'mouseover', setClickedItem);
 
  function setClickedItem(e) {
