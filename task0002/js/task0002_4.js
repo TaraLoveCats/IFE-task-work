@@ -14,31 +14,29 @@ function filterData() {
             showData.push(data[i]);
         }
     }
-    var spanChar = '';
-    for (var i = 0; i < showData.length; i++) {
-        for (var j = 0; j < input.length; j++) {
-            spanChar = spanChar + showData[i].charAt(j);
-        }
-        span = document.createElement('span');
-        span.innerHTML = spanChar;
-        span.style.color = '#f00';
-    }
-    show();
+    show(input);
 }
 
-function show() {
+function show(input) {
     //refresh data
     $('.prompt-box').innerHTML = null;
     prompt = [];
 
     for ( var i = 0; i < showData.length; i++) {
+        var span1 = document.createElement('span');
+        var span2 = document.createElement('span');
+        var len = input.length;
+
+        span1.innerHTML = input;
+        span1.style.color = '#f00';
+        span2.innerHTML = showData[i].slice(len);
 
         var p = document.createElement('p');
-        p.style.margin = '1px';
-        p.innerHTML = showData[i];
-        
-        p.appendChild(span);
-        prompt.push(p);
+        p.style.margin = '2px';
+
+        p.appendChild(span1);
+        p.appendChild(span2);
+        prompt.push(p); 
 
         $('.prompt-box').appendChild(p);
 
