@@ -74,7 +74,7 @@ function step3(e) {
 
     var p = document.createElement('p');
 
-    each (arr, function(item, i) {
+    each (arr, function (item, i) {
         var checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
         checkbox.setAttribute('id', 'checkbox' + i);

@@ -5,9 +5,9 @@ var indexGlobal = -1;
 
 function clearCurr() {
     //first clear other current classes
-    for (var i = 0; i < prompt.length; i++) {
-        prompt[i].classList.remove('current');
-    }
+    each (prompt, function (item) {
+        item.classList.remove('current');
+    });
 }
 
 function recordCurrentPos(pos) {
@@ -40,11 +40,17 @@ function mouseSelect() {
     recordCurrentPos(pos);
 
     addClickEvent(this, function () {
-        //this.innerHTML是HTML文档形式（<span>...</span><span>...</span>）
-        $('.input').value = this.childNodes[0].innerHTML + this.childNodes[1].innerHTML;
+        setInputText(this);
+    });
+}
+
+function setInputText(obj) {
+    if(obj) {
+        //obj.innerHTML是HTML文档形式（<span>...</span><span>...</span>）
+        $('.input').value = obj.childNodes[0].innerHTML + obj.childNodes[1].innerHTML;
         //让输入框重新 focus,否则无法触发键盘事件
         $('.input').focus();
-    });
+    }
 }
 
 function kbdSelect(code) {
@@ -58,41 +64,46 @@ function kbdSelect(code) {
     }
 
     var index = indexGlobal;
-    prompt[index].classList.add('current');
 
-    addEnterEvent($('.input'), function () {
-        $('.input').value = prompt[index].childNodes[0].innerHTML + prompt[index].childNodes[1].innerHTML;
-    });
-
+    //避免TypeError
+    if (prompt[index]) {
+        prompt[index].classList.add('current');
+    }
 }
 
 function filterData() {
-    //to avoid duplicate data in showData
+    //every time the input changes, re-initialize glbal variables
     showData = [];
+    prompt = [];
+    indexGlobal = -1;
 
     var input = trim($('.input').value).toLowerCase();
-    for (var i = 0; i < data.length; i++) {
-        var index = data[i].indexOf(input);
+    each (data, function (item) {
+        var index = item.indexOf(input);
         if (input !== '' && index === 0) {
-            showData.push(data[i]);
+            showData.push(item);
         }
+    });
+
+    //refresh data
+    $('.prompt-box').innerHTML = null;
+
+    if (showData[0]) {
+        var validInput = showData[0].slice(0, input.length);
+        show(validInput);
     }
-    show(input);
 }
 
 function show(input) {
-    //refresh data
-    $('.prompt-box').innerHTML = null;
-    prompt = [];
 
-    for ( var i = 0; i < showData.length; i++) {
+    each (showData, function (item, i) {
         var span1 = document.createElement('span');
         var span2 = document.createElement('span');
         var len = input.length;
 
         span1.innerHTML = input;
-        span1.style.color = '#f00';
-        span2.innerHTML = showData[i].slice(len);
+        span1.style.color = '#e20059';
+        span2.innerHTML = item.slice(len);
 
         var p = document.createElement('p');
         p.style.margin = '2px';
@@ -104,12 +115,18 @@ function show(input) {
         $('.prompt-box').appendChild(p);
 
         addEvent(prompt[i], 'mouseover', mouseSelect);
-
-    }
-    addEvent($('.input'), 'keydown', function (e) {
-        kbdSelect(e.keyCode);
     });
 }
+//don't add some handler to A element more than one time,
+//because the handler will execute more than once! 
+addEvent($('.input'), 'keydown', function (e) {
+    kbdSelect(e.keyCode);
+});
+
+addEnterEvent($('.input'), function () {
+    setInputText(prompt[indexGlobal]);
+});
+
 //input event( fired synchronously when the value of an
 // <input>, <select>, or <textarea> element is changed.)
 addEvent($('.input'), 'input', filterData);
