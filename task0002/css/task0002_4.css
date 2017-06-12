@@ -11,6 +11,7 @@ body {
 .prompt-box {
     width: 182px;
     border: 1px solid #ccc;
+    border-top: none;
 }
 
 .current {

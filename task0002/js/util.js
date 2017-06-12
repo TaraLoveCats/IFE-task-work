@@ -417,8 +417,6 @@ function getPosition(element) {
 
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
 function addEvent(element, event, listener) {
-    console.log(element.className);
-
     event = event.replace(/^on/i, '').toLowerCase();
     if (element.addEventListener) {
         element.addEventListener(event, listener, false);
@@ -452,7 +450,7 @@ function addClickEvent(element, listener) {
 
 // 实现对于按Enter键时的事件绑定
 function addEnterEvent(element, listener) {
-    addEvent(element, "keydown", function(e) {
+    addEvent(element, "keydown", function (e) {
         if (e.keyCode === 13) {
             listener.call(element, event);
         }
@@ -461,7 +459,7 @@ function addEnterEvent(element, listener) {
 
 //事件代理 (element代理tag)
 function delegateEvent(element, tag, eventName, listener) {
-    addEvent(element, eventName, function(e) {
+    addEvent(element, eventName, function (e) {
         var event = e || window.event;
         var target = e.target || e.srcElement;
         if (target && target.tagName === tag.toUpperCase()) {

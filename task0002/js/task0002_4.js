@@ -1,7 +1,79 @@
 var data = ['jd', 'job hunting', 'java', 'javascript', 'javascript void 0'];
-var showData = [];
-var prompt = [];
-var span;
+var showData = [],
+    prompt = [];
+var recordGlobal = -1;
+
+function clearCurr() {
+    console.log('clear');
+    //first clear other current classes
+    for (var i = 0; i < prompt.length; i++) {
+        prompt[i].classList.remove('current');
+    }
+}
+
+function recordCurrentPos(pos) {
+    recordGlobal = pos;
+}
+
+function recordCurrentPosPlus(flag) {
+    var maxIndex = prompt.length - 1;
+    if (flag === -1) {
+        if (recordGlobal === -1) {
+            recordGlobal = 0;
+        } else {
+            recordGlobal = (recordGlobal + 1) % (maxIndex + 1);
+        }
+    } else if (flag === 1) {
+        if (recordGlobal === -1) {
+            recordGlobal = maxIndex;
+        } else {
+            if (recordGlobal === 0) {
+                recordGlobal = maxIndex;
+            } else {
+                recordGlobal = (recordGlobal - 1) % (maxIndex + 1);
+            }
+        }
+    } else {
+        // error
+    }
+}
+
+function recordCurrentPosShow() {
+    return recordGlobal;
+}
+
+function mouseSelect() {
+    clearCurr();
+    //必须用this不能写prompt[i], 因为事件发生时才会调用此函数，i不存在
+    this.classList.add('current');
+    var pos = prompt.indexOf(this);
+
+    recordCurrentPos(pos);
+
+    addClickEvent(this, function () {
+        //this.innerHTML是HTML文档形式（<span>...</span><span>...</span>）
+        $('.input').value = this.childNodes[0].innerHTML + this.childNodes[1].innerHTML;
+    });
+}
+
+function kbdSelect(code) {
+    clearCurr();
+
+    if (code === 38) {
+        recordCurrentPosPlus(1);
+    }
+    else if (code === 40) {
+        recordCurrentPosPlus(-1);
+    }
+
+    var index = recordCurrentPosShow();
+    prompt[index].classList.add('current');
+
+    addEnterEvent($('.input'), function () {
+        $('.input').value = prompt[index].childNodes[0].innerHTML + prompt[index].childNodes[1].innerHTML;
+    });
+
+}
 
 function filterData() {
     //to avoid duplicate data in showData
@@ -36,27 +108,26 @@ function show(input) {
 
         p.appendChild(span1);
         p.appendChild(span2);
-        prompt.push(p); 
+        prompt.push(p);
 
         $('.prompt-box').appendChild(p);
 
-        addEvent(prompt[i], 'mouseover', function () {
-            //first clear other current classes
-            for (var i = 0; i < prompt.length; i++) {
-                prompt[i].classList.remove('current');
-            }
-            //必须用this不能写prompt[i], 因为事件发生时才会调用此函数，i已经变了
-            this.classList.add('current');
-        });
+        addEvent(prompt[i], 'mouseover', mouseSelect);
+
     }
+    addEvent($('.input'), 'keydown', function (e) {
+        kbdSelect(e.keyCode);
+    });
 }
+//input event( fired synchronously when the value of an
+// <input>, <select>, or <textarea> element is changed.)
+addEvent($('.input'), 'input', filterData);
+
 // var lastinput = null;
-// addEvent($('.input'), 'keyup', function () {
+// function () {
 //     var inputCurr = trim($('.input').value).toLowerCase();
 //     if (inputCurr !== lastinput) {
 //         filterData();
 //     }
 //     lastinput = inputCurr;
-// });
-
-addEvent($('.input'), 'keyup', filterData);
+// }
