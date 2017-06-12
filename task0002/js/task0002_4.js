@@ -1,10 +1,9 @@
 var data = ['jd', 'job hunting', 'java', 'javascript', 'javascript void 0'];
 var showData = [],
     prompt = [];
-var recordGlobal = -1;
+var indexGlobal = -1;
 
 function clearCurr() {
-    console.log('clear');
     //first clear other current classes
     for (var i = 0; i < prompt.length; i++) {
         prompt[i].classList.remove('current');
@@ -12,34 +11,24 @@ function clearCurr() {
 }
 
 function recordCurrentPos(pos) {
-    recordGlobal = pos;
+    indexGlobal = pos;
 }
 
-function recordCurrentPosPlus(flag) {
-    var maxIndex = prompt.length - 1;
+function changePos(flag) {
+    var len = prompt.length;
+    var maxIndex = len - 1;
+
     if (flag === -1) {
-        if (recordGlobal === -1) {
-            recordGlobal = 0;
-        } else {
-            recordGlobal = (recordGlobal + 1) % (maxIndex + 1);
+        if (indexGlobal === -1 || indexGlobal === 0) {
+            indexGlobal = maxIndex;
         }
-    } else if (flag === 1) {
-        if (recordGlobal === -1) {
-            recordGlobal = maxIndex;
-        } else {
-            if (recordGlobal === 0) {
-                recordGlobal = maxIndex;
-            } else {
-                recordGlobal = (recordGlobal - 1) % (maxIndex + 1);
-            }
+        else {
+            indexGlobal = (indexGlobal - 1) % len;
         }
-    } else {
-        // error
     }
-}
-
-function recordCurrentPosShow() {
-    return recordGlobal;
+    else if (flag === 1) {
+        indexGlobal = (indexGlobal === -1) ? 0 : (indexGlobal + 1) % len;
+    }
 }
 
 function mouseSelect() {
@@ -53,6 +42,8 @@ function mouseSelect() {
     addClickEvent(this, function () {
         //this.innerHTML是HTML文档形式（<span>...</span><span>...</span>）
         $('.input').value = this.childNodes[0].innerHTML + this.childNodes[1].innerHTML;
+        //让输入框重新 focus,否则无法触发键盘事件
+        $('.input').focus();
     });
 }
 
@@ -60,13 +51,13 @@ function kbdSelect(code) {
     clearCurr();
 
     if (code === 38) {
-        recordCurrentPosPlus(1);
+        changePos(-1);
     }
     else if (code === 40) {
-        recordCurrentPosPlus(-1);
+        changePos(1);
     }
 
-    var index = recordCurrentPosShow();
+    var index = indexGlobal;
     prompt[index].classList.add('current');
 
     addEnterEvent($('.input'), function () {
