@@ -1,0 +1,53 @@
+.container {
+    margin-left: 150px;
+    width: 700px;
+    overflow: hidden;
+}
+
+.left-box,
+.right-box {
+    width: 200px;
+    height: 450px;
+    border: 2px solid #000;
+}
+
+.left-box {
+    position: relative;
+    float: left;
+}
+
+.right-box {
+    position: relative;
+    float: right;
+}
+
+.inner-box-1,
+.inner-box-2,
+.inner-box-3,
+.inner-box-4 {
+    position: absolute;
+    width: 200px;
+    height: 55px;
+    text-align: center;
+    /*20px relative to default font-size 16px*/
+    font-size: 125%;
+    /*55px  relative to font-size 20px*/
+    line-height: 2.75;
+    background: #d80062;
+}
+
+.inner-box-1 {
+    top: 0;
+}
+
+.inner-box-2 {
+    top: 57px;
+}
+
+.inner-box-3 {
+    top: 114px;
+}
+
+.inner-box-4 {
+    top: 171px;
+}

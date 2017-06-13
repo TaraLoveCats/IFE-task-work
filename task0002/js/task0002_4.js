@@ -3,6 +3,8 @@ var showData = [],
     prompt = [];
 var indexGlobal = -1;
 
+
+
 function clearCurr() {
     //first clear other current classes
     each (prompt, function (item) {
@@ -76,6 +78,7 @@ function filterData() {
     showData = [];
     prompt = [];
     indexGlobal = -1;
+    $('.box').classList.add('prompt-box');
 
     var input = trim($('.input').value).toLowerCase();
     each (data, function (item) {
@@ -86,7 +89,7 @@ function filterData() {
     });
 
     //refresh data
-    $('.prompt-box').innerHTML = null;
+    $('.box').innerHTML = null;
 
     if (showData[0]) {
         var validInput = showData[0].slice(0, input.length);
@@ -112,13 +115,13 @@ function show(input) {
         p.appendChild(span2);
         prompt.push(p);
 
-        $('.prompt-box').appendChild(p);
+        $('.box').appendChild(p);
 
         addEvent(prompt[i], 'mouseover', mouseSelect);
     });
 }
 //don't add some handler to A element more than one time,
-//because the handler will execute more than once! 
+//because the handler will execute more than once!
 addEvent($('.input'), 'keydown', function (e) {
     kbdSelect(e.keyCode);
 });
