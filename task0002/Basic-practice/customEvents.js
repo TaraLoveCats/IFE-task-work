@@ -1,6 +1,7 @@
 function eventTarget() {
     this.handlers = {};
 }
+
 eventTarget.prototype = {
     constructor: eventTarget,
 

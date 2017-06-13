@@ -1,30 +1,31 @@
+body {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
 .container {
     margin-left: 150px;
-    width: 700px;
-    overflow: hidden;
+    width: 650px;
 }
 
 .left-box,
 .right-box {
+    position: relative;
     width: 200px;
     height: 450px;
     border: 2px solid #000;
 }
 
 .left-box {
-    position: relative;
     float: left;
 }
 
 .right-box {
-    position: relative;
     float: right;
 }
 
-.inner-box-1,
-.inner-box-2,
-.inner-box-3,
-.inner-box-4 {
+.draggable {
     position: absolute;
     width: 200px;
     height: 55px;
@@ -36,18 +37,19 @@
     background: #d80062;
 }
 
-.inner-box-1 {
+.box-1 {
     top: 0;
+    /*border-bottom: 1px solid #000;*/
 }
 
-.inner-box-2 {
-    top: 57px;
+.box-2 {
+    top: 56px;
 }
 
-.inner-box-3 {
-    top: 114px;
+.box-3 {
+    top: 112px;
 }
 
-.inner-box-4 {
-    top: 171px;
+.box-4 {
+    top: 168px;
 }
