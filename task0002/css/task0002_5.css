@@ -1,10 +1,5 @@
-body {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
-}
-
 .container {
+    position: absolute;
     margin-left: 150px;
     width: 650px;
 }
@@ -26,30 +21,19 @@ body {
 }
 
 .draggable {
-    position: absolute;
-    width: 200px;
+    position: relative;
+    width: 198px;
     height: 55px;
+    border: 1px solid #fff;
     text-align: center;
     /*20px relative to default font-size 16px*/
     font-size: 125%;
     /*55px  relative to font-size 20px*/
     line-height: 2.75;
     background: #d80062;
+    cursor: move;
 }
 
-.box-1 {
-    top: 0;
-    /*border-bottom: 1px solid #000;*/
-}
-
-.box-2 {
-    top: 56px;
-}
-
-.box-3 {
-    top: 112px;
-}
-
-.box-4 {
-    top: 168px;
+.dragged {
+    z-index: 999;
 }
