@@ -1,12 +1,11 @@
 .container {
-    position: absolute;
+    position: relative;
     margin-left: 150px;
     width: 650px;
 }
 
 .left-box,
 .right-box {
-    position: relative;
     width: 200px;
     height: 450px;
     border: 2px solid #000;
@@ -21,9 +20,9 @@
 }
 
 .draggable {
-    position: relative;
+    position: absolute;
     width: 198px;
-    height: 55px;
+    height: 53px;
     border: 1px solid #fff;
     text-align: center;
     /*20px relative to default font-size 16px*/
@@ -34,6 +33,16 @@
     cursor: move;
 }
 
-.dragged {
-    z-index: 999;
+.clearfix:before,
+.clearfix:after {
+    content: '';
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
 }
