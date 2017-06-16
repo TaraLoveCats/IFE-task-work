@@ -56,17 +56,10 @@ function handleEvent(event) {
 
                 if (outOfScreen(event.clientX, event.clientY, event)) {
                     console.log('out of screen');
-                    
-                    dragging.parentNode.removeChild(dragging);
-                    parent.appendChild(dragging);
 
-                    if(parent.className.indexOf('left-box') !== -1) {
-                        dragging.style.left = 2 + 'px';
-                    }
-                    else if (parent.className.indexOf('right-box') !== -1) {
-                        dragging.style.left = rightX + 2 + 'px';
-                    }
-                    initialPos(parent);
+                    dragging.parentNode.removeChild(dragging);
+
+                    backToParent();
                 }
                 else {
                     dragging.style.left = (event.clientX - containerLeft - diffX) + 'px';
@@ -79,8 +72,8 @@ function handleEvent(event) {
 
             case 'mouseup':
                 if (dragging !== null) {
-                    console.log(parent.className);
-                    console.log(dragging.parentNode.className);
+                    console.log('parent: ' + parent.className);
+                    console.log('dragging.parentNode: ' + dragging.parentNode.className);
 
                     dragging.style.opacity = 1;
                     //这里不能再写parent了， 因为在mousemove中firstMove已经remove过一次了
@@ -98,19 +91,24 @@ function handleEvent(event) {
                         initialPos(rightBox);
                     }
                     else {
-                        parent.appendChild(dragging);
-                        if(parent.className.indexOf('left-box') !== -1) {
-                            dragging.style.left = 2 + 'px';
-                        }
-                        else if (parent.className.indexOf('right-box') !== -1) {
-                            dragging.style.left = rightX + 2 + 'px';
-                        }
-                        initialPos(parent);
+                        backToParent();
                     }
                 }
                 dragging = null;
                 break;
     }
+}
+
+function backToParent() {
+    parent.appendChild(dragging);
+
+    if(parent.className.indexOf('left-box') !== -1) {
+        dragging.style.left = 2 + 'px';
+    }
+    else if (parent.className.indexOf('right-box') !== -1) {
+        dragging.style.left = rightX + 2 + 'px';
+    }
+    initialPos(parent);
 }
 
 function outOfScreen(x, y, e) {
