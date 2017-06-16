@@ -1,0 +1,370 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Microsoft Yahei, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    min-width: 980px;
+    background: #eee;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background: #522a5c;
+}
+
+.header-wrap {
+    position: relative;
+    width: 980px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.logo {
+    position: absolute;
+    bottom: 5px;
+    font-size: 20px;
+}
+
+.nav {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+}
+
+.nav ul {
+    float: right;
+}
+
+.nav li {
+    float: left;
+    margin-left: 28px;
+    font: 14px SimSun, sans-serif;
+}
+
+.nav li :hover {
+    text-decoration: underline;
+    color: #c76a76;
+}
+
+.icon-github {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+@media(max-width: 980px) {
+    .icon-github  {
+        display: none;
+    }
+}
+
+.wrapper {
+    display: -webkit-flex;
+    display: flex;
+    width: 980px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.main {
+    -webkit-flex-basis: 710px;
+            flex-basis: 710px;
+    margin-right: 10px;
+}
+
+.article {
+    position: relative;
+    margin-bottom: 10px;
+    padding: 20px;
+    background: #fff;
+}
+
+.article h1 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #a660b7;
+}
+
+.article h2 {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.article .content{
+    margin-bottom: 30px;
+    text-indent: 2em;
+}
+
+.author {
+    font-size: 10px;
+    text-align: right;
+    color: #888;
+}
+
+.tag {
+    position: absolute;
+    left: -45px;
+    top: 20px;
+    width: 45px;
+    font-size: 14px;
+    background: #fff;
+}
+
+.tag-data {
+    height: 35px;
+    text-align: center;
+    line-height: 35px; /*line-height 实现居中！！！*/
+    background: #522a5c;
+    color: #fff;
+}
+
+.tag-type {
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    background: #a660b7;
+    color: #fff;
+}
+
+.page {
+    margin-bottom: 330px;
+    font-size: 0;/* 去除inline-block之间的间隙*/
+    text-align: center;
+}
+
+.page a {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 10px 15px;
+    font-size: 12px;
+    color: #000;
+    background: #fff;
+}
+
+.page .curr {
+    font-weight: 700;
+    color: #fff;
+    background: #a660b7;
+    cursor: text;
+}
+
+.page .disable {
+    color: #ccc;
+    cursor: text;
+}
+
+.aside {
+    -webkit-flex: 1;
+            flex: 1;
+}
+
+.form-wrap {
+    width: 100%;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+.search {
+    position: relative;
+    padding: 20px;
+    font-size: 0;
+}
+
+.text-input {
+    height: 40px;
+    border: 1px solid #eee;
+    padding: 0 0 0 40px;
+    border-right: 0;
+    line-height: 40px;
+    color: #eee;
+    background: url() no-repeat;
+}
+
+.search button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 42px;
+    border: 1px solid #eee;
+    font-size: 20px;
+    color: #fff;
+    background: #ddd;
+    cursor: pointer;
+}
+
+.catego a {
+    display: block;
+    height: 40px;
+    padding-left: 20px;
+    border-left: 4px solid #dfc6e6;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    line-height: 40px;
+    color: #666;
+}
+
+.catego .first {
+    border-top: 1px solid #ddd;
+}
+
+.catego .active,
+.catego a:hover {
+    border-left: 4px solid #522a5c;
+}
+
+.calendar {
+    padding: 10px 20px 20px 20px;
+    /*有了border-callapse以后就没有效果了？*/
+    /*border: 1px solid black;*/
+    margin: 0 auto;
+    /*border-collapse: collapse;*/
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+.calendar th,
+.calendar td {
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.calendar-em {
+    font-weight: 700;
+    color: #522a5c;
+}
+
+.today {
+    background: #a660b7;
+    color: #fff;
+}
+
+.tags {
+    color: #a660b7;
+    padding: 10px 20px 30px 20px;
+}
+
+.tags p {
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #666;
+}
+
+.lev1 {
+    font-size: 26px;
+}
+
+.lev2 {
+    font-size: 20px;
+}
+
+.lev3 {
+    font-size: 18px;
+}
+
+.lev4 {
+    font-size: 14px;
+}
+
+.lev5 {
+    font-size: 12px;
+}
+
+
+.footer {
+    color: #fff;
+    background: #000;
+}
+
+.footer hr {
+    border: 1px solid #aaa;
+}
+
+.footer-nav ul{
+    width: 100%;
+    padding: 10px 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-nav li {
+    display: inline;
+    margin: 0 12px;
+    font: 14px SimSun, sans-serif;
+}
+
+.footer-nav li :hover {
+    text-decoration: underline;
+    color: #c76a76;
+}
+
+.link {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-justify-content: center ;
+            justify-content: center;
+    width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.link-item {
+    -webkit-flex: 1;
+            flex: 1;
+}
+
+.link-title {
+    margin: 30px 0;
+    font-size: 15px;
+}
+
+.link ul {
+    line-height: 1.5;
+}
+
+.link li {
+    font: 14px SimSun, sans-serif;
+}
+
+.link li :hover {
+    text-decoration: underline;
+    color: #c76a76;
+}
+
+.copyright {
+    width: 980px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.copyright p {
+    margin-bottom: 15px;
+    font-size: 13px;
+}

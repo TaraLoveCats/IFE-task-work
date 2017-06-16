@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Microsoft YaHei, sans-serif;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    min-width: 980px;
+    background: #eee;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background: #522a5c;
+}
+
+.header-wrap {
+    position: relative;
+    width: 980px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.logo {
+    position: absolute;
+    bottom: 5px;
+    font-size: 20px;
+}
+
+.nav {
+    position: absolute;
+    bottom: 5px;
+    width: 100%; /*使导航能float到右边，因为nav自身也是块级元素*/
+}
+
+.nav ul {
+    float: right;
+}
+
+.nav li {
+    float: left;
+    margin-left: 28px;
+    font: 14px SimSun, sans-serif;
+}
+
+.nav li :hover {
+    text-decoration: underline;
+    color: #c76a76;
+}
+
+.icon-github {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
+
+@media (max-width: 980px) {
+    .icon-github {
+        display: none;
+
+    }
+}
+
+.banner-pic {
+    position: relative;
+    height: 530px;
+    background: url(../pic/banner-bg.jpg) round;
+    font-size: 0;
+}
+
+.pic-text-wrap {
+    position: relative;
+    height: 530px;
+    width: 980px;
+    margin: 0 auto;
+}
+
+.pic-text {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 350px;
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.5) 75%, rgba(255,255,255,0) 100%); /*Chrome10+,Safari5.1+*/
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0.7), rgba(255,255,255,0.5) 75%, rgba(255,255,255,0)); /*Firefox3.6+*/
+    background: -ms-linear-gradient(top, rgba(255,255,255,0.7), rgba(255,255,255,0.5) 75%, rgba(255,255,255,0)); /*IE10+*/
+    background: -o-linear-gradient(top, rgba(255,255,255,0.7), rgba(255,255,255,0.5) 75%, rgba(255,255,255,0)); /*Opera 11.10+*/
+    background: -linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.5) 75%, rgba(255,255,255,0)); /*W3C*/
+    padding: 10px 10px 30px 10px;
+}
+
+.pic-text h1 {
+    text-align: right;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.pic-text p {
+    font-size: 12px;
+    line-height: 1.5;
+    text-indent: 2em;
+}
+
+.main-content {
+   display: table;
+   border-spacing: 10px;
+   margin: 0 auto;
+   overflow: hidden;
+}
+
+.table-row {
+    display: table-row;
+}
+
+.post {
+    display: table-cell;
+    width: 320px;
+    background: #fff;
+    vertical-align: top;
+}
+
+.main-content img {
+    margin: 10px;
+}
+
+.post p {
+    padding: 5px 30px 25px 30px;
+    font-size: 12px;
+    line-height: 1.7;
+    text-indent: 2em;
+}
+
+.personal-info {
+    margin-top: 100px;
+    height: 530px;
+    background: #fff;
+}
+
+.personal-info img {
+    display: block;
+    position: relative;
+    top: -50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@font-face {
+    font-family: Century Gothic;
+    src: url(../font/Century%20Gothic.ttf);
+}
+
+.personal-info h1 {
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: "Century Gothic", sans-serif;
+    font-size: 20px;
+}
+
+.personal-info p {
+    width: 600px;
+    margin: 0 auto;
+    text-indent: 2em;
+    font-size: 14px;
+}
+
+.footer {
+    color: #fff;
+    background: #000;
+}
+
+.footer hr {
+    border: 1px solid #aaa;
+}
+
+.footer-nav ul {
+    width: 100%;
+    padding: 10px 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-nav li {
+    display: inline;
+    margin: 0 12px;
+    font: 14px SimSun, sans-serif;
+}
+
+.footer-nav li :hover {
+    text-decoration: underline;
+    color: #c76a76;
+}
+
+.link {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.link-item
+ {
+    -webkit-flex: 1;
+            flex: 1;
+}
+
+.link-title {
+    margin: 30px 0;
+    font-size: 15px;
+}
+
+.link ul {
+    line-height: 1.5;
+}
+
+.link li {
+    font: 14px SimSun, sans-serif;
+}
+
+.link li :hover {
+    text-decoration: underline;
+    color: #c76a76;
+}
+
+.copyright {
+    width: 980px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.copyright p {
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+
