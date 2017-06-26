@@ -248,12 +248,38 @@ function uniqArray(arr) {
         }
         return typeof a < typeof b ? -1 : 1;
      });
+
     for (var i = 0; i < arr.length; i++) {
         while (arr[i] === arr[i + 1]) {
             arr.splice(i + 1, 1);
         }
     }
     return arr;
+}
+
+// hash
+function uniqArray1 (arr) {
+    var obj = {},
+        result = [];
+
+    for(var i = 0, len = arr.length; i < len; i++) {
+
+        var key = arr[i];
+        if (!obj[key]) {
+            result.push(key);
+            obj[key] = true;
+        }
+        return result;
+    }
+}
+
+//hash
+function uniqArray2 (arr) {
+    var obj = {};
+    for (var i = 0, len = arr.length; i < len; i++) {
+        obj[arr[i]] = true;
+    }
+    return Object.keys(obj);
 }
 
 
@@ -263,25 +289,29 @@ function uniqArray(arr) {
 function simpleTrim(str) {
     var i = 0,
         j = str.length - 1;
+
     while (str[i] === ' ') {
         i++;
     }
-    var str_s = i;
     while (str[j] === ' ') {
         j--;
     }
-    var str_e = j;
-    return str.slice(str_s, str_e + 1);
+
+    if (i > j) {
+        return '';
+    }
+
+    return str.slice(i, j + 1);
  }
 
 // 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串
 // 尝试使用一行简洁的正则表达式完成该题目
-// function trim(str) {
-//     return str.match(/\S\w*(?:\s\w*)*\S/);
-// }
-
 function trim(str) {
+    return str.match(/\S+.+\S/);
+}
 
+function trim1(str) {
+// \xa0是不换行空格（&nbsp） \u3000是全角空格的16进制编码
     var trimer = new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+\x24)", "g");
 
     return String(str).replace(trimer, "");
@@ -291,7 +321,7 @@ function trim(str) {
 // 实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
 // 其中fn函数可以接受两个参数：item和index
 function each(arr, fn) {
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 0, len = arr.length; i < len; i++) {
         fn(arr[i], i);
     }
 }
@@ -318,7 +348,7 @@ function isMobilePhone(phone) {
     return /^1\d{10}$/.test(phone);
 }
 
-// 为element增加一个样式名为newClassName的新样式
+
 function hasClass(element, className) {
     var names = element.className;
     if (!names) {
@@ -333,6 +363,7 @@ function hasClass(element, className) {
     return false;
 }
 
+// 为element增加一个样式名为newClassName的新样式
 function addClass(element, newClassName) {
     if (!hasClass(element, newClassName)) {
         element.className = trim(element.className + " " + newClassName);
