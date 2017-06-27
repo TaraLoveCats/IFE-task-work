@@ -524,29 +524,48 @@ function isIE() {
 */
 // 设置 cookie
 function setCookie(cookieName, cookieValue, expiredays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (expiredays*24*60*60*1000));
-    var expires = 'expires=' + d.toUTCString();
-    document.cookie = cookieName + '=' + cookieValue + ';' + expires + ';path=/';
+    var expires = new Date();
+
+    if (typeof expiredays === 'number') {
+        expires.setTime(expires.getTime() + (expiredays * 24 * 60 * 60 * 1000));
+        expires = expires.toGMTString();
+    }
+
+    document.cookie =
+        encodeURIComponent(cookieName) + '=' + encodeURIComponent(cookieValue)
+         + '; expires=' + expires +'; path=/';
 }
 
 //获取 cookie 值
 function getCookie(cookieName) {
+
     var name = cookieName + '=';
     var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = trim(ca[i]);
-        if (c.indexOf(name) === 0) {
-            return c.slice(name.length, c.length);
+    var parts = decodedCookie.split(';');
+
+    for (var i = 0, len = parts.length; i < len; i++) {
+
+        var part = trim(parts[i]);
+        if (part.indexOf(name) === 0) {
+            return part.slice(name.length, part.length);
         }
     }
     return '';
 }
 
 //学习Ajax，并尝试自己封装一个Ajax方法
+/**
+ * @param {string} url 发送请求的url
+ * @param {Object} options 发送请求的选项参数
+ * @config {string} [options.type] 请求发送的类型。默认为GET。
+ * @config {Object} [options.data] 需要发送的数据,为一个键值对象或一个用&链接的赋值字符串。
+ * @config {Function} [options.onsuccess] 请求成功时触发，function(XMLHttpRequest xhr, string responseText)。
+ * @config {Function} [options.onfail] 请求失败时触发，function(XMLHttpRequest xhr)。
+ *
+ * @returns {XMLHttpRequest} 发送请求的XMLHttpRequest对象
+ */
 function ajax(url, options) {
-    var options = options || [];
+    var options = options || {};
     var data = stringifyData(options.data || {});
     var type = (options.type || 'GET').toUpperCase();
     var xhr;
@@ -556,10 +575,12 @@ function ajax(url, options) {
             url += (url.indexof('?') === -1 ? '?' : '&') + data;
             data = null;
         }
+
         xhr = createXHR();
         xhr.open(type, url, true);
         xhr.onreadystatechange = stateChangeHandler;
 
+        //open()之后设置http请求头
         if (type === 'POST') {
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         }
@@ -568,9 +589,7 @@ function ajax(url, options) {
         xhr.send(data);
     }
     catch(ex) {
-        if (options.onfail) {
-            options.onfail();
-        }
+        fire('fail');
     }
     return xhr;
 
@@ -602,24 +621,20 @@ function ajax(url, options) {
                 stat = xhr.status;
             }
             catch(ex) {
-                if (options.onfail) {
-                    options.onfail();
-                }
+                fire('fail');
                 return;
             }
+
+            fire(stat);
 
             if ((stat >= 200 && stat < 300)
                 || stat === 304
                 || stat === 1223) {
-                    if (options.onsuccess) {
-                        options.onsuccess(xhr.responseText, xhr);
-                    }
-                }
-                else {
-                    if (options.onfail) {
-                        options.onfail();
-                    }
-                }
+                fire('success');
+            }
+            else {
+                fire('fail');
+            }
                 /*
                 *见Note
                 */
@@ -630,6 +645,27 @@ function ajax(url, options) {
                     },
                     0
                 );
+        }
+    }
+
+    function fire(type) {
+        type = 'on' + type;
+        var handler = options[type];
+
+        if (!isFunction(handler)) {
+            return;
+        }
+        if (type === 'onfail') {
+            handler(xhr);
+        }
+        else {
+            try {
+                xhr.responseText;
+            }
+            catch(e) {
+                return handler(xhr);
+            }
+            handler(xhr, xhr.responseText);
         }
     }
 
