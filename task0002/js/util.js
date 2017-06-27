@@ -102,7 +102,7 @@ function $(selector) {
         var ret = direct(part, actions);
         //convert to array
         ret = [].slice.call(ret);
-        //ret[0] 不是 ret, ret is an array, while ret[0] is the true element!!!(demo中有错)
+
         // if (parts[0] && ret[0]) {
         //
         //     var r_ele = filterParents(parts, ret);
@@ -113,6 +113,8 @@ function $(selector) {
         //     alert('this is 2 ' + r_ele.tagName);
         //     return r_ele;
         // }
+
+        //ret[0] 不是 ret, ret is an array, while ret[0] is the true element!!!(demo中有错)
         return parts[0] && ret[0] ? filterParents(parts, ret) : ret[0];
     }
 
@@ -180,14 +182,7 @@ function isFunction(fn) {
     return Object.prototype.toString.call(fn) === "[Object Function]";
 }
 
-// 使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
-// 被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
-/*
-*这个
-*函数
-*还有
-*问题
-*/
+//判断一个对象是否为字面量对象
 function isPlain(obj) {
     var hasOwnProperty = Object.prototype.hasOwnProperty,
         key;
@@ -197,8 +192,6 @@ function isPlain(obj) {
         ) {
         return false;
     }
-
-    // 下面两个 暂时还没看懂
 
     if (obj.constructor &&
         !hasOwnProperty.call(obj, "constructor") &&
@@ -211,6 +204,8 @@ function isPlain(obj) {
 
 }
 
+// 使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
+// 被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
 function cloneObject(src) {
     var result = src,
         i,
@@ -258,7 +253,7 @@ function uniqArray(arr) {
 }
 
 // hash
-function uniqArray1 (arr) {
+function uniqArray1(arr) {
     var obj = {},
         result = [];
 
@@ -274,7 +269,7 @@ function uniqArray1 (arr) {
 }
 
 //hash
-function uniqArray2 (arr) {
+function uniqArray2(arr) {
     var obj = {};
     for (var i = 0, len = arr.length; i < len; i++) {
         obj[arr[i]] = true;
@@ -485,7 +480,7 @@ function addEnterEvent(element, listener) {
         if (e.keyCode === 13) {
             listener.call(element, event);
         }
-    })
+    });
 }
 
 //事件代理 (element代理tag)
