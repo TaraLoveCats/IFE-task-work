@@ -340,7 +340,7 @@ function isEmail(emailStr) {
 
 // 判断是否为手机号
 function isMobilePhone(phone) {
-    return /^1\d{10}$/.test(phone);
+    return /^1[3|5|8]\d{10}$/.test(phone);
 }
 
 
@@ -624,7 +624,7 @@ function ajax(url, options) {
                 fire('fail');
                 return;
             }
-
+            //什么意思？
             fire(stat);
 
             if ((stat >= 200 && stat < 300)
