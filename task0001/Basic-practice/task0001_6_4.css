@@ -31,22 +31,22 @@ div.right {
 div.container {
   width: 100%;
 }
-div.main {
+div.main-wrap {
   float: left;
   width: 100%;
   background: #fff;
 }
-div.main-wrap {
+div.main {
   min-height: 50px;
   margin-left: 200px;
   margin-right: 250px;
   background: #0f0;
 }
 div.left {
-  min-height: 50px;
   float: left;
+  min-height: 50px;
   width:200px;
-  margin-left: -100%; /*负边距让div上移*/
+  margin-left: -100%; /*负边距让div上移 百分比relative to viewport width*/
   background: #f00;
 }
 div.right {
@@ -56,4 +56,3 @@ div.right {
   margin-left:-250px;
   background: #00f;
 }
-
