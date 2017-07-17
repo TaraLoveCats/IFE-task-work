@@ -8,15 +8,28 @@
     <link rel="stylesheet" href="task0003.css">
 </head>
 <body>
-    <div class="wrapper clearfix">
-        <header class="header">
-            <div class="logo">GTD Tools</div>
-        </header>
-        <div class="left">
-            <div class="category"></div>
-            <div class="task-name"></div>
-        </div>
-        <div class="description"></div>
+    <header class="header">
+        <h1>Tasks ToDo</h1>
+    </header>
+    <div class="category">
+        <div id="all-tasks">所有任务（<span>3</span>）</div>
+        <div class="list-title">分类列表</div>
+        <ul class="folder-wrap">
+            <li class="folder">前端项目（<span>2</span>）
+                <ul class="file-wrap">
+                    <li class="file">task1（1）</li>
+                    <li class="file">task2（1）</li>
+                </ul>
+            </li>
+            <li class="folder">默认分类（1）
+                <ul class="file-wrap">
+                    <li class="file">默认子分类（1）</li>
+                </ul>
+            </li>
+        </ul>
+        <button class="add">新增任务</button>
     </div>
+    <div class="task-name"></div>
+    <div class="description"></div>
 </body>
 </html>
