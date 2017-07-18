@@ -1,9 +1,9 @@
 * {
-    padding: 0;
-    margin: 0;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
+    padding: 0;
+    margin: 0;
     font-family: Microsoft Yahei, sans-serif;
 }
 
@@ -32,7 +32,7 @@ html, body {
     position: relative;
     width: 100%;
     height: 70px;
-    background: #bbb;
+    background: #aaa;
 }
 
 h1 {
@@ -46,35 +46,51 @@ h1 {
     top: 70px;
     bottom: 0;
     width: 250px;
-    padding: 18px;
     border-right: 2px solid #aaa;
     line-height: 1.8;
-    background: #eee;
+    background: #ddd;
 }
 
+
+#all-tasks {
+    padding-left: 18px;
+    margin-top: 10px;
+}
 .list-title {
     margin: 8px 0;
-}
-.folder-wrap {
     padding-left: 18px;
 }
 
 .folder {
-    list-style-image: url(img/folder-icon.png);
-}
-
-.file-wrap {
     padding-left: 18px;
 }
+
 .file {
-    list-style-image: url(img/file-icon.png);
+    padding-left: 36px;
+}
+
+.selected {
+    background: #fff;
+}
+.no-default {
+    position: relative;
+}
+
+.del {
+    visibility: hidden;
+    position: absolute;
+    right: 8px;
+    top: 6px;
 }
 
 #all-tasks:hover,
 .folder:hover,
 .file:hover{
-    /*display: inline-block;*/
     background: #fff;
+}
+
+.no-default:hover .del {
+    visibility: visible;
 }
 
 .category .add {
@@ -82,13 +98,19 @@ h1 {
     left: 0;
     bottom: 0;
     width: 248px;
-    height: 50px;
-    outline: none;
 }
 
 .add {
+    height: 50px;
     border: none;
-    background: #ddd;
+    font-size: 16px;
+    outline: none;
+    background: #ccc;
+}
+
+.add:hover {
+    background: #d8e5ff;
+    transition: 0.3s ease;
 }
 
 .task-name {
@@ -96,14 +118,74 @@ h1 {
     top: 70px;
     left: 250px;
     bottom: 0;
-    width: 200px;
+    width: 250px;
     background: #eee;
+}
+
+.filter-wrap {
+    width: 250px;
+    height: 50px;
+    border-bottom: 2px dashed #eee;
+    background: #fff;
+}
+
+.btn-wrap {
+    width: 191px;
+    margin: 0 auto;
+    padding-top: 10px;
+    font-size: 0; /*注意inline-block之间的间隙！*/
+}
+
+.filter {
+    width: 55px;
+    margin: 0 4px;
+    border: none;
+    outline: none;
+    text-align: center;
+    line-height: 30px;
+    background: #ccc;
+
+}
+
+.filter:hover {
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.task-name .add {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 250px;
 }
 
 .description {
     position: absolute;
     top: 70px;
-    left: 550px;
+    left: 500px;
     right: 0;
     bottom: 0;
+}
+
+.title {
+    height: 60px;
+    padding-left: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 60px;
+    background: #ccc;
+}
+
+.date {
+    height: 50px;
+    padding-left: 20px;
+    line-height: 50px;
+    background: #ddd;
+}
+
+.content {
+    padding-left: 20px;
+    padding-top: 20px;
+    line-height: 2;
+    /*background: #fffceb2*/
 }

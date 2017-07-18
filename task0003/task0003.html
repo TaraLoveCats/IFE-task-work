@@ -15,21 +15,36 @@
         <div id="all-tasks">所有任务（<span>3</span>）</div>
         <div class="list-title">分类列表</div>
         <ul class="folder-wrap">
-            <li class="folder">前端项目（<span>2</span>）
+            <li>
+                <p class="folder no-default"><img src="img/folder-icon.png" style="padding-right: 5px">前端项目（<span>2</span>）<img src="img/del-icon.png" class="del"></p>
                 <ul class="file-wrap">
-                    <li class="file">task1（1）</li>
-                    <li class="file">task2（1）</li>
+                    <li class="file no-default"><img src="img/file-icon.png" style="padding-right: 5px">task1（1）<img src="img/del-icon.png" class="del"></li>
+                    <li class="file no-default"><img src="img/file-icon.png" style="padding-right: 5px">task2（1）<img src="img/del-icon.png" class="del"></li>
                 </ul>
             </li>
-            <li class="folder">默认分类（1）
+            <li>
+                <p class="folder selected"><img src="img/folder-icon.png" style="padding-right: 5px">默认分类（<span>1</span>）</p>
                 <ul class="file-wrap">
-                    <li class="file">默认子分类（1）</li>
+                    <li class="file"><img src="img/file-icon.png" style="padding-right: 5px">默认子分类（1）</li>
                 </ul>
             </li>
         </ul>
-        <button class="add">新增任务</button>
+        <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增分类</button>
     </div>
-    <div class="task-name"></div>
-    <div class="description"></div>
+    <div class="task-name">
+        <div class="filter-wrap">
+            <div class="btn-wrap">
+                <button class="filter">所有</button>
+                <button class="filter">未完成</button>
+                <button class="filter">已完成</button>
+            </div>
+        </div>
+        <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增任务</button>
+    </div>
+    <div class="description">
+        <div class="title">任务要求</div>
+        <div class="date">任务日期：<span>2017-7-20</span></div>
+        <div class="content">这是一个个人任务管理系统，为离线应用，数据保存在本地硬盘。<br>浏览器兼容性： Chrome/ IE8+</div>
+    </div>
 </body>
 </html>
