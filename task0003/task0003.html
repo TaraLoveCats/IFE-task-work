@@ -33,18 +33,45 @@
     </div>
     <div class="task-name">
         <div class="filter-wrap">
-            <div class="btn-wrap">
-                <button class="filter selected">所有</button>
-                <button class="filter">未完成</button>
-                <button class="filter">已完成</button>
-            </div>
+            <button class="filter selected">所有</button>
+            <button class="filter">未完成</button>
+            <button class="filter">已完成</button>
         </div>
+        <div class="task-list"></div>
         <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增任务</button>
     </div>
     <div class="description">
-        <div class="title">任务要求</div>
+        <div class="title">
+            <div class="todo-name">任务名称</div>
+            <div class="revise">
+                <a></a>
+                <a></a>
+            </div>
+        </div>
         <div class="date">任务日期：<span>2017-7-20</span></div>
         <div class="content">这是一个个人任务管理系统，为离线应用，数据保存在本地硬盘。<br>浏览器兼容性： Chrome/ IE8+</div>
+        <div class="button-area">
+            <button class="save">保存</button>
+            <button class="cancel">放弃</button>
+        </div>
     </div>
+    <div class="pop-up">
+        <div class="pop-head">新增分类</div>
+        <div class="pop-body">
+            选择主分类：<select id="select">
+                <option value="major">主分类</option>
+                <option value="front-end">前端项目</option>
+            </select> <br>
+            新分类名称：<input type="text">
+        </div>
+        <div class="pop-foot">
+            <button>确定</button>
+            <button>取消</button>
+        </div>
+    </div>
+
+    <script src="js/util.js"></script>
+    <script src="js/task0003.js"></script>
+
 </body>
 </html>
