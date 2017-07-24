@@ -37,36 +37,51 @@
             <button class="filter">未完成</button>
             <button class="filter">已完成</button>
         </div>
-        <div class="task-list"></div>
+        <div class="task-list">
+            <div></div>
+            <ul>
+                <li data-taskId></li>
+                <li data-taskId></li>
+            </ul>
+        </div>
         <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增任务</button>
     </div>
     <div class="description">
         <div class="title">
             <div class="todo-name">任务名称</div>
-            <div class="revise">
+            <div class="operation">
                 <a></a>
                 <a></a>
             </div>
         </div>
         <div class="date">任务日期：<span>2017-7-20</span></div>
         <div class="content">这是一个个人任务管理系统，为离线应用，数据保存在本地硬盘。<br>浏览器兼容性： Chrome/ IE8+</div>
+        <div class="title">
+            <div class="todo-name"><input type="text" class="input-title" placeholder="请输入标题..."></div>
+            <div class="operation">
+            </div>
+        </div>
+        <div class="date">任务日期：<span><input type="date" class="input-date"></span></div>
+        <div class="content"><textarea class="text-content" placeholder="请输入内容..."></textarea></div>
         <div class="button-area">
             <button class="save">保存</button>
             <button class="cancel">放弃</button>
         </div>
     </div>
-    <div class="pop-up">
-        <div class="pop-head">新增分类</div>
-        <div class="pop-body">
-            选择主分类：<select id="select">
-                <option value="major">主分类</option>
-                <option value="front-end">前端项目</option>
-            </select> <br>
-            新分类名称：<input type="text">
-        </div>
-        <div class="pop-foot">
-            <button>确定</button>
-            <button>取消</button>
+    <div class="cover">
+        <div class="pop-up">
+            <div class="pop-head">新增分类</div>
+            <div class="pop-body">
+                选择主分类：<select id="select">
+                    <option value="major">主分类</option>
+                    <option value="front-end">前端项目</option>
+                </select> <br>
+                新分类名称：<input type="text">
+            </div>
+            <div class="pop-foot">
+                <button>确定</button>
+                <button>取消</button>
+            </div>
         </div>
     </div>
 
