@@ -12,12 +12,14 @@ function initAll() {
     cateStatusControl();
     generateTaskById(-1);
     addClass($('[data-taskId]'), 'selected');
-    listAllStorage();
+    listlocalStorage();
 }
 
 /**
  * cate分类
+ *
  * childCate子分类
+ *
  * task任务
  */
 
@@ -35,15 +37,16 @@ function initDataBase() {
         var childCate = [
             {
                 'id': 0,
+                'parent': 0,
                 'name': '默认子分类'，
-                'child': [-1],
-                'parent': 0
+                'child': [-1]
             }
         ];
 
         var task = [
             {
                 'id': -1,
+                'parent': 0,
                 'finished': true,
                 'name': '介绍',
                 'date': '2017-7-30',
@@ -267,4 +270,243 @@ function queryTasksByCateId(id, status) {
     }
 
     return result;
+}
+
+/**
+ * Object.create polyfill（部分功能）
+ * @param  {Object} o 原对象
+ * @return {Object}   一份原对象的shallow copy
+ */
+function object(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+}
+
+/**
+ * 添加分类
+ * @param {String} name 新分类的名称
+ */
+function addCate(name) {
+    var cate = JSON.parse(localStorage.cate),
+        newCate = {};
+    newCate.id = cate[cate.length - 1].id + 1;
+    newCate.name = name;
+    newCate.child = [];
+
+    cate.push(newCate);
+    localStorage.cate = JSON.stringify(cate);
+}
+
+/**
+ * 添加子分类
+ * @param {number} parent 父节点的id
+ * @param {String} name   新子分类的名称
+ */
+function addChildCate(parent, name) {
+    var childCate = JSON.parse(localStorage.childCate),
+        newChildCate = {};
+    newChildCate.id = childCate[childCate.length - 1].id + 1;
+    newChildCate.parent = parent;
+    newChildCate.name = name;
+    newChildCate.child = [];
+
+    childCate.push(newChildCate);
+    localStorage.childCate = JSON.stringify(childCate);
+
+    updateCateChildByAdd(parent, newChildCate.id);
+}
+
+/**
+ * 添加任务
+ * @param {Object} obj 一个没有id的任务对象
+ * @return {number} 任务的id
+ */
+function addTask(obj) {
+    var allTasks = queryAllTasks();
+    obj.id = task[task.length - 1].id + 1;
+    task.push(obj);
+
+    updateCateChildByAdd(obj.parent, obj.id);
+    localStorage.task = JSON.stringify(task);
+
+    return obj.id;
+}
+
+/**
+ * 更新主分类的child，添加一个childId
+ * @param  {number} id      要更新的分类id
+ * @param  {number} childId child中添加的id
+ */
+function updateCateChildByAdd(id, childId) {
+    var cate = JSON.parse(localStorage.cate),
+        len = cate.length;
+    for (var i = 0; i < len; i++) {
+        if (cate[i].id === id) {
+            cate[i].child.push(childId);
+            break;
+        }
+    }
+
+    localStorage.cate = JSON.stringify(cate);
+}
+
+
+/**
+ * 更新主分类的child，删除一个childId
+ * @param  {number} id
+ * @param  {number} childId
+ */
+function updateCateChildByDel(id, childId) {
+    var cate = JSON.parse(localStorage.cate),
+        len = cate.length;
+    for (var i = 0; i < len; i++) {
+        if (cate[i].id === id) {
+            for (var j = 0, l = cate[i].child.length; j < l; j++) {
+                if (cate[i].child[j] === childId) {
+                    cate[i].child = deleteInArray(cate[i].child, j);
+                    break;
+                }
+            }
+        }
+    }
+    localStorage.cate = JSON.stringify(cate);
+}
+
+/**
+ * 更新子分类的child,添加一个childId
+ * @param  {number} id
+ * @param  {number} childId
+ */
+function updateChildCateChildByAdd(id, childId) {
+    var childCate = queryAllChildCates(),
+        len = childCate.length;
+
+    for (var i = 0; i < len; i++) {
+        if (childCate[i].id === id) {
+            childCate[i].child.push(childId);
+            break;
+        }
+    }
+    localStorage.childCate = JSON.stringify(childCate);
+}
+
+/**
+ * 根据任务id更新任务状态
+ * @param  {number} taskId 任务id
+ */
+function updateTaskStatusById(taskId) {
+    var allTasks = queryAllTasks(),
+        len = allTasks.length;
+    for (var i = 0; i < len; i++) {
+        if (allTasks[i].id === taskId) {
+            allTasks[i].finished = true;
+            break;
+        }
+    }
+
+    localStorage.task = JSON.stringify(allTasks);
+}
+
+
+/**
+ * 修改任务
+ * @param  {number} id      任务id
+ * @param  {String} name    任务名称
+ * @param  {String} date    任务日期
+ * @param  {String} content 任务内容
+ */
+function updateTaskById(id, name, date, content) {
+    var allTasks = queryAllTasks(),
+        len = allTasks.length;
+    for (var i = 0; i < len; i++) {
+        var item = allTasks[i];
+        if (item.id === id) {
+            item.name = name;
+            item.date = date;
+            item.content = content;
+            break;
+        }
+    }
+    localStorage.task = JSON.stringify(allTasks);
+}
+
+/**
+ * 删除指定id的分类
+ * @param  {number} id 任务id
+ */
+function deleteCate(id) {
+    var cate = queryCates(),
+        result = [],
+        len = cateArr.length;
+
+    for (var i = 0; i < len; i++) {
+        var item = cate[i];
+        if (item.id === id) {
+            result = deleteInArray(item, i);
+            for (var j = 0, l = item.length; j < l; j++) {
+                deleteChildCate(item.child[j]);
+            }
+        }
+    }
+
+    localStorage.cate = JSON.stringify(result);
+}
+
+/**
+ * 删除指定id的子类
+ * @param  {number} id 子分类
+ */
+function deleteChildCate(id) {
+    var childCate = queryAllChildCates(),
+        result = [],
+        len = childCate.length;
+
+    for (var i = 0; i < len; i++) {
+        var item = childCate[i];
+        if (item.id === id) {
+            result = deleteInArray(childCate, i);
+            updateCateChildByDel(item.parent, item.id);
+
+            for (var j = 0, l = item.child.length; i < l; i++) {
+                deleteTaskById(item.child[j]);
+            }
+        }
+    }
+
+    localStorage.childCate = JSON.stringify(result);
+}
+
+/**
+ * 根据id删除任务
+ * @param  {number} id 任务id
+ */
+function deleteTaskById(id) {
+    var allTasks = queryAllTasks(),
+        result = [],
+        len = allTasks.length;
+
+    for (var i = 0; i < len; i++) {
+        if (allTasks[i].id === id) {
+            result = deleteInArray(allTasks, i);
+            break;
+        }
+    }
+
+    localStorage.task = JSON.stringify(result);
+}
+
+/**
+ * 列举localStorage
+ */
+function listlocalStorage() {
+    console.log('-------localStorage--------');
+    for (var i = 0, l = localStorage.length; i < l; i++) {
+        var name = localStorage.key(i),
+            value = localStorage.getItem(name);
+        console.log('name:   ' + name);
+        console.log('value:   ' + value);
+        console.log('++++++++++++++++');
+    }
+    console.log('-------localStorage---------');
 }
