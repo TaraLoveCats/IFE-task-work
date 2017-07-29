@@ -12,16 +12,9 @@
         <h1>Tasks ToDo</h1>
     </header>
     <div class="category">
-        <div id="all-tasks">所有任务（<span>3</span>）</div>
+        <div id="all-tasks" class="selected" onclick="clickOnCate(this)">所有任务（<span></span>）</div>
         <div class="list-title">分类列表</div>
         <ul class="folder-wrap" id="list-content">
-            <li>
-                <p class="folder no-default"><img src="img/folder-icon.png" style="padding-right: 5px">前端项目（<span>2</span>）<img src="img/del-icon.png" class="del"></p>
-                <ul class="file-wrap">
-                    <li class="file no-default"><img src="img/file-icon.png" style="padding-right: 5px">task1（1）<img src="img/del-icon.png" class="del"></li>
-                    <li class="file no-default"><img src="img/file-icon.png" style="padding-right: 5px">task2（1）<img src="img/del-icon.png" class="del"></li>
-                </ul>
-            </li>
             <li>
                 <p class="folder selected"><img src="img/folder-icon.png" style="padding-right: 5px">默认分类（<span>1</span>）</p>
                 <ul class="file-wrap">
@@ -38,29 +31,25 @@
             <button class="filter" id="done">已完成</button>
         </div>
         <div id="task-list">
-
+            <!-- <div></div>
+            <ul>
+                <li></li>
+                <li></li>
+            </ul> -->
+        </div>
         <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增任务</button>
     </div>
     <div class="description">
         <div class="title">
-            <div class="todo-name">任务名称</div>
-            <div class="operation">
-                <a></a>
-                <a></a>
-            </div>
+            <div class="todo-name"></div>
+            <div class="operation"></div>
         </div>
-        <div class="date">任务日期：<span>2017-7-20</span></div>
-        <div class="content">这是一个个人任务管理系统，为离线应用，数据保存在本地硬盘。<br>浏览器兼容性： Chrome/ IE8+</div>
-        <div class="title">
-            <div class="todo-name"><input type="text" class="input-title" placeholder="请输入标题..."></div>
-            <div class="operation">
-            </div>
-        </div>
-        <div class="date">任务日期：<span><input type="date" class="input-date"></span></div>
-        <div class="content"><textarea class="text-content" placeholder="请输入内容..."></textarea></div>
+        <div class="date">任务日期：<span></span></div>
+        <div class="content"></div>
+
         <div class="button-area">
-            <button class="save">保存</button>
-            <button class="cancel">放弃</button>
+            <button class="save" onclick="save()">保存</button>
+            <button class="cancel" onclick="cancelSave()">放弃</button>
         </div>
     </div>
     <div class="cover">
@@ -68,7 +57,7 @@
             <div class="pop-head">新增分类</div>
             <div class="pop-body">
                 选择主分类：<select id="select-cate">
-                    <option value="major">主分类</option>
+                    <!-- <option value="-1">主分类</option> -->
                 </select> <br>
                 新分类名称：<input id="input-cate" type="text">
             </div>

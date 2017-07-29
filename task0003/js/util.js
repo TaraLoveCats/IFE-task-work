@@ -174,12 +174,12 @@ function $(selector) {
 
 // 判断arr是否为一个数组，返回一个bool值
 function isArray(arr) {
-    return Object.prototype.toString.call(arr) === "[Object Array]";
+    return Object.prototype.toString.call(arr) === "[object Array]";
 }
 
 // 判断fn是否为一个函数，返回一个bool值
 function isFunction(fn) {
-    return Object.prototype.toString.call(fn) === "[Object Function]";
+    return Object.prototype.toString.call(fn) === "[object Function]";
 }
 
 //判断一个对象是否为字面量对象
@@ -187,7 +187,7 @@ function isPlain(obj) {
     var hasOwnProperty = Object.prototype.hasOwnProperty,
         key;
     if (!obj
-        || Object.prototype.toString.call(obj) !== "[Object Object]"
+        || Object.prototype.toString.call(obj) !== "[object Object]"
         || !('isPrototypeOf' in obj)
         ) {
         return false;
@@ -368,9 +368,10 @@ function addClass(element, newClassName) {
 // 移除element中的样式oldClassName
 function removeClass(element, oldClassName) {
     if (hasClass(element, oldClassName)) {
-        element.className = trim(element.className.repalce(oldClassName, " "));
+        element.className = trim(element.className.replace(oldClassName, " "));
     }
 }
+
 
 // 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
 function isSiblingNode(element, siblingNode) {

@@ -1,19 +1,27 @@
+//C:\Users\Username\AppData\Local\Google\Chrome\User Data\Default\Local Storage
 var currentCateId = -1,
     currentCateTable = "allCate",
-    currentTaskId = -1;
-
-initAll();
+    currentTaskId = -1,
+    editSave = false;
 
 function initAll() {
+    // localStorage.clear();
     initDataBase();
     initCates();
     initPopUp();
     $('#task-list').innerHTML = createTaskList(queryAllTasks());
-    cateStatusControl();
-    generateTaskById(-1);
-    addClass($('[data-taskId]'), 'selected');
+    createStatusTaskList();
+    showTaskContentById(-1);
+    addClass($('[taskid]'), 'selected');
     listlocalStorage();
+
 }
+
+initAll();
+
+addClickEvent($('.category .add'), clickAddCate);
+addClickEvent($('.task-name .add'), clickAddTask);
+// window.addEventListener('load', initAll, false);
 
 /**
  * cate分类
@@ -29,7 +37,7 @@ function initDataBase() {
         var cate = [
             {
                 'id': 0,
-                'name': '默认分类'，
+                'name': '默认分类',
                 'child': [0]
             }
         ];
@@ -38,7 +46,7 @@ function initDataBase() {
             {
                 'id': 0,
                 'parent': 0,
-                'name': '默认子分类'，
+                'name': '默认子分类',
                 'child': [-1]
             }
         ];
@@ -60,6 +68,8 @@ function initDataBase() {
     }
 }
 
+console.log(localStorage.cate);
+
 /**
  * 查询所有分类
  * @return {Array} 对象数组
@@ -78,7 +88,7 @@ function queryCateById(id) {
         len = cate.length;
 
     for (var i = 0; i < len; i++) {
-        if (cate[i].id === id) {
+        if (cate[i].id == id) {
             return cate[i];
         }
     }
@@ -95,7 +105,7 @@ function queryTasksNumByCateId(id) {
         len = cate.child.length;
 
     for (var i = 0; i < len; i++) {
-        var childCate = queryChildCatesById(cate.chlid[i]);
+        var childCate = queryChildCateById(cate.chlid[i]);
         result += childCate.child.length;
     }
 
@@ -112,7 +122,7 @@ function queryTasksNumByCate(cateObj) {
         len = cateObj.child.length;
 
     for (var i = 0; i < len; i++) {
-        var childCate = queryChildCatesById(cateObj.chlid[i]);
+        var childCate = queryChildCateById(cateObj.child[i]);
          result += childCate.child.length;
     }
 
@@ -132,12 +142,12 @@ function queryAllChildCates() {
  * @param  {number} id
  * @return {Object}
  */
-function queryChildCatesById(id) {
+function queryChildCateById(id) {
     var childCate = JSON.parse(localStorage.childCate),
         len = childCate.length;
 
     for (var i = 0; i < len; i++) {
-        if (childCate[i].id === id) {
+        if (childCate[i].id == id) {
             return childCate[i];
         }
     }
@@ -148,15 +158,17 @@ function queryChildCatesById(id) {
  * @param  {Array}
  * @return {Array} 子分类对象数组
  */
-function queryChildCatesByIdArr(idArr) {
+function queryChildCateByIdArr(idArr) {
+    console.log('in queryChildCateByIdArr');
+
     if (isArray(idArr)) {
         var cateArr = [],
             len = idArr.length;
 
         for (var i = 0; i < len; i++) {
-            cateArr.push(queryChildCatesById(idArr[i]));
+            cateArr.push(queryChildCateById(idArr[i]));
         }
-
+        console.log(cateArr);
         return cateArr;
     }
 }
@@ -216,7 +228,7 @@ function queryTaskById(id) {
         len = allTasks.length;
 
     for (var i = 0; i < len; i++) {
-        if (allTasks[i].id === id) {
+        if (allTasks[i].id == id) {
             return allTasks[i];
         }
     }
@@ -230,24 +242,27 @@ function queryTaskById(id) {
  */
 function queryTasksByChildCateId(id, status) {
     var result = [],
-        arr = queryChildCatesById(id).child,
+        arr = queryChildCateById(id).child,
         len = arr.length;
+    console.log(JSON.stringify(queryChildCateById(id)));
+    console.log('arr: ' + arr);
 
     for (var i = 0; i < len; i++) {
         var task = queryTaskById(arr[i]);
 
         if (typeof status !== 'boolean') {
             result.push(task);
-        }
-        if (status && task[i].done) {
-            result.push(task);
-        }
-        else if (!status && !task[i].done) {
-            result.push(task);
+        } else {
+            if (status && task.done) {
+                result.push(task);
+            } else if (!status && !task.done) {
+                result.push(task);
+            }
         }
 
-        return result;
     }
+
+    return result;
 }
 
 /**
@@ -257,6 +272,7 @@ function queryTasksByChildCateId(id, status) {
  * @return {Array}
  */
 function queryTasksByCateId(id, status) {
+    console.log('in queryTasksByCateId');
     var result = [],
         cateChild = queryCateById(id).child,
         len = cateChild.length;
@@ -273,21 +289,11 @@ function queryTasksByCateId(id, status) {
 }
 
 /**
- * Object.create polyfill（部分功能）
- * @param  {Object} o 原对象
- * @return {Object}   一份原对象的shallow copy
- */
-function object(o) {
-    function F() {}
-    F.prototype = o;
-    return new F();
-}
-
-/**
  * 添加分类
  * @param {String} name 新分类的名称
  */
 function addCate(name) {
+
     var cate = JSON.parse(localStorage.cate),
         newCate = {};
     newCate.id = cate[cate.length - 1].id + 1;
@@ -306,15 +312,19 @@ function addCate(name) {
 function addChildCate(parent, name) {
     var childCate = JSON.parse(localStorage.childCate),
         newChildCate = {};
+
     newChildCate.id = childCate[childCate.length - 1].id + 1;
     newChildCate.parent = parent;
     newChildCate.name = name;
     newChildCate.child = [];
+    console.log(newChildCate);
 
     childCate.push(newChildCate);
+    console.log(childCate);
     localStorage.childCate = JSON.stringify(childCate);
 
     updateCateChildByAdd(parent, newChildCate.id);
+    console.log('after updateCateChildByAdd: ' + localStorage.cate);
 }
 
 /**
@@ -327,8 +337,9 @@ function addTask(obj) {
     obj.id = allTasks[allTasks.length - 1].id + 1;
     allTasks.push(obj);
 
-    updateCateChildByAdd(obj.parent, obj.id);
+    updateChildCateChildByAdd(obj.parent, obj.id);
     localStorage.task = JSON.stringify(allTasks);
+    console.log('in addTask, allTasks: ' + localStorage.task);
 
     return obj.id;
 }
@@ -339,10 +350,14 @@ function addTask(obj) {
  * @param  {number} childId child中添加的id
  */
 function updateCateChildByAdd(id, childId) {
+    console.log('in updateCateChildByAdd');
+    console.log(localStorage.cate);
     var cate = JSON.parse(localStorage.cate),
         len = cate.length;
+
     for (var i = 0; i < len; i++) {
-        if (cate[i].id === id) {
+
+        if (cate[i].id == id) {//id 是 string!!!
             cate[i].child.push(childId);
             break;
         }
@@ -353,7 +368,7 @@ function updateCateChildByAdd(id, childId) {
 
 
 /**
- * 更新主分类的child，删除一个childId
+ * 更新主分类的child属性，删除一个childId
  * @param  {number} id
  * @param  {number} childId
  */
@@ -361,10 +376,12 @@ function updateCateChildByDel(id, childId) {
     var cate = JSON.parse(localStorage.cate),
         len = cate.length;
     for (var i = 0; i < len; i++) {
-        if (cate[i].id === id) {
-            for (var j = 0, l = cate[i].child.length; j < l; j++) {
-                if (cate[i].child[j] === childId) {
-                    cate[i].child = deleteInArray(cate[i].child, j);
+        var item = cate[i];
+
+        if (item.id == id) {
+            for (var j = 0; j < item.child.length; j++) {
+                if (item.child[j] === childId) {
+                    item.child.splice(j, 1);
                     break;
                 }
             }
@@ -383,7 +400,7 @@ function updateChildCateChildByAdd(id, childId) {
         len = childCate.length;
 
     for (var i = 0; i < len; i++) {
-        if (childCate[i].id === id) {
+        if (childCate[i].id == id) {
             childCate[i].child.push(childId);
             break;
         }
@@ -420,14 +437,16 @@ function updateTaskById(id, name, date, content) {
     var allTasks = queryAllTasks(),
         len = allTasks.length;
     for (var i = 0; i < len; i++) {
-        var item = allTasks[i];
-        if (item.id === id) {
-            item.name = name;
-            item.date = date;
-            item.content = content;
+        var task = allTasks[i];
+        if (task.id == id) {
+            task.name = name;
+            task.date = date;
+            task.content = content;
+
             break;
         }
     }
+
     localStorage.task = JSON.stringify(allTasks);
 }
 
@@ -436,21 +455,22 @@ function updateTaskById(id, name, date, content) {
  * @param  {number} id 任务id
  */
 function deleteCate(id) {
-    var cate = queryCates(),
-        result = [],
-        len = cateArr.length;
+    var cate = queryCates();
+    console.log('id: ' + id);
 
-    for (var i = 0; i < len; i++) {
+    for (var i = 0; i < cate.length; i++) {
         var item = cate[i];
-        if (item.id === id) {
-            result = deleteInArray(item, i);
-            for (var j = 0, l = item.length; j < l; j++) {
+        console.log('in for');
+        if (item.id == id) {
+            cate.splice(i, 1);
+            console.log('cate spliced: ' + cate);
+            for (var j = 0, l = item.child.length; j < l; j++) {
                 deleteChildCate(item.child[j]);
             }
         }
     }
 
-    localStorage.cate = JSON.stringify(result);
+    localStorage.cate = JSON.stringify(cate);
 }
 
 /**
@@ -458,23 +478,24 @@ function deleteCate(id) {
  * @param  {number} id 子分类
  */
 function deleteChildCate(id) {
-    var childCate = queryAllChildCates(),
-        result = [],
-        len = childCate.length;
+    console.log('in deleteChildCate');
+    var childCate = queryAllChildCates();
 
-    for (var i = 0; i < len; i++) {
+    for (var i = 0; i < childCate.length; i++) {
         var item = childCate[i];
-        if (item.id === id) {
-            result = deleteInArray(childCate, i);
-            updateCateChildByDel(item.parent, item.id);
-
-            for (var j = 0, l = item.child.length; i < l; i++) {
+        if (item.id == id) {
+            childCate.splice(i, 1);
+            //删除子分类下所有任务
+            console.log(item.child);
+            for (var j = 0, l = item.child.length; j < l; j++) {
+            console.log(l);
                 deleteTaskById(item.child[j]);
             }
+            updateCateChildByDel(item.parent, item.id);
         }
     }
 
-    localStorage.childCate = JSON.stringify(result);
+    localStorage.childCate = JSON.stringify(childCate);
 }
 
 /**
@@ -482,18 +503,17 @@ function deleteChildCate(id) {
  * @param  {number} id 任务id
  */
 function deleteTaskById(id) {
-    var allTasks = queryAllTasks(),
-        result = [],
-        len = allTasks.length;
+    console.log('in deleteTaskById');
+    var allTasks = queryAllTasks();
 
-    for (var i = 0; i < len; i++) {
-        if (allTasks[i].id === id) {
-            result = deleteInArray(allTasks, i);
+    for (var i = 0; i < allTasks.length; i++) {
+        if (allTasks[i].id == id) {
+            allTasks.splice(i, 1);
             break;
         }
     }
 
-    localStorage.task = JSON.stringify(result);
+    localStorage.task = JSON.stringify(allTasks);
 }
 
 /**
@@ -517,23 +537,32 @@ function listlocalStorage() {
 /**
  * 初始化分类列表
  */
-function initCase() {
+
+function initCates() {
+    console.log('in initCates');
     var cate = queryCates(),
-        defaultChildCate = queryChildCatesById(0),
+        defaultChildCate = queryChildCateById(0),
         str = '<ul class="folder-wrap">';
 
     for (var i = 0; i < cate.length; i++) {
         var liStr = '';
         if (cate[i].child.length === 0) {
-            liStr = '<li><p class="folder no-default" onclick="clickCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>' + queryTasksNumByCate(cate[i]) + ')</span><img src="img/del-icon.png" class="del" onclick="delete(event, this)"></p></li>';
+            liStr = '<li><p class="folder no-default" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>' + queryTasksNumByCate(cate[i]) + ')</span><img src="img/del-icon.png" class="del" onclick="del(event, this)"></p></li>';
         } else {
-            liStr = '<li><p class="folder no-default" onclick="clickCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>' + queryTasksNumByCate(cate[i]) + ')</span><img src="img/del-icon.png" class="del" onclick="delete(event, this)"></p><ul>';
-            var childCate = queryChildCatesByIdArr(cate[i].child);
-            for (var j = 0; j < childCate.length; j++) {
-                var childLiStr = '';
-                childLiStr = '<li class="file no-default" onclick="clickCate(this)" cateid='+ childCate[j].id + '><img src="img/file-icon.png" style="padding-right: 5px">' + childCate[j].name + '(<span>' + childCate[j].child.length +')</span>'
-                +'<img src="img/del-icon.png" class="del" onclick="delete(event, this)"></li>'
-                liStr += childLiStr;
+            if (cate[i].id === 0) {
+                liStr =  '<li><p class="folder" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>1</span>)</p><ul class="file-wrap">';
+                liStr += '<li><p class="file" onclick="clickOnCate(this)" cateid='+ defaultChildCate.id + '><img src="img/file-icon.png" style="padding-right: 5px">' + defaultChildCate.name + '(<span>1</span>)</li>';
+            } else {
+                liStr = '<li><p class="folder no-default" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>' + queryTasksNumByCate(cate[i]) + ')</span><img src="img/del-icon.png" class="del" onclick="del(event, this)"></p><ul class="file-wrap">';
+                console.log(cate[i].child);
+
+                var childCate = queryChildCateByIdArr(cate[i].child);
+                for (var j = 0; j < childCate.length; j++) {
+                    var childLiStr = '';
+                    childLiStr = '<li class="file no-default" onclick="clickOnCate(this)" cateid='+ childCate[j].id + '><img src="img/file-icon.png" style="padding-right: 5px">' + childCate[j].name + '(<span>' + childCate[j].child.length +')</span>'
+                    +'<img src="img/del-icon.png" class="del" onclick="del(event, this)"></li>'
+                    liStr += childLiStr;
+                }
             }
             liStr += '</ul></li>'
         }
@@ -553,7 +582,9 @@ function initPopUp() {
     var cate = queryCates(),
         options = '<option value="-1">新增主分类</option>';
     for (var i = 0; i < cate.length; i++) {
-        options += '<option value="' + cate[i].id + '">' + cate[i].name + '</option>';
+        if (cate[i].id !== 0) {
+            options += '<option value="' + cate[i].id + '">' + cate[i].name + '</option>';
+        }
     }
 
     $('#select-cate').innerHTML = options;
@@ -575,26 +606,31 @@ function clickAddCate() {
  * @param  {Object} ele DOM元素
  * @return {[type]}     [description]
  */
-function delete(e, ele) {
+function del(e, ele) {
     //阻止事件冒泡
     if (window.event) {
         window.event.cancelBubble = true;
     } else {
         e.stopPropagation();
     }
+    console.log(ele);
+    var clickedCate = ele.parentNode;
+    console.log(clickedCate);
 
-    var clickedCate = element.parentNode;
     if (/folder/.test(clickedCate.className)) {
         if (confirm("是否确定删除分类？")) {
             deleteCate(clickedCate.getAttribute('cateid'));
         }
     } else if (/file/.test(clickedCate.className)) {
-        if (confirm("是否确定删除分类？")) [
+        if (confirm("是否确定删除子分类？")) {
             deleteChildCate(clickedCate.getAttribute('cateid'));
+        }
     }
 
     initCates();
-    $('#task-list').innerHTML = initTaskList(queryAllTasks());
+    $('#task-list').innerHTML = createTaskList(queryAllTasks());
+
+    clickOnCate($('#all-tasks'));
 }
 
 /**
@@ -603,18 +639,24 @@ function delete(e, ele) {
 function ok() {
     var optionValue = $('#select-cate').value,
         inputCate = $('#input-cate').value;
-    if (inputCate === '') {
-        alert('请输入新分类名称')；
-    }
 
-    if (optionValue === -1) {
+    if (inputCate === '') {
+        alert('请输入新分类名称');
+    }
+    console.log(typeof optionValue);// string!!!
+    console.log(inputCate);
+
+    if (optionValue == -1) {
+        console.log('about going in addCate');
         addCate(inputCate);
     } else {
+        console.log('about going in addChildCate');
         addChildCate(optionValue, inputCate);
     }
-
+    console.log(localStorage.cate);
     initCates();
-    $('cover').style.display = 'none';
+
+    $('.cover').style.display = 'none';
     //新增了（主）分类，更新浮层
     initPopUp();
 }
@@ -623,7 +665,7 @@ function ok() {
  * 浮层取消按钮
  */
 function cancel() {
-    $('cover').style.display = 'none';
+    $('.cover').style.display = 'none';
 }
 
 /**
@@ -632,11 +674,13 @@ function cancel() {
  * @return {[type]}     [description]
  */
 function clickOnCate(ele) {
+    console.log('in clickOnCate');
     cleanAllSelected();
     addClass(ele, 'selected');
 
     var taskList = $('#task-list'),
         cateId = ele.getAttribute('cateid');
+        console.log('cateid:' + cateId);
 
     if (ele.getAttribute('id') === 'all-tasks') {
 
@@ -653,10 +697,13 @@ function clickOnCate(ele) {
         currentCateId = cateId;
         currentCateTable = 'childCate';
     }
-
-    removeClass($('.filter'), 'selected');
+    console.log('cateid:' + cateId);
+    cleanStatusSelected();
     addClass($('#all'), 'selected');
-    addClass($('[taskid]'), 'selected');
+
+    if ($('[taskid]')) {
+        addClass($('[taskid]'), 'selected');
+    }
 
     showTaskContentById(currentTaskId);
 }
@@ -666,9 +713,16 @@ function clickOnCate(ele) {
  * @return {[type]} [description]
  */
 function cleanAllSelected() {
+    var folderEle = document.getElementsByClassName('folder'),
+        fileEle = document.getElementsByClassName('file');
+
+    for (var i = 0, l = folderEle.length; i < l; i++) {
+        removeClass(folderEle[i], 'selected');
+    }
+    for (var i = 0, l = fileEle.length; i < l; i++) {
+        removeClass(fileEle[i], 'selected');
+    }
     removeClass($('#all-tasks'), 'selected');
-    removeClass($('.folder'), 'selected');
-    removeClass($('file'), 'selected');
 }
 
 
@@ -682,15 +736,13 @@ function createDateSortedData(task) {
         sortedTask = [];
 
     for (var i = 0; i < task.length; i++) {
-        if (dateArr.indexOf(task[i].date === -1)) {
+        if (dateArr.indexOf(task[i].date) === -1) {
             dateArr.push(task[i].date);
         }
     }
     console.log('dateArr:    ' + dateArr);
     //对日期进行排序
-    dateArr = dateArr.sort(function (a, b) {
-        return a - b;
-    });
+    dateArr = dateArr.sort();
     console.log('dateArr:    ' + dateArr);
 
     for (var i = 0; i < dateArr.length; i++) {
@@ -710,25 +762,28 @@ function createDateSortedData(task) {
  * @param  {Array} task 需要显示在列表中的任务数组
  * @return {String}      任务列表的html内容
  */
+
 function createTaskList(task) {
+    console.log('in createTaskList, task: ' + JSON.stringify(task));
     var str = '';
 
     if (!task.length) {
         return str;
     }
     var sortedTask = createDateSortedData(task);
-
+    console.log('sortedTask: ' + JSON.stringify(sortedTask));
+    //命名冲突！！！
     for (var i = 0, l = sortedTask.length; i < l; i++) {
-
+        console.log('l:' + l);
         //liStr表示一个日期下的一个任务
         var item = sortedTask[i];
         str += '<div>' + item.date + '</div><ul>';
-        for (var i = 0, l = item.task.length; i < l; i++) {
+        for (var j = 0, len = item.task.length; j < len; j++) {
             var liStr = '';
-            if (item.task[i].done) {
-                liStr = '<li class="task-done" taskid="' + item.task[i].id + '" onclick="clickOnTask(this)">' + item.task[i].name + '</li>';
+            if (item.task[j].done) {
+                liStr = '<li class="task-done task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)">' + item.task[j].name + '</li>';
             } else {
-                liStr = '<li taskid="' + item.task[i].id + '" onclick="clickOnTask(this)">' + item.task[i].name + '</li>';
+                liStr = '<li class="task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)">' + item.task[j].name + '</li>';
             }
             str += liStr;
         }
@@ -740,6 +795,13 @@ function createTaskList(task) {
     return str;
 }
 
+
+function cleanStatusSelected() {
+    removeClass($('#all'), 'selected');
+    removeClass($('#done'), 'selected');
+    removeClass($('#undone'), 'selected');
+}
+
 /**
  * 根据不同的状态更改任务列表内容
  * @param  {Object} ele    点击的状态按钮
@@ -747,12 +809,12 @@ function createTaskList(task) {
  * @return {[type]}        [description]
  */
 function filterTaskByStatus(ele, status) {
-    removeClass($('.filter'), 'selected');
+    cleanStatusSelected();
     addClass(ele, 'selected');
 
     var taskList = $('#task-list');
 
-    if (currentCateId === -1) {
+    if (currentCateId == -1) {
         taskList.innerHTML = createTaskList(queryAllTasks(status));
     } else if (currentCateTable === 'cate') {
         taskList.innerHTML = createTaskList(queryTasksByCateId(currentCateId, status));
@@ -769,10 +831,10 @@ function createStatusTaskList() {
     addClickEvent($('#all'), function () {
         filterTaskByStatus(this);
     });
-    addClickEvent($('undone'), function () {
+    addClickEvent($('#undone'), function () {
         filterTaskByStatus(this, false);
     });
-    addClickEvent($('done'), function () {
+    addClickEvent($('#done'), function () {
         filterTaskByStatus(this, true);
     });
 }
@@ -798,22 +860,23 @@ function clickOnTask(ele) {
  * @return {[type]}    [description]
  */
 function showTaskContentById(id) {
+    console.log('in showTaskContentById');
     var task = queryTaskById(id);
-
-    var name = $('.todo-name'),
-        opt = $('.operation'),
-        date = $('.date span'),
-        content = $('.content');
+    console.log(task.content);
 
     if (!task.done) {
-        var optStr = '<a><img src="img/check.png" style="width: 26px; heigth: 26px; padding-right: 20px;"></a>';
-        optStr +=  '<a><img src="img/edit.png" style="width: 26px; heigth: 26px;"></a>';
-        opt.innerHTML = optStr;
+        var optStr = '<img src="img/check.png" id="check-icon">';
+        optStr +=  '<img src="img/edit.png" id="edit-icon">';
+        $('.operation').innerHTML = optStr;
+        addClickEvent($('#check-icon'), check);
+        addClickEvent($('#edit-icon'), edit);
     }
 
-    name.innerHTML = task.name;
-    date.innerHTML = task.date;
-    content.innerHTML = task.content;
+    $('.todo-name').innerHTML = task.name;
+    $('.date span').innerHTML = task.date;
+    $('.content').innerHTML = task.content;
+    $('.button-area').style.display = 'none';
+
 }
 
 /**
@@ -833,44 +896,41 @@ function cleanTaskSelected() {
  * @return {[type]} [description]
  */
 function clickAddTask() {
-    if (currentCateId === -1 || currentCateTable !== 'childCate') {
+    console.log('in clickAddTask');
+    console.log(typeof currentCateId);
+    if (currentCateId == -1 || currentCateTable !== 'childCate') {
         alert('请选择具体子分类，若没有，请先建立子分类');
+    } else if (currentCateId == 0) {
+        alert('不能给默认子分类添加任务');
     } else {
-        $('.todo-name').innerHTML = '<input type="text" class="input-title" max-length="20" placeholder="请输入标题...">';
-        $('.date span').innerHTML = '<input type="date" class="input-date">';
-        $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容..."></textarea>';
-        $('.button-area').style.display = 'block';
+        createEditArea();
     }
 }
 
-
-function hint() {
-    var title = $('input-title').value,
-        date = $('.input-date').value,
-        content = $('.text-content').value,
-        taskList = $('#task-list');
-
-    if (!title) {
-        alert('标题不能为空')；
-    }
-    if (!date) {
-        alert('日期不能为空');
-    }
-    if (!content) {
-        alert('输入内容不能为空');
-    }
+function createEditArea() {
+    $('.todo-name').innerHTML = '<input type="text" class="input-title" max-length="20" placeholder="请输入标题...">';
+    $('.date span').innerHTML = '<input type="date" class="input-date">';
+    $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容..."></textarea>';
+    $('.button-area').style.display = 'block';
 }
+
 
 function updateTaskList() {
-    var taskList = $('.task-list');
+    console.log('in updateTaskList');
+    var taskList = $('#task-list');
 
         if (currentCateTable === 'allCate') {
+            console.log('allCate');
             taskList.innerHTML = createTaskList(queryAllTasks());
         } else if (currentCateTable === 'cate') {
+            console.log('cate');
             taskList.innerHTML = createTaskList(queryTasksByCateId(currentCateId));
         } else {
+            console.log('childCate');
+            console.log(currentCateId);
             taskList.innerHTML = createTaskList(queryTasksByChildCateId(currentCateId));
         }
+        console.log(taskList.innerHTML);
 }
 
 /**
@@ -878,20 +938,37 @@ function updateTaskList() {
  * @return {[type]} [description]
  */
 function save() {
-    hint();
+    var title = $('.input-title').value,
+        date = $('.input-date').value,
+        content = $('.text-content').value,
+        taskList = $('#task-list');
 
-    var taskObj = {
-        name: title,
-        date: date,
-        content: content,
-        done: false,
-        parent: currentCateId;
-    };
+    if (!(title && date && content)) {
+        alert('标题、日期和任务内容都不能为空，请重新输入。');
+        createEditArea();
+        return;
+    }
+    if (editSave) {
+        console.log('before:' + localStorage.task);
+        updateTaskById(currentTaskId, title, date, content);
 
-    currentTaskId = addTask(taskObj);
+        console.log('after:' + localStorage.task);
+        editSave = false;
+    } else {
+        var taskObj = {};
+        taskObj.name = title;
+        taskObj.date = date;
+        taskObj.content = content;
+        taskObj.done = false;
+        taskObj.parent = currentCateId;
+
+        currentTaskId = addTask(taskObj);
+        console.log('after addTask, currentTaskId:  ' + currentTaskId);
+    }
+
     updateTaskList();
-
     showTaskContentById(currentTaskId);
+    initCates();
 }
 
 
@@ -926,8 +1003,6 @@ function edit() {
     $('.date span').innerHTML = '<input type="date" class="input-date" value="' + task.date + '">';
     $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容...">' + task.content + '</textarea>';
     $('.button-area').style.display = 'block';
+
+    editSave = true;
 }
-
-
-
-

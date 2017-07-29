@@ -55,6 +55,7 @@ h1 {
 #all-tasks {
     padding-left: 18px;
     margin-top: 10px;
+    cursor: pointer;
 }
 .list-title {
     margin: 8px 0;
@@ -63,10 +64,12 @@ h1 {
 
 .folder {
     padding-left: 18px;
+    cursor: pointer;
 }
 
 .file {
     padding-left: 36px;
+    cursor: pointer;
 }
 
 .category .selected {
@@ -82,6 +85,7 @@ h1 {
     position: absolute;
     right: 8px;
     top: 6px;
+    cursor: pointer;
 }
 
 #all-tasks:hover,
@@ -107,6 +111,7 @@ h1 {
     font-size: 16px;
     outline: none;
     background: #ccc;
+    cursor: pointer;
 }
 
 .add:hover {
@@ -139,6 +144,7 @@ h1 {
     border: none;
     outline: none;
     background: #ccc;
+    cursor: pointer;
 
 }
 
@@ -153,6 +159,10 @@ h1 {
 
 .task-list .selected {
     background: #fff;
+}
+
+.task-self {
+    cursor: pointer;
 }
 
 .task-name .add {
@@ -190,6 +200,14 @@ h1 {
     padding-right: 20px;
 }
 
+#check-icon,
+#edit-icon {
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
 .date {
     height: 50px;
     padding-left: 20px;
@@ -199,12 +217,12 @@ h1 {
 
 .content {
     position: absolute;
-    top: 110px;
+    top: 120px;
     bottom: 60px;
     left: 20px;
     right: 20px;
     line-height: 2;
-    background: #ffceb2;
+    /*background: #ffceb2;*/
 }
 
 .input-title {
@@ -226,6 +244,7 @@ h1 {
     resize: none;
 }
 
+
 .button-area {
     display: none;
     position: absolute;
@@ -237,6 +256,7 @@ h1 {
     padding: 10px 20px;
     border: none;
     outline: none;
+    cursor: pointer;
 }
 
 .save,
@@ -298,4 +318,5 @@ h1 {
     border: none;
     outline: none;
     font-size: 13px;
+    cursor: pointer;
 }
