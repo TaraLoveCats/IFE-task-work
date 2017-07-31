@@ -5,30 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Task Management System</title>
-    <link rel="stylesheet" href="task0003.css">
+    <link rel="stylesheet" href="css/task0003.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 </head>
 <body>
     <header class="header">
-        <h1>Tasks ToDo</h1>
+        <h1>Get Started!</h1>
     </header>
     <div class="category">
-        <div id="all-tasks" class="selected" onclick="clickOnCate(this)">所有任务（<span></span>）</div>
+        <div id="all-tasks" class="selected">所有任务（<span></span>）</div>
         <div class="list-title">分类列表</div>
         <ul class="folder-wrap" id="list-content">
             <li>
-                <p class="folder selected"><img src="img/folder-icon.png" style="padding-right: 5px">默认分类（<span>1</span>）</p>
+                <p class="folder selected"></p>
                 <ul class="file-wrap">
-                    <li class="file"><img src="img/file-icon.png" style="padding-right: 5px">默认子分类（1）</li>
+                    <li class="file"></li>
                 </ul>
             </li>
         </ul>
-        <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增分类</button>
+        <button class="add"><i class="fa fa-plus-square" style="font-size: 20px; padding-right: 5px;" aria-hidden="true"></i>新增分类</button>
     </div>
-    <div class="task-name">
+    <div class="list-all">
         <div class="filter-wrap">
-            <button class="filter selected" id="all">所有</button>
-            <button class="filter" id="undone">未完成</button>
-            <button class="filter" id="done">已完成</button>
+            <button class="filter selected" id="all"><i class="fa fa-meh-o" style="padding-right: 3px;" aria-hidden="true"></i>所有</button>
+            <button class="filter" id="undone"><i class="fa fa-frown-o" style="padding-right: 3px;" aria-hidden="true"></i>未完成</button>
+            <button class="filter" id="done"><i class="fa fa-smile-o" style="padding-right: 3px;" aria-hidden="true"></i>已完成</button>
         </div>
         <div id="task-list">
             <!-- <div></div>
@@ -37,7 +38,7 @@
                 <li></li>
             </ul> -->
         </div>
-        <button class="add"><img src="img/plus-icon.png" style="padding-right: 5px">新增任务</button>
+        <button class="add"><i class="fa fa-plus-square" style="font-size: 20px; padding-right: 5px;" aria-hidden="true"></i>新增任务</button>
     </div>
     <div class="description">
         <div class="title">

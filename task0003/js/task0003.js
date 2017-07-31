@@ -11,8 +11,8 @@ function initAll() {
     initPopUp();
     $('#task-list').innerHTML = createTaskList(queryAllTasks());
     createStatusTaskList();
-    showTaskContentById(-1);
     addClass($('[taskid]'), 'selected');
+    showTaskContentById($('[taskid]').getAttribute('taskid'));
     listlocalStorage();
 
 }
@@ -20,8 +20,10 @@ function initAll() {
 initAll();
 
 addClickEvent($('.category .add'), clickAddCate);
-addClickEvent($('.task-name .add'), clickAddTask);
-// window.addEventListener('load', initAll, false);
+addClickEvent($('.list-all .add'), clickAddTask);
+addClickEvent($('#all-tasks'), function () {
+    clickOnCate(this);
+});
 
 /**
  * cate分类
@@ -409,6 +411,33 @@ function updateChildCateChildByAdd(id, childId) {
 }
 
 /**
+ * 更新子分类的child属性，删除一个childId
+ * @param  {number} id
+ * @param  {number} childId
+ */
+function updateChildCateChildByDel(id, childId) {
+    console.log('in updateChildCateChildByDel');
+    var childCate = queryAllChildCates(),
+        len = childCate.length;
+
+    for (var i = 0; i < len; i++) {
+        var item = childCate[i];
+        if (item.id == id) {
+            console.log(JSON.stringify(item.child));
+            for (var j = 0; j < item.child.length; j++) {
+                //item.child[j]本身就是id
+                if (item.child[j] == childId) {
+                    item.child.splice(j, 1);
+                    break;
+                }
+            }
+            console.log(JSON.stringify(item.child));
+        }
+    }
+    localStorage.childCate = JSON.stringify(childCate);
+}
+
+/**
  * 根据任务id更新任务状态
  * @param  {number} taskId 任务id
  */
@@ -416,13 +445,14 @@ function updateTaskStatusById(taskId) {
     var allTasks = queryAllTasks(),
         len = allTasks.length;
     for (var i = 0; i < len; i++) {
-        if (allTasks[i].id === taskId) {
+        if (allTasks[i].id == taskId) {
             allTasks[i].done = true;
             break;
         }
     }
 
     localStorage.task = JSON.stringify(allTasks);
+    console.log('after updateTaskStatusById, task: ' + localStorage.task);
 }
 
 
@@ -507,8 +537,11 @@ function deleteTaskById(id) {
     var allTasks = queryAllTasks();
 
     for (var i = 0; i < allTasks.length; i++) {
-        if (allTasks[i].id == id) {
+        var item = allTasks[i];
+        if (item.id == id) {
             allTasks.splice(i, 1);
+            //删除一个后，i位置的元素是原来i + 1位置的元素
+            updateChildCateChildByDel(item.parent, item.id);
             break;
         }
     }
@@ -547,20 +580,20 @@ function initCates() {
     for (var i = 0; i < cate.length; i++) {
         var liStr = '';
         if (cate[i].child.length === 0) {
-            liStr = '<li><p class="folder no-default" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>' + queryTasksNumByCate(cate[i]) + ')</span><img src="img/del-icon.png" class="del" onclick="del(event, this)"></p></li>';
+            liStr = '<li><p class="folder no-default" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><i class="fa fa-folder-open folder-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + cate[i].name + '(' + queryTasksNumByCate(cate[i]) + ')<i class="fa fa-trash-o del" style="color: #b00d07;" onclick="del(event, this)"></i></p></li>';
         } else {
             if (cate[i].id === 0) {
-                liStr =  '<li><p class="folder" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>1</span>)</p><ul class="file-wrap">';
-                liStr += '<li><p class="file" onclick="clickOnCate(this)" cateid='+ defaultChildCate.id + '><img src="img/file-icon.png" style="padding-right: 5px">' + defaultChildCate.name + '(<span>1</span>)</li>';
+                liStr =  '<li><p class="folder" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><i class="fa fa-folder-open folder-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + cate[i].name + '(1)</p><ul class="file-wrap">';
+                liStr += '<li><p class="file" onclick="clickOnCate(this)" cateid='+ defaultChildCate.id + '><i class="fa fa-file-o file-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + defaultChildCate.name + '(1)</li>';
             } else {
-                liStr = '<li><p class="folder no-default" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><img src="img/folder-icon.png" style="padding-right: 5px">' + cate[i].name + '(<span>' + queryTasksNumByCate(cate[i]) + ')</span><img src="img/del-icon.png" class="del" onclick="del(event, this)"></p><ul class="file-wrap">';
+                liStr = '<li><p class="folder no-default" onclick="clickOnCate(this)" cateid='+ cate[i].id + '><i class="fa fa-folder-open folder-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + cate[i].name + '(' + queryTasksNumByCate(cate[i]) + ')<i class="fa fa-trash-o del" style="color: #b00d07;" onclick="del(event, this)"></i></p><ul class="file-wrap">';
                 console.log(cate[i].child);
 
                 var childCate = queryChildCateByIdArr(cate[i].child);
                 for (var j = 0; j < childCate.length; j++) {
                     var childLiStr = '';
-                    childLiStr = '<li class="file no-default" onclick="clickOnCate(this)" cateid='+ childCate[j].id + '><img src="img/file-icon.png" style="padding-right: 5px">' + childCate[j].name + '(<span>' + childCate[j].child.length +')</span>'
-                    +'<img src="img/del-icon.png" class="del" onclick="del(event, this)"></li>'
+                    childLiStr = '<li class="file no-default" onclick="clickOnCate(this)" cateid='+ childCate[j].id + '><i class="fa fa-file-o file-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + childCate[j].name + '(' + childCate[j].child.length +')'
+                    +'<i class="fa fa-trash-o del" style="color: #b00d07;" onclick="del(event, this)"></i></li>'
                     liStr += childLiStr;
                 }
             }
@@ -572,8 +605,8 @@ function initCates() {
 
     $('#list-content').innerHTML = str;
     $('#all-tasks span').innerHTML = queryAllTasks().length;
-
 }
+
 
 /**
  * 初始化浮层
@@ -614,16 +647,20 @@ function del(e, ele) {
         e.stopPropagation();
     }
     console.log(ele);
-    var clickedCate = ele.parentNode;
-    console.log(clickedCate);
+    var clickedEle = ele.parentNode;
+    console.log(clickedEle);
 
-    if (/folder/.test(clickedCate.className)) {
+    if (/folder/.test(clickedEle.className)) {
         if (confirm("是否确定删除分类？")) {
-            deleteCate(clickedCate.getAttribute('cateid'));
+            deleteCate(clickedEle.getAttribute('cateid'));
         }
-    } else if (/file/.test(clickedCate.className)) {
+    } else if (/file/.test(clickedEle.className)) {
         if (confirm("是否确定删除子分类？")) {
-            deleteChildCate(clickedCate.getAttribute('cateid'));
+            deleteChildCate(clickedEle.getAttribute('cateid'));
+        }
+    } else if (/task-self/.test(clickedEle.className)) {
+        if (confirm('是否确定删除此任务')) {
+            deleteTaskById(clickedEle.getAttribute('taskid'));
         }
     }
 
@@ -700,7 +737,7 @@ function clickOnCate(ele) {
     console.log('cateid:' + cateId);
     cleanStatusSelected();
     addClass($('#all'), 'selected');
-
+    //将第一个task高亮
     if ($('[taskid]')) {
         addClass($('[taskid]'), 'selected');
     }
@@ -777,13 +814,19 @@ function createTaskList(task) {
         console.log('l:' + l);
         //liStr表示一个日期下的一个任务
         var item = sortedTask[i];
-        str += '<div>' + item.date + '</div><ul>';
+        str += '<div class="time">' + item.date + '</div><ul>';
         for (var j = 0, len = item.task.length; j < len; j++) {
             var liStr = '';
             if (item.task[j].done) {
-                liStr = '<li class="task-done task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)">' + item.task[j].name + '</li>';
+
+                if (item.task[j].id == -1) {
+                    liStr = '<li class="task-done task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)"><i class="fa fa-check" style="color: #23b812; padding-right: 5px;" aria-hidden="true"></i>' + item.task[j].name + '</li>';
+                } else {
+                    liStr = '<li class="task-done task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)"><i class="fa fa-check" style="color: #23b812; padding-right: 5px;" aria-hidden="true"></i>' + item.task[j].name + '<i class="fa fa-trash-o del" style="color: #b00d07;" onclick="del(event, this)"></i></li>';
+                }
+
             } else {
-                liStr = '<li class="task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)">' + item.task[j].name + '</li>';
+                liStr = '<li class="task-self" taskid="' + item.task[j].id + '" onclick="clickOnTask(this)">' + item.task[j].name + '<i class="fa fa-trash-o del" style="color: #b00d07;" onclick="del(event, this)"></i></li>';
             }
             str += liStr;
         }
@@ -791,7 +834,7 @@ function createTaskList(task) {
         str += '</ul>';
     }
 
-    console.log(str);
+    // console.log(str);
     return str;
 }
 
@@ -862,14 +905,16 @@ function clickOnTask(ele) {
 function showTaskContentById(id) {
     console.log('in showTaskContentById');
     var task = queryTaskById(id);
-    console.log(task.content);
+    console.log(task.done);
 
     if (!task.done) {
-        var optStr = '<img src="img/check.png" id="check-icon">';
-        optStr +=  '<img src="img/edit.png" id="edit-icon">';
+        var optStr = '<i class="fa fa-pencil-square-o" id="edit-icon" style="font-size: 25px; margin-right: 15px; cursor: pointer;" aria-hidden="true"></i>';
+        optStr +=  '<i class="fa fa-check-square-o" id="check-icon" style="font-size: 25px; cursor: pointer;" aria-hidden="true"></i>';
         $('.operation').innerHTML = optStr;
         addClickEvent($('#check-icon'), check);
         addClickEvent($('#edit-icon'), edit);
+    } else {
+        $('.operation').innerHTML = '';
     }
 
     $('.todo-name').innerHTML = task.name;
@@ -930,7 +975,6 @@ function updateTaskList() {
             console.log(currentCateId);
             taskList.innerHTML = createTaskList(queryTasksByChildCateId(currentCateId));
         }
-        console.log(taskList.innerHTML);
 }
 
 /**
@@ -949,11 +993,11 @@ function save() {
         return;
     }
     if (editSave) {
+        var temp1 = currentTaskId;
+
         console.log('before:' + localStorage.task);
         updateTaskById(currentTaskId, title, date, content);
-
         console.log('after:' + localStorage.task);
-        editSave = false;
     } else {
         var taskObj = {};
         taskObj.name = title;
@@ -962,15 +1006,20 @@ function save() {
         taskObj.done = false;
         taskObj.parent = currentCateId;
 
-        currentTaskId = addTask(taskObj);
-        console.log('after addTask, currentTaskId:  ' + currentTaskId);
+        //updateTaskList()中调用createTaskList(),再调用createDateSortedData()中会改变currentTaskId
+        var temp2 = addTask(taskObj);
+        console.log('after addTask, currentTaskId:  ' + temp2);
     }
 
     updateTaskList();
+    console.log('currentTaskId again: ' + currentTaskId);
+
+    currentTaskId = editSave ? temp1 : temp2;
     showTaskContentById(currentTaskId);
     initCates();
+    // addClass($('[cateid == currentCateId]'), 'selected');
+    editSave = false;
 }
-
 
 function cancelSave() {
     showTaskContentById(currentTaskId);
@@ -989,6 +1038,7 @@ function check() {
         showTaskContentById(currentTaskId);
 
         updateTaskList();
+        filterTaskByStatus($('#all'));
     }
 }
 
