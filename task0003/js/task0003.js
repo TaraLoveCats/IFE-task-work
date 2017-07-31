@@ -851,7 +851,7 @@ function cleanStatusSelected() {
  * @param  {[type]} status
  * @return {[type]}        [description]
  */
-function filterTaskByStatus(ele, status) {
+function  ByStatus(ele, status) {
     cleanStatusSelected();
     addClass(ele, 'selected');
 
