@@ -60,7 +60,7 @@ function initDataBase() {
                 'done': true,
                 'name': '介绍',
                 'date': '2017-7-30',
-                'content': '这是一个个人任务管理系统，为离线应用，数据保存在本地硬盘。<br>浏览器兼容性： Chrome/ IE8+'
+                'content': '这是一个个人任务管理系统，为离线应用，数据保存在本地硬盘。<br>'
             }
         ];
 
