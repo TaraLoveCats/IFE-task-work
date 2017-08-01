@@ -25,6 +25,8 @@ addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
 
+//功能函数模块
+
 /**
  * cate分类
  *
@@ -646,6 +648,7 @@ function del(e, ele) {
     } else {
         e.stopPropagation();
     }
+
     console.log(ele);
     var clickedEle = ele.parentNode;
     console.log(clickedEle);
@@ -734,7 +737,7 @@ function clickOnCate(ele) {
         currentCateId = cateId;
         currentCateTable = 'childCate';
     }
-    console.log('cateid:' + cateId);
+
     cleanStatusSelected();
     addClass($('#all'), 'selected');
     //将第一个task高亮
@@ -788,6 +791,7 @@ function createDateSortedData(task) {
         obj.task = queryTasksByDateInTaskArr(dateArr[i], task);
         sortedTask.push(obj);
     }
+    //
     currentTaskId = sortedTask[0].task[0].id;
 
     return sortedTask;
@@ -851,7 +855,7 @@ function cleanStatusSelected() {
  * @param  {[type]} status
  * @return {[type]}        [description]
  */
-function  ByStatus(ele, status) {
+function  filterTaskByStatus(ele, status) {
     cleanStatusSelected();
     addClass(ele, 'selected');
 
@@ -1037,7 +1041,7 @@ function check() {
         updateTaskStatusById(currentTaskId);
         showTaskContentById(currentTaskId);
 
-        updateTaskList();
+        // updateTaskList();
         filterTaskByStatus($('#all'));
     }
 }
