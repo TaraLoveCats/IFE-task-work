@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="robots" content="index,follow">
+    <meta name="apple-mobile-web-app-title" content="Task Management">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-itunes-app" content="app-id=myAppStoreID, affiliate-data=myAffiliateData, app-argument=myURL">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telphone=no, email=no">
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="msapplication-TileColor" content="#000">
+    <meta name="msapplication-TileImage" content="icon.png">
+    <meta name="mobile-agent" content="format=[wml|xhtml|html5]; url=url">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+    href="/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+    href="/apple-touch-icon-144x144-precomposed.png">
+    <link rel="apple-touch-startup-image" sizes="768x1004" href="/splash-screen-768x1004.png">
+    <link rel="apple-touch-startup-image" sizes="1536x2008" href="/splash-screen-1536x2008.png">
+    <link rel="apple-touch-startup-image" sizes="1024x768" href="/splash-screen-1024x768.png">
+    <link rel="apple-touch-startup-image" sizes="2048x1496" href="/splash-screen-2048x1496.png">
+    <link rel="apple-touch-startup-image" sizes="320x480" href="/splash-screen-320x480.png">
+    <link rel="apple-touch-startup-image" sizes="640x960" href="/splash-screen-640x960.png">
+    <link rel="apple-touch-startup-image" sizes="640X1136" href="/splash-screen-640X1136.png">
+
+    <title>Task Management System</title>
+    <link rel="stylesheet" href="css/task0004.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Get Started!</h1>
+        <p class="return"><i class="fa fa-arrow-circle-o-left" aria-hidden="true" style="margin-right: 5px;"></i><span>返回</span></p>
+    </header>
+    <div class="category view curr">
+        <div id="all-tasks" class="selected" cateid="-1">所有任务（<span></span>）</div>
+        <div class="list-title">分类列表</div>
+        <ul class="folder-wrap" id="list-content">
+            <li>
+                <p class="folder selected"></p>
+                <ul class="file-wrap">
+                    <li class="file"></li>
+                </ul>
+            </li>
+        </ul>
+        <button class="add"><i class="fa fa-plus-square" style="font-size: 20px; padding-right: 5px;" aria-hidden="true"></i>新增分类</button>
+    </div>
+    <div class="list-all view">
+        <div class="filter-wrap">
+            <button class="filter selected" id="all"><i class="fa fa-meh-o" style="padding-right: 3px;" aria-hidden="true"></i>所有</button>
+            <button class="filter" id="undone"><i class="fa fa-frown-o" style="padding-right: 3px;" aria-hidden="true"></i>未完成</button>
+            <button class="filter" id="done"><i class="fa fa-smile-o" style="padding-right: 3px;" aria-hidden="true"></i>已完成</button>
+        </div>
+        <div id="task-list">
+            <!-- <div></div>
+            <ul>
+                <li></li>
+                <li></li>
+            </ul> -->
+        </div>
+        <button class="add"><i class="fa fa-plus-square" style="font-size: 20px; padding-right: 5px;" aria-hidden="true"></i>新增任务</button>
+    </div>
+    <div class="description view">
+        <div class="title">
+            <div class="todo-name"></div>
+            <div class="operation"></div>
+        </div>
+        <div class="date">任务日期：<span></span></div>
+        <div class="content"></div>
+
+        <div class="button-area">
+            <button class="save" onclick="save()">保存</button>
+            <button class="cancel" onclick="cancelSave()">放弃</button>
+        </div>
+    </div>
+    <div class="cover">
+        <div class="pop-up">
+            <div class="pop-head">新增分类</div>
+            <div class="pop-body">
+                选择主分类：<select id="select-cate">
+                    <!-- <option value="-1">主分类</option> -->
+                </select> <br>
+                新分类名称：<input id="input-cate" type="text">
+            </div>
+            <div class="pop-foot">
+                <button onclick="ok()">确定</button>
+                <button onclick="cancel()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/util.js"></script>
+    <script src="js/task0004.js"></script>
+
+</body>
+</html>
