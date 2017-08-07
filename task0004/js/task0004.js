@@ -2,6 +2,7 @@
 var currentCateId = -1,
     currentCateTable = "allCate",
     currentTaskId = -1,
+    currentPage = 1,
     editSave = false;
 
 function initAll() {
@@ -24,6 +25,7 @@ addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
+// addClickEvent($('#backto'), clickBackTo);
 
 //功能函数模块
 
@@ -747,6 +749,8 @@ function clickOnCate(ele) {
     }
 
     showTaskContentById(currentTaskId);
+
+    setCurr2();
 }
 
 /**
@@ -900,6 +904,8 @@ function clickOnTask(ele) {
     currentTaskId = taskId;
 
     showTaskContentById(taskId);
+
+    setCurr3();
 }
 
 /**
@@ -950,10 +956,14 @@ function clickAddTask() {
     console.log(typeof currentCateId);
     if (currentCateId == -1 || currentCateTable !== 'childCate') {
         alert('请选择具体子分类，若没有，请先建立子分类');
+        setCurr1();
     } else if (currentCateId == 0) {
         alert('不能给默认子分类添加任务');
+        setCurr1();
     } else {
         createEditArea();
+
+        setCurr3();
     }
 }
 
@@ -1058,6 +1068,63 @@ function edit() {
     $('.date span').innerHTML = '<input type="date" class="input-date" value="' + task.date + '">';
     $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容...">' + task.content + '</textarea>';
     $('.button-area').style.display = 'block';
-
-    editSave = true;
 }
+
+function setCurr1() {
+    $('.category').setAttribute('class', 'category view curr');
+    $('.list-all').setAttribute('class', 'list-all view next');
+    currentPage = 1;
+    clickBackTo(1);
+}
+
+function setCurr2() {
+    $('.category').setAttribute('class', 'category view last');
+    $('.list-all').setAttribute('class', 'list-all view curr');
+    $('.description').setAttribute('class', 'description view next');
+    currentPage = 2;
+    clickBackTo(2);
+}
+
+function setCurr3() {
+    $('.list-all').setAttribute('class', 'list-all view last');
+    $('.description').setAttribute('class', 'description view curr');
+    currentPage = 3;
+    clickBackTo(3);
+}
+
+
+function clickBackTo(currentPage) {
+    if (window.innerWidth < 760) {
+        var backTo = $('#backto');
+
+        switch (currentPage) {
+            case 1:
+                backTo.style.display = 'none';
+                break;
+            case 2:
+                backTo.style.display = 'block';
+                addClickEvent(backTo, function () {
+                    setCurr1();
+                });
+                // addClickEvent(backTo, setCurr1);
+                break;
+            case 3:
+                backTo.style.display = 'block';
+                addClickEvent(backTo, function () {
+                    setCurr2();
+                });
+                // addClickEvent(backTo, setCurr2);
+                break;
+            default:
+                break;
+        }
+    }
+ }
+
+ window.onresize = function () {
+     if (window.innerWidth > 760) {
+         $('#backto').style.display = 'none';
+     } else {
+         clickBackTo(currentPage);
+     }
+ }
