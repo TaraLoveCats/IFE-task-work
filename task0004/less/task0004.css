@@ -1,0 +1,370 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Microsoft Yahei, sans-serif;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+}
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+html,
+body {
+  height: 100%;
+}
+/*header*/
+.header {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  background: #00ccff;
+  box-shadow: 0 2px 3px #666;
+  z-index: 300;
+}
+#backto {
+  display: none;
+  position: absolute;
+  top: 17px;
+  left: 20px;
+  bottom: auto;
+  right: auto;
+  cursor: pointer;
+  color: #fff;
+}
+h1 {
+  margin-left: 2%;
+  line-height: 70px;
+  color: #fff;
+  text-shadow: 2px 3px 3px #333;
+}
+/*left part*/
+.category {
+  position: absolute;
+  top: 70px;
+  left: auto;
+  bottom: 0;
+  right: auto;
+  width: 250px;
+  border-right: 2px solid #aaa;
+  line-height: 1.8;
+  background: #eee;
+  z-index: 200;
+}
+#all-tasks {
+  margin-top: 10px;
+  padding-left: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.list-title {
+  margin: 8px 0;
+  padding-left: 18px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.folder {
+  padding-left: 18px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.folder-icon {
+  padding-right: 5px;
+}
+.file {
+  padding-left: 36px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.no-default {
+  position: relative;
+}
+.no-default:hover del {
+  visibility: visible;
+}
+.del {
+  visibility: hidden;
+  position: absolute;
+  top: 6px;
+  left: auto;
+  bottom: auto;
+  right: 8px;
+  cursor: pointer;
+}
+#all-tasks:hover,
+.folder:hover,
+.file:hover,
+.task-self:hover {
+  border: 1px solid #bbbbbb;
+  border-radius: 5%;
+  box-shadow: 0 0 1em #888;
+  transition: .1s ease;
+}
+.add {
+  position: absolute;
+  top: auto;
+  left: 0;
+  bottom: 0;
+  right: auto;
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 2%;
+  font-size: 16px;
+  outline: none;
+  background: #ccc;
+  cursor: pointer;
+}
+.add:hover {
+  background: #4ddbff;
+  z-index: 260;
+  box-shadow: 0 0 1em #888;
+  transition: .1s ease;
+}
+/*middle part*/
+.list-all {
+  position: absolute;
+  top: 70px;
+  left: 250px;
+  bottom: 0;
+  right: auto;
+  width: 250px;
+  box-shadow: 2px 3px 3px #888;
+  background: #eee;
+  z-index: 100;
+}
+.filter-wrap {
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px dashed #eee;
+  text-align: center;
+  background: #fff;
+}
+.filter {
+  width: 60px;
+  height: 30px;
+  margin-top: 10px;
+  border: none;
+  box-shadow: 1px 2px 3px #888;
+  outline: none;
+  background: #ddd;
+  cursor: pointer;
+}
+.filter:hover {
+  color: #fff;
+  transition: 0.3s ease;
+}
+.selected {
+  border: 1px solid #eeeeee;
+  border-radius: 5%;
+  background: #ff9;
+}
+.time {
+  padding: 5px 20px;
+  box-shadow: 1px 2px 2px #ccc;
+  font-weight: 600;
+  color: #333;
+  background: #ddd;
+  text-shadow: 1px 2px 3px #bbb;
+}
+.task-self {
+  position: relative;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+.task-self:hover del {
+  visibility: visible;
+}
+.task-done {
+  color: #23b812;
+}
+/*right part*/
+.description {
+  position: absolute;
+  top: 70px;
+  left: 500px;
+  bottom: 0;
+  right: 0;
+  border: 1px solid #cccccc;
+  border-radius: 1%;
+}
+.title {
+  height: 60px;
+  padding-left: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 60px;
+  border-bottom: 1px dashed #ccc;
+}
+.todo-name {
+  float: left;
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: 400;
+}
+.operation {
+  float: right;
+  padding-right: 25px;
+}
+.date {
+  height: 50px;
+  padding-left: 20px;
+  line-height: 50px;
+  background: #eee;
+}
+.content {
+  position: absolute;
+  top: 120px;
+  left: 20px;
+  bottom: 60px;
+  right: 20px;
+  line-height: 2;
+}
+.input-title {
+  width: 240px;
+  padding: 5px;
+}
+.input-date {
+  padding: 5px;
+}
+.text-content {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.8;
+  resize: none;
+}
+.button-area {
+  display: none;
+  position: absolute;
+  top: auto;
+  left: auto;
+  bottom: 20px;
+  right: 20px;
+}
+.button-area button {
+  padding: 10px 20px;
+  margin-right: 20px;
+  border: none;
+  border-radius: 5%;
+  box-shadow: 1px 2px 3px #888;
+  outline: none;
+  cursor: pointer;
+}
+.save,
+.cancel {
+  background: #ffff99;
+  color: #333;
+}
+/*Modal box*/
+.cover {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 400;
+}
+.pop-up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  bottom: auto;
+  right: auto;
+  width: 300px;
+  height: 180px;
+  margin-top: -90px;
+  margin-left: -150px;
+  border-radius: 3%;
+  box-shadow: 2px 3px 4px #888;
+  font-size: 14px;
+  background: #eee;
+  z-index: 100;
+}
+.pop-head {
+  height: 40px;
+  border-bottom: 1px dashed #0cf;
+  line-height: 40px;
+  text-align: center;
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.pop-body {
+  height: 100px;
+  padding: 10px 10px;
+}
+.pop-body input {
+  margin-top: 20px;
+}
+.pop-foot {
+  position: absolute;
+  top: auto;
+  left: auto;
+  bottom: 10px;
+  right: 10px;
+}
+.pop-foot button {
+  width: 40px;
+  height: 30px;
+  margin: 5px;
+  border: none;
+  border-radius: 5%;
+  box-shadow: 1px 2px 3px #888;
+  outline: none;
+  font-size: 13px;
+  background: #4ddbff;
+  cursor: pointer;
+}
+/*responsive web app*/
+@media screen and (max-width: 760px) {
+  body {
+    overflow: hidden;
+  }
+  .header {
+    height: 50px;
+  }
+  h1 {
+    margin: 0 auto;
+    line-height: 50px;
+    font-size: 1.5em;
+    text-align: center;
+  }
+  .view {
+    top: 50px;
+    left: 0;
+    /*display: none;*/
+    z-index: 99;
+    width: 100%;
+    transition: 0.3s ease-in;
+  }
+  .curr {
+    /*display: block;*/
+    z-index: 100;
+    -webkit-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  .next {
+    -webkit-transform: translate3d(100%, 0, 0);
+    -ms-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  .last {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    -ms-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}

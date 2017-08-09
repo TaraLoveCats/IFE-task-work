@@ -21,21 +21,55 @@ html, body {
     height: 100%;
 }
 
+//variables
+@head-blue: #0cf;
+@hover-blue: #4ddbff;
+@selected-yellow: #ff9;
+
+
+//mixins
+.positioned(@pos, @top: auto, @left: auto, @bottom: auto, @right: auto) {
+    position: @pos;
+    top: @top;
+    left: @left;
+    bottom: @bottom;
+    right: @right;
+}
+
+.size(@width: auto, @height: auto) {
+    width: @width;
+    height: @height;
+}
+
+.text-about(@padding-left: 0, @font-size: 16px, @font-weight: 400) {
+    padding-left: @padding-left;
+    font-size: @font-size;
+    font-weight: @font-weight;
+}
+
+.border-about(@border, @radius) {
+    border: @border;
+    border-radius: @radius;
+}
+
+.v-transform(@x, @y, @z) {
+    -webkit-transform: translate3d(@x, @y, @z);
+        -ms-transform: translate3d(@x, @y, @z);
+            transform: translate3d(@x, @y, @z);
+}
+
 /*header*/
 .header {
     position: relative;
-    width: 100%;
-    height: 70px;
-    background: #0cf;
+    .size(100%, 70px);
+    background: @head-blue;
     box-shadow: 0 2px 3px #666;
     z-index: 300;
 }
 
 #backto {
     display: none;
-    position: absolute;
-    top: 17px;
-    left: 20px;
+    .positioned(absolute, 17px, 20px);
     cursor: pointer;
     color: #fff;
 }
@@ -49,9 +83,7 @@ h1 {
 
 /*left part*/
 .category {
-    position: absolute;
-    top: 70px;
-    bottom: 0;
+    .positioned(absolute, 70px, @bottom: 0);
     width: 250px;
     border-right: 2px solid #aaa;
     line-height: 1.8;
@@ -61,24 +93,18 @@ h1 {
 
 
 #all-tasks {
-    padding-left: 18px;
     margin-top: 10px;
-    font-size: 18px;
-    font-weight: 700;
+    .text-about(18px, 18px, 700);
     cursor: pointer;
 }
 
 .list-title {
     margin: 8px 0;
-    padding-left: 18px;
-    font-size: 18px;
-    font-weight: 700;
+    .text-about(18px, 18px, 700);
 }
 
 .folder {
-    padding-left: 18px;
-    font-size: 17px;
-    font-weight: 600;
+    .text-about(18px, 17px, 600);
     cursor: pointer;
 }
 
@@ -87,20 +113,20 @@ h1 {
 }
 
 .file {
-    padding-left: 36px;
-    font-weight: 600;
+    .text-about(36px, @font-weight: 600);
     cursor: pointer;
 }
 
 .no-default {
     position: relative;
+    &:hover del {
+        visibility: visible;
+    }
 }
 
 .del {
     visibility: hidden;
-    position: absolute;
-    right: 8px;
-    top: 6px;
+    .positioned(absolute, 6px, @right: 8px);
     cursor: pointer;
 }
 
@@ -108,24 +134,15 @@ h1 {
 .folder:hover,
 .file:hover,
 .task-self:hover {
-    border: 1px solid #bbb;
-    border-radius: 5%;
+    .border-about(1px solid #bbb, 5%);
     box-shadow: 0 0 1em #888;
     transition: .1s ease;
 }
 
-.no-default:hover .del {
-    visibility: visible;
-}
-
 .add {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    border: none;
-    border-radius: 2%;
+    .positioned(absolute, @left: 0, @bottom: 0);
+    .size(100%, 50px);
+    .border-about(none, 2%);
     font-size: 16px;
     outline: none;
     background: #ccc;
@@ -133,7 +150,7 @@ h1 {
 }
 
 .add:hover {
-    background: #4ddbff;
+    background: @hover-blue;
     z-index: 260;
     box-shadow: 0 0 1em #888;
     transition: .1s ease;
@@ -141,10 +158,7 @@ h1 {
 
 /*middle part*/
 .list-all {
-    position: absolute;
-    top: 70px;
-    left: 250px;
-    bottom: 0;
+    .positioned(absolute, 70px, 250px, 0);
     width: 250px;
     box-shadow: 2px 3px 3px #888;
     background: #eee;
@@ -152,32 +166,28 @@ h1 {
 }
 
 .filter-wrap {
-    width: 100%;
-    height: 50px;
+    .size(100%, 50px);
     border-bottom: 2px dashed #eee;
     text-align: center;
     background: #fff;
 }
 
 .filter {
-    width: 60px;
-    height: 30px;
+    .size(60px, 30px);
     margin-top: 10px;
     border: none;
     box-shadow: 1px 2px 3px #888;
     outline: none;
     background: #ddd;
     cursor: pointer;
-}
-
-.filter:hover {
-    color: #fff;
-    transition: 0.3s ease;
+    &:hover {
+        color: #fff;
+        transition: 0.3s ease;
+    }
 }
 
 .selected {
-    border: 1px solid #eee;
-    border-radius: 5%;
+    .border-about(1px solid #eee, 5%);
     background: #ff9;
 }
 
@@ -194,12 +204,10 @@ h1 {
     position: relative;
     padding: 5px 20px;
     cursor: pointer;
+    &:hover del {
+        visibility: visible;
+    }
 }
-
-.task-self:hover .del {
-    visibility: visible;
-}
-
 
 .task-done {
     color: #23b812;
@@ -207,27 +215,20 @@ h1 {
 
 /*right part*/
 .description {
-    position: absolute;
-    top: 70px;
-    left: 500px;
-    right: 0;
-    bottom: 0;
-    border: 1px solid #ccc;
-    border-radius: 1%;
+    .positioned(absolute, 70px, 500px, 0, 0);
+    .border-about(1px solid #ccc, 1%);
 }
 
 .title {
     height: 60px;
-    font-size: 20px;
-    font-weight: 700;
+    .text-about(@font-size: 20px, @font-weight: 700);
     line-height: 60px;
     border-bottom: 1px dashed #ccc;
 }
 
 .todo-name {
     float: left;
-    padding-left: 20px;
-    font-size: 20px;
+    .text-about(20px, 20px);
 }
 
 .operation {
@@ -243,11 +244,7 @@ h1 {
 }
 
 .content {
-    position: absolute;
-    top: 120px;
-    bottom: 60px;
-    left: 20px;
-    right: 20px;
+    .positioned(absolute, 120px, 20px, 60px, 20px);
     line-height: 2;
 }
 
@@ -261,8 +258,7 @@ h1 {
 }
 
 .text-content {
-    width: 100%;
-    height: 100%;
+    .size(100%, 100%);
     border: 0;
     margin: 0;
     font-size: 16px;
@@ -273,16 +269,13 @@ h1 {
 
 .button-area {
     display: none;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    .positioned(absolute, @bottom: 20px, @right: 20px);
 }
 
 .button-area button {
     padding: 10px 20px;
     margin-right: 20px;
-    border: none;
-    border-radius: 5%;
+    .border-about(none, 5%);
     box-shadow: 1px 2px 3px #888;
     outline: none;
     cursor: pointer;
@@ -290,28 +283,21 @@ h1 {
 
 .save,
 .cancel {
-    background: #ff9;
+    background: @selected-yellow;
     color: #333;
 }
 
 /*Modal box*/
 .cover {
     display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    .positioned(absolute, 0, 0, 0, 0);
     background: rgba(0, 0, 0, 0.3);
     z-index: 400;
 }
 
 .pop-up {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 300px;
-    height: 180px;
+    .positioned(absolute, 50%, 50%);
+    .size(300px, 180px);
     margin-top: -90px;
     margin-left: -150px;
     border-radius: 3%;
@@ -323,11 +309,10 @@ h1 {
 
 .pop-head {
     height: 40px;
-    padding-left: 10px;
     border-bottom: 1px dashed #0cf;
     line-height: 40px;
     text-align: center;
-    font-weight: 600;
+    .text-about(10px, @font-weight: 600);
 }
 
 .pop-body {
@@ -340,21 +325,17 @@ h1 {
 }
 
 .pop-foot {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+    .positioned(absolute, @bottom: 10px, @right: 10px);
 }
 
 .pop-foot button {
-    width: 40px;
-    height: 30px;
+    .size(40px, 30px);
     margin: 5px;
-    border: none;
-    border-radius: 5%;
+    .border-about(none, 5%);
     box-shadow: 1px 2px 3px #888;
     outline: none;
     font-size: 13px;
-    background: #4ddbff;
+    background: @hover-blue;
     cursor: pointer;
 }
 
@@ -387,20 +368,14 @@ h1 {
     .curr {
         /*display: block;*/
         z-index: 100;
-        -webkit-transform: translate3d(0, 0, 0);
-            -ms-transform: translate3d(0, 0, 0);
-                transform: translate3d(0, 0, 0);
+        .v-transform(0, 0, 0);
     }
 
     .next {
-        -webkit-transform: translate3d(100%, 0, 0);
-            -ms-transform: translate3d(100%, 0, 0);
-                transform: translate3d(100%, 0, 0);
+        .v-transform(100%, 0, 0);
     }
 
     .last {
-        -webkit-transform: translate3d(-100%, 0, 0);
-            -ms-transform: translate3d(-100%, 0, 0);
-                transform: translate3d(-100%, 0, 0);
+        .v-transform(-100%, 0, 0);
     }
 }
