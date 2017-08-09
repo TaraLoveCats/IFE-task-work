@@ -1,33 +1,14 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: Microsoft Yahei, sans-serif;
-}
-
-a {
-    text-decoration: none;
-    color: #fff;
-}
-
-ul,
-li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-html, body {
-    height: 100%;
-}
-
 //variables
 @head-blue: #0cf;
 @hover-blue: #4ddbff;
 @selected-yellow: #ff9;
 
+//mixins(no output)
+.zero-pm() {
+    padding: 0;
+    margin: 0;
+}
 
-//mixins
 .positioned(@pos, @top: auto, @left: auto, @bottom: auto, @right: auto) {
     position: @pos;
     top: @top;
@@ -39,6 +20,11 @@ html, body {
 .size(@width: auto, @height: auto) {
     width: @width;
     height: @height;
+}
+
+.box-bg(@bg-color, @box-shadow) {
+    background: @bg-color;
+    box-shadow: @box-shadow;
 }
 
 .text-about(@padding-left: 0, @font-size: 16px, @font-weight: 400) {
@@ -58,12 +44,33 @@ html, body {
             transform: translate3d(@x, @y, @z);
 }
 
+//general
+* {
+    box-sizing: border-box;
+    .zero-pm;
+    font-family: Microsoft Yahei, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+ul,
+li {
+    .zero-pm;
+    list-style: none;
+}
+
+html, body {
+    height: 100%;
+}
+
 /*header*/
 .header {
     position: relative;
     .size(100%, 70px);
-    background: @head-blue;
-    box-shadow: 0 2px 3px #666;
+    .box-bg(@head-blue, 0 2px 3px #666);
     z-index: 300;
 }
 
@@ -147,21 +154,18 @@ h1 {
     outline: none;
     background: #ccc;
     cursor: pointer;
-}
-
-.add:hover {
-    background: @hover-blue;
-    z-index: 260;
-    box-shadow: 0 0 1em #888;
-    transition: .1s ease;
+    &:hover {
+        z-index: 260;
+        .box-bg(@hover-blue, 0 0 1em #888);
+        transition: .1s ease;
+    }
 }
 
 /*middle part*/
 .list-all {
     .positioned(absolute, 70px, 250px, 0);
     width: 250px;
-    box-shadow: 2px 3px 3px #888;
-    background: #eee;
+    .box-bg(#eee, 2px 3px 3px #888);
     z-index: 100;
 }
 
@@ -176,9 +180,8 @@ h1 {
     .size(60px, 30px);
     margin-top: 10px;
     border: none;
-    box-shadow: 1px 2px 3px #888;
     outline: none;
-    background: #ddd;
+    .box-bg(#ddd, 1px 2px 3px #888);
     cursor: pointer;
     &:hover {
         color: #fff;
@@ -193,10 +196,10 @@ h1 {
 
 .time {
     padding: 5px 20px;
-    box-shadow: 1px 2px 2px #ccc;
     font-weight: 600;
     color: #333;
-    background: #ddd;
+
+    .box-bg(#ddd, 0 2px 2px #ccc);
     text-shadow: 1px 2px 3px #bbb;
 }
 
@@ -270,15 +273,14 @@ h1 {
 .button-area {
     display: none;
     .positioned(absolute, @bottom: 20px, @right: 20px);
-}
-
-.button-area button {
-    padding: 10px 20px;
-    margin-right: 20px;
-    .border-about(none, 5%);
-    box-shadow: 1px 2px 3px #888;
-    outline: none;
-    cursor: pointer;
+    & button {
+        padding: 10px 20px;
+        margin-right: 20px;
+        .border-about(none, 5%);
+        box-shadow: 1px 2px 3px #888;
+        outline: none;
+        cursor: pointer;
+    }
 }
 
 .save,
@@ -301,9 +303,8 @@ h1 {
     margin-top: -90px;
     margin-left: -150px;
     border-radius: 3%;
-    box-shadow: 2px 3px 4px #888;
     font-size: 14px;
-    background: #eee;
+    .box-bg(#eee, 2px 3px 4px #888);
     z-index: 100;
 }
 
@@ -318,25 +319,22 @@ h1 {
 .pop-body {
     height: 100px;
     padding: 10px 10px;
-}
-
-.pop-body input {
-    margin-top: 20px;
+    & input {
+        margin-top: 20px;
+    }
 }
 
 .pop-foot {
     .positioned(absolute, @bottom: 10px, @right: 10px);
-}
-
-.pop-foot button {
-    .size(40px, 30px);
-    margin: 5px;
-    .border-about(none, 5%);
-    box-shadow: 1px 2px 3px #888;
-    outline: none;
-    font-size: 13px;
-    background: @hover-blue;
-    cursor: pointer;
+    & button {
+        .size(40px, 30px);
+        margin: 5px;
+        .border-about(none, 5%);
+        outline: none;
+        font-size: 13px;
+        .box-bg(@hover-blue, 1px 2px 3px #888);
+        cursor: pointer;
+    }
 }
 
 /*responsive web app*/
