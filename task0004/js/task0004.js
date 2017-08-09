@@ -25,7 +25,7 @@ addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
-// addClickEvent($('#backto'), clickBackTo);
+addClickEvent($('#backto'), clickBackTo);
 
 //功能函数模块
 
@@ -1071,54 +1071,72 @@ function edit() {
 }
 
 function setCurr1() {
+    console.log('in setCurr1');
     $('.category').setAttribute('class', 'category view curr');
     $('.list-all').setAttribute('class', 'list-all view next');
     currentPage = 1;
-    clickBackTo(1);
+
+    showBackTo(1);
 }
 
 function setCurr2() {
+    console.log('in setCurr2');
     $('.category').setAttribute('class', 'category view last');
     $('.list-all').setAttribute('class', 'list-all view curr');
     $('.description').setAttribute('class', 'description view next');
     currentPage = 2;
-    clickBackTo(2);
+
+    showBackTo(2);
 }
 
 function setCurr3() {
+    console.log('in setCurr3');
     $('.list-all').setAttribute('class', 'list-all view last');
     $('.description').setAttribute('class', 'description view curr');
     currentPage = 3;
-    clickBackTo(3);
+
+    showBackTo(3);
 }
 
 
-function clickBackTo(currentPage) {
+function clickBackTo() {
     if (window.innerWidth < 760) {
+        console.log('in clickBackTo');
+        console.log('currentPage: ' +  currentPage);
+
         var backTo = $('#backto');
 
         switch (currentPage) {
-            case 1:
-                backTo.style.display = 'none';
-                break;
             case 2:
-                backTo.style.display = 'block';
-                addClickEvent(backTo, function () {
-                    setCurr1();
-                });
-                // addClickEvent(backTo, setCurr1);
+                setCurr1();
                 break;
             case 3:
-                backTo.style.display = 'block';
-                addClickEvent(backTo, function () {
-                    setCurr2();
-                });
-                // addClickEvent(backTo, setCurr2);
+                setCurr2();
                 break;
             default:
                 break;
         }
     }
+ }
+
+ function showBackTo(currentPage) {
+     if (window.innerWidth < 760) {
+         var backTo = $('#backto');
+
+         switch (currentPage) {
+             case 1:
+                 backTo.style.display = 'none';
+                 break;
+             case 2:
+                 backTo.style.display = 'block';
+                 break;
+             case 3:
+                 backTo.style.display = 'block';
+                 break;
+             default:
+                 break;
+         }
+     }
  }
 
  window.onresize = function () {
