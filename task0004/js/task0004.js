@@ -1068,6 +1068,8 @@ function edit() {
     $('.date span').innerHTML = '<input type="date" class="input-date" value="' + task.date + '">';
     $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容...">' + task.content + '</textarea>';
     $('.button-area').style.display = 'block';
+
+    editSave = true;
 }
 
 function setCurr1() {

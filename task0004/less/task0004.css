@@ -87,7 +87,7 @@ h1 {
 .no-default {
   position: relative;
 }
-.no-default:hover del {
+.no-default:hover .del {
   visibility: visible;
 }
 .del {
@@ -180,7 +180,7 @@ h1 {
   padding: 5px 20px;
   cursor: pointer;
 }
-.task-self:hover del {
+.task-self:hover .del {
   visibility: visible;
 }
 .task-done {
