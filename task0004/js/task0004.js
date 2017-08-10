@@ -15,11 +15,13 @@ function initAll() {
     addClass($('[taskid]'), 'selected');
     showTaskContentById($('[taskid]').getAttribute('taskid'));
     listlocalStorage();
-
 }
 
 initAll();
 
+document.addEvent('DOMContentLoaded', function () {
+    Fastclick.attach(document.body);
+});
 addClickEvent($('.category .add'), clickAddCate);
 addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {

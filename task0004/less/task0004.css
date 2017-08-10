@@ -18,6 +18,10 @@ html,
 body {
   height: 100%;
 }
+html {
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
 /*header*/
 .header {
   position: relative;
