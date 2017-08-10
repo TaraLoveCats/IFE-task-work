@@ -19,7 +19,7 @@ function initAll() {
 
 initAll();
 
-document.addEvent('DOMContentLoaded', function () {
+addEvent(document, 'DOMContentLoaded', function () {
     Fastclick.attach(document.body);
 });
 addClickEvent($('.category .add'), clickAddCate);
