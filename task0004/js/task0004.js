@@ -23,9 +23,9 @@ initAll();
 document.ontouchmove = function (e) {
     e.preventDefault();
 }
-addEvent(document, 'DOMContentLoaded', function () {
-    Fastclick.attach(document.body);
-});
+// addEvent(document, 'DOMContentLoaded', function () {
+//     Fastclick.attach(document.body);
+// });
 addClickEvent($('.category .add'), clickAddCate);
 addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
