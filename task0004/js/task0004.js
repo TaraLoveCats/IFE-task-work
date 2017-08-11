@@ -23,15 +23,15 @@ initAll();
 document.ontouchmove = function (e) {
     e.preventDefault();
 }
-// addEvent(document, 'DOMContentLoaded', function () {
-//     Fastclick.attach(document.body);
-// });
+addEvent(document, 'DOMContentLoaded', function () {
+    Fastclick.attach(document.body);
+});
 addClickEvent($('.category .add'), clickAddCate);
 addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
-// addClickEvent($('#backto'), clickBackTo);
+addClickEvent($('#backto'), clickBackTo);
 
 //功能函数模块
 
@@ -1150,7 +1150,8 @@ function clickBackTo() {
  window.onresize = function () {
      if (window.innerWidth > 760) {
          $('#backto').style.display = 'none';
-     } else {
+     } else if (!is_touch_device()){
+         console.log('in window.onresize');
          clickBackTo(currentPage);
      }
  }
