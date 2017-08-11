@@ -23,9 +23,9 @@ initAll();
 document.ontouchmove = function (e) {
     e.preventDefault();
 }
-addEvent(document, 'DOMContentLoaded', function () {
-    Fastclick.attach(document.body);
-});
+// addEvent(document, 'DOMContentLoaded', function () {
+//     Fastclick.attach(document.body);
+// });
 addClickEvent($('.category .add'), clickAddCate);
 addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
@@ -1164,16 +1164,17 @@ function clickBackTo() {
  }
 
  function optTouchDevice() {
+     console.log('touch-device?  '+ is_touch_device());
      if (is_touch_device()) {
         var styleSheet = document.styleSheets[0],
             len = styleSheet.cssRules.length;
-        styleSheet.insertRule('#all-tasks:hover {border: none}', len);
-        styleSheet.insertRule('.folder:hover {border: none}', len + 1);
-        styleSheet.insertRule('.file:hover {border: none}', len + 2);
-        styleSheet.insertRule('.task-self:hover {border: none}', len + 3);
-        styleSheet.insertRule('.add:hover {border: none}', len + 4);
-        styleSheet.insertRule('.filter:hover {color: #000}', len + 5);
+        styleSheet.insertRule('#all-tasks:hover {border: none; border-radius: 0; box-shadow: none; transition: none;}', len);
+        styleSheet.insertRule('.folder:hover {border: none; border-radius: 0; box-shadow: none; transition: none;}', len + 1);
+        styleSheet.insertRule('.file:hover {border: none; border-radius: 0; box-shadow: none; transition: none;}', len + 2);
+        styleSheet.insertRule('.task-self:hover {border: none; border-radius: 0; box-shadow: none; transition: none;}', len + 3);
+        styleSheet.insertRule('.add:hover {box-shadow: none; transition: none;}', len + 4);
+        styleSheet.insertRule('.filter:hover {color: #000;}', len + 5);
 
-        $('.del').style.display = 'block';
+        $('.del').style.visibility = 'visible';
      }
  }
