@@ -31,7 +31,7 @@ addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
-addClickEvent($('#backto'), clickBackTo);
+// addClickEvent($('#backto'), clickBackTo);
 
 //功能函数模块
 
