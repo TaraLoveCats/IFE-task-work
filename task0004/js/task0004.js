@@ -32,6 +32,8 @@ addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
 addClickEvent($('#backto'), clickBackTo);
+addEventListener($('save'), save);
+addEventListener($('.cancel'), cancelSave);
 
 //功能函数模块
 
@@ -1046,9 +1048,6 @@ function cancelSave() {
     showTaskContentById(currentTaskId);
 }
 
-addEventListener($('save'), save);
-addEventListener($('.cancel'), cancelSave);
-
 /**
  * 点击check图标，将任务标记为已完成
  * @return {[type]} [description]
@@ -1078,6 +1077,9 @@ function edit() {
     editSave = true;
 }
 
+/**
+*设置当前页面
+**/
 function setCurr1() {
     console.log('in setCurr1');
     $('.category').setAttribute('class', 'category view curr');
@@ -1106,27 +1108,9 @@ function setCurr3() {
     showBackTo(3);
 }
 
-
-function clickBackTo() {
-    if (window.innerWidth < 760) {
-        console.log('in clickBackTo');
-        console.log('currentPage: ' +  currentPage);
-
-        var backTo = $('#backto');
-
-        switch (currentPage) {
-            case 2:
-                setCurr1();
-                break;
-            case 3:
-                setCurr2();
-                break;
-            default:
-                break;
-        }
-    }
- }
-
+ /**
+ *根据当前页面显示返回按钮
+ **/
  function showBackTo(currentPage) {
      if (window.innerWidth < 760) {
          var backTo = $('#backto');
@@ -1147,6 +1131,9 @@ function clickBackTo() {
      }
  }
 
+/**
+*解决浏览器viewport宽度从小变大时的“返回”按钮显示问题
+**/
  window.onresize = function () {
      if (window.innerWidth > 760) {
          $('#backto').style.display = 'none';
@@ -1157,6 +1144,29 @@ function clickBackTo() {
  }
 
 /**
+*“返回”按钮的回调函数
+**/
+function clickBackTo() {
+    if (window.innerWidth < 760) {
+        console.log('in clickBackTo');
+        console.log('currentPage: ' +  currentPage);
+
+        var backTo = $('#backto');
+
+        switch (currentPage) {
+            case 2:
+                setCurr1();
+                break;
+            case 3:
+                setCurr2();
+                break;
+            default:
+                break;
+        }
+    }
+ }
+
+/**
 *检测是否为touch-device
 **/
  function is_touch_device() {
@@ -1164,6 +1174,9 @@ function clickBackTo() {
         || navigator.maxTouchPoints;
  }
 
+ /**
+ *取消touch-device的hover样式
+ **/
  function optTouchDevice() {
      console.log('touch-device?  '+ is_touch_device());
      if (is_touch_device()) {
