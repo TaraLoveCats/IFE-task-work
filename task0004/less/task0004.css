@@ -39,6 +39,7 @@ html {
   bottom: auto;
   right: auto;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   color: #fff;
 }
 h1 {
@@ -66,6 +67,13 @@ h1 {
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+#all-tasks:hover {
+  border: 1px solid #bbb;
+  border-radius: 5%;
+  box-shadow: 0 0 1em #888;
+  transition: .1s ease;
 }
 .list-title {
   margin: 8px 0;
@@ -78,6 +86,13 @@ h1 {
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.folder:hover {
+  border: 1px solid #bbb;
+  border-radius: 5%;
+  box-shadow: 0 0 1em #888;
+  transition: .1s ease;
 }
 .folder-icon {
   padding-right: 5px;
@@ -87,6 +102,13 @@ h1 {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.file:hover {
+  border: 1px solid #bbb;
+  border-radius: 5%;
+  box-shadow: 0 0 1em #888;
+  transition: .1s ease;
 }
 .no-default {
   position: relative;
@@ -102,15 +124,7 @@ h1 {
   bottom: auto;
   right: 8px;
   cursor: pointer;
-}
-#all-tasks:hover,
-.folder:hover,
-.file:hover,
-.task-self:hover {
-  border: 1px solid #bbbbbb;
-  border-radius: 5%;
-  box-shadow: 0 0 1em #888;
-  transition: .1s ease;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .add {
   position: absolute;
@@ -126,6 +140,7 @@ h1 {
   outline: none;
   background: #ccc;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .add:hover {
   z-index: 260;
@@ -161,6 +176,7 @@ h1 {
   background: #dddddd;
   box-shadow: 1px 2px 3px #888888;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .filter:hover {
   color: #fff;
@@ -169,7 +185,7 @@ h1 {
 .selected {
   border: 1px solid #eeeeee;
   border-radius: 5%;
-  background: #ff9;
+  background: #ffff99;
 }
 .time {
   padding: 5px 20px;
@@ -183,6 +199,13 @@ h1 {
   position: relative;
   padding: 5px 20px;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.task-self:hover {
+  border: 1px solid #bbb;
+  border-radius: 5%;
+  box-shadow: 0 0 1em #888;
+  transition: .1s ease;
 }
 .task-self:hover .del {
   visibility: visible;
@@ -264,6 +287,7 @@ h1 {
   box-shadow: 1px 2px 3px #888;
   outline: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .save,
 .cancel {
@@ -331,6 +355,7 @@ h1 {
   background: #4ddbff;
   box-shadow: 1px 2px 3px #888888;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 /*responsive web app*/
 @media screen and (max-width: 760px) {

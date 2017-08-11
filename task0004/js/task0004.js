@@ -15,10 +15,12 @@ function initAll() {
     addClass($('[taskid]'), 'selected');
     showTaskContentById($('[taskid]').getAttribute('taskid'));
     listlocalStorage();
+    optTouchDevice();
 }
 
 initAll();
 
+document.ontouchmove = event.preventDefault;
 addEvent(document, 'DOMContentLoaded', function () {
     Fastclick.attach(document.body);
 });
@@ -1148,5 +1150,28 @@ function clickBackTo() {
          $('#backto').style.display = 'none';
      } else {
          clickBackTo(currentPage);
+     }
+ }
+
+/**
+*检测是否为touch-device
+**/
+ function is_touch_device() {
+     return 'ontouchstart' in window
+        || navigator.maxTouchPoints;
+ }
+
+ function optTouchDevice() {
+     if (is_touch_device()) {
+        var styleSheet = document.styleSheets[0],
+            len = styleSheet.cssRules.length;
+        styleSheet.insertRule('#all-tasks:hover {border: none}', len);
+        styleSheet.insertRule('.folder:hover {border: none}', len + 1);
+        styleSheet.insertRule('.file:hover {border: none}', len + 2);
+        styleSheet.insertRule('.task-self:hover {border: none}', len + 3);
+        styleSheet.insertRule('.add:hover {border: none}', len + 4);
+        styleSheet.insertRule('.filter:hover {color: #000}', len + 5);
+
+        $('.del').style.display = 'block';
      }
  }

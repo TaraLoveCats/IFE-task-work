@@ -9,6 +9,18 @@
     margin: 0;
 }
 
+.clickable() {
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.hover-state() {
+    border: 1px solid #bbb;
+    border-radius: 5%;
+    box-shadow: 0 0 1em #888;
+    transition: .1s ease;
+}
+
 .positioned(@pos; @top: auto; @left: auto; @bottom: auto; @right: auto) {
     position: @pos;
     top: @top;
@@ -82,7 +94,7 @@ html {
 #backto {
     display: none;
     .positioned(absolute; 17px; 20px);
-    cursor: pointer;
+    .clickable();
     color: #fff;
 }
 
@@ -107,7 +119,10 @@ h1 {
 #all-tasks {
     margin-top: 10px;
     .text-about(18px; 18px; 700);
-    cursor: pointer;
+    .clickable();
+    &:hover {
+        .hover-state();
+    }
 }
 
 .list-title {
@@ -117,7 +132,10 @@ h1 {
 
 .folder {
     .text-about(18px; 17px; 600);
-    cursor: pointer;
+    .clickable();
+    &:hover {
+        .hover-state();
+    }
 }
 
 .folder-icon {
@@ -126,7 +144,10 @@ h1 {
 
 .file {
     .text-about(36px; @font-weight: 600);
-    cursor: pointer;
+    .clickable();
+    &:hover {
+        .hover-state();
+    }
 }
 
 .no-default {
@@ -139,16 +160,7 @@ h1 {
 .del {
     visibility: hidden;
     .positioned(absolute; 6px; @right: 8px);
-    cursor: pointer;
-}
-
-#all-tasks:hover,
-.folder:hover,
-.file:hover,
-.task-self:hover {
-    .border-about(1px solid #bbb; 5%);
-    box-shadow: 0 0 1em #888;
-    transition: .1s ease;
+    .clickable();
 }
 
 .add {
@@ -158,7 +170,7 @@ h1 {
     font-size: 16px;
     outline: none;
     background: #ccc;
-    cursor: pointer;
+    .clickable();
     &:hover {
         z-index: 260;
         .box-bg(@hover-blue; 0 0 1em #888);
@@ -187,7 +199,7 @@ h1 {
     border: none;
     outline: none;
     .box-bg(#ddd; 1px 2px 3px #888);
-    cursor: pointer;
+    .clickable();
     &:hover {
         color: #fff;
         transition: 0.3s ease;
@@ -196,7 +208,7 @@ h1 {
 
 .selected {
     .border-about(1px solid #eee; 5%);
-    background: #ff9;
+    background: @selected-yellow;
 }
 
 .time {
@@ -211,9 +223,12 @@ h1 {
 .task-self {
     position: relative;
     padding: 5px 20px;
-    cursor: pointer;
-    &:hover .del {
-        visibility: visible;
+    .clickable();
+    &:hover {
+        .hover-state();
+        & .del {
+            visibility: visible;
+        }
     }
 }
 
@@ -284,7 +299,7 @@ h1 {
         .border-about(none; 5%);
         box-shadow: 1px 2px 3px #888;
         outline: none;
-        cursor: pointer;
+        .clickable();
     }
 }
 
@@ -338,7 +353,7 @@ h1 {
         outline: none;
         font-size: 13px;
         .box-bg(@hover-blue; 1px 2px 3px #888);
-        cursor: pointer;
+        .clickable();
     }
 }
 
