@@ -23,9 +23,9 @@ initAll();
 document.ontouchmove = function (e) {
     e.preventDefault();
 }
-// addEvent(document, 'DOMContentLoaded', function () {
-//     Fastclick.attach(document.body);
-// });
+addEvent(document, 'DOMContentLoaded', function () {
+    Fastclick.attach(document.body);
+});
 addClickEvent($('.category .add'), clickAddCate);
 addClickEvent($('.list-all .add'), clickAddTask);
 addClickEvent($('#all-tasks'), function () {
@@ -974,7 +974,7 @@ function clickAddTask() {
 }
 
 function createEditArea() {
-    $('.todo-name').innerHTML = '<input type="text" class="input-title" max-length="20" placeholder="请输入标题...">';
+    $('.todo-name').innerHTML = '<input type="text" class="input-title" max-length="10" placeholder="请输入标题...">';
     $('.date span').innerHTML = '<input type="date" class="input-date">';
     $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容..."></textarea>';
     $('.button-area').style.display = 'block';
@@ -1174,7 +1174,6 @@ function clickBackTo() {
         styleSheet.insertRule('.task-self:hover {border: none; border-radius: 0; box-shadow: none; transition: none;}', len + 3);
         styleSheet.insertRule('.add:hover {box-shadow: none; transition: none;}', len + 4);
         styleSheet.insertRule('.filter:hover {color: #000;}', len + 5);
-
-        $('.del').style.visibility = 'visible';
+        styleSheet.insertRule('.del {visibility: visible;}', len + 6);
      }
  }
