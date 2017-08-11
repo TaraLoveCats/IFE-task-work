@@ -20,7 +20,9 @@ function initAll() {
 
 initAll();
 
-document.ontouchmove = event.preventDefault;
+document.ontouchmove = function (e) {
+    e.preventDefault();
+}
 addEvent(document, 'DOMContentLoaded', function () {
     Fastclick.attach(document.body);
 });
