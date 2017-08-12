@@ -976,7 +976,7 @@ function clickAddTask() {
 }
 
 function createEditArea() {
-    $('.todo-name').innerHTML = '<input type="text" class="input-title" max-length="10" placeholder="请输入标题...">';
+    $('.todo-name').innerHTML = '<input type="text" class="input-title" maxlength="15" placeholder="请输入标题（不超过15字符）...">';
     $('.date span').innerHTML = '<input type="date" class="input-date">';
     $('.content').innerHTML = '<textarea class="text-content" placeholder="请输入内容..."></textarea>';
     $('.button-area').style.display = 'block';
