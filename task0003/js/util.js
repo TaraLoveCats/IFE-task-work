@@ -518,11 +518,7 @@ function isIE() {
         //正则表达式，\x24即是 $
          (parseFloat(RegExp.$1) || document.documentMode) : -1;
 }
-/*
-*不是
-*很懂
-*cookie
-*/
+
 // 设置 cookie
 function setCookie(cookieName, cookieValue, expiredays) {
     var expires = new Date();

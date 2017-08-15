@@ -14,7 +14,6 @@ function initAll() {
     createStatusTaskList();
     addClass($('[taskid]'), 'selected');
     showTaskContentById($('[taskid]').getAttribute('taskid'));
-    listlocalStorage();
     optTouchDevice();
 }
 
@@ -32,8 +31,8 @@ addClickEvent($('#all-tasks'), function () {
     clickOnCate(this);
 });
 addClickEvent($('#backto'), clickBackTo);
-addEventListener($('save'), save);
-addEventListener($('.cancel'), cancelSave);
+addClickEvent($('.save'), save);
+addClickEvent($('.cancel'), cancelSave);
 
 //功能函数模块
 
@@ -559,21 +558,6 @@ function deleteTaskById(id) {
     }
 
     localStorage.task = JSON.stringify(allTasks);
-}
-
-/**
- * 列举localStorage
- */
-function listlocalStorage() {
-    console.log('-------localStorage--------');
-    for (var i = 0, l = localStorage.length; i < l; i++) {
-        var name = localStorage.key(i),
-            value = localStorage.getItem(name);
-        console.log('name:   ' + name);
-        console.log('value:   ' + value);
-        console.log('++++++++++++++++');
-    }
-    console.log('-------localStorage---------');
 }
 
 

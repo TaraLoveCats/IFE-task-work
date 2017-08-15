@@ -54,7 +54,7 @@
             <li>
                 <p class="folder selected"></p>
                 <ul class="file-wrap">
-                    <li class="file"></li>
+                    <li><p class="file"></p></li>
                 </ul>
             </li>
         </ul>
@@ -84,8 +84,8 @@
         <div class="content"></div>
 
         <div class="button-area">
-            <button class="save" onclick="save()">保存</button>
-            <button class="cancel" onclick="cancelSave()">放弃</button>
+            <button class="save">保存</button>
+            <button class="cancel-save">放弃</button>
         </div>
     </div>
     <div class="cover">
@@ -98,15 +98,13 @@
                 新分类名称：<input id="input-cate" type="text">
             </div>
             <div class="pop-foot">
-                <button onclick="ok()">确定</button>
-                <button onclick="cancel()">取消</button>
+                <button class="ok">确定</button>
+                <button class="cancel-ok">取消</button>
             </div>
         </div>
     </div>
 
-    <script type="application/javascript" src="fastclick/lib/fastclick.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/task0004.js"></script>
+    <script src="js/require.js" data-main="js/main" defer async></script>
 
 </body>
 </html>
