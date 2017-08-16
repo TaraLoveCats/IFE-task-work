@@ -19,7 +19,7 @@ define(['util', 'data'], function (util, data) {
 
         document.ontouchmove = function (e) {
             e.preventDefault();
-        }
+        };
 
         util.addClickEvent(util.$('.category .add'), clickAddCate);
         util.addClickEvent(util.$('.list-all .add'), clickAddTask);
@@ -40,7 +40,7 @@ define(['util', 'data'], function (util, data) {
         });
         util.delegateEvent(util.$('#task-list'), 'li', 'click', function () {
             clickOnTask(this);
-        })
+        });
 
         util.delegateDelEvent(util.$('#list-content'), 'fa-trash-o', 'click', function () {
             del(event, this);
@@ -56,7 +56,7 @@ define(['util', 'data'], function (util, data) {
                 console.log('in window.onresize');
                 clickBackTo(currentPage);
             }
-        })
+        });
     };
 
     /**
@@ -84,12 +84,11 @@ define(['util', 'data'], function (util, data) {
                     var childCate = data.queryChildCateByIdArr(cate[i].child);
                     for (var j = 0; j < childCate.length; j++) {
                         var childLiStr = '';
-                        childLiStr = '<li><p class="file no-default" cateid='+ childCate[j].id + '><i class="fa fa-file-o file-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + childCate[j].name + '(' + childCate[j].child.length +')'
-                        +'<i class="fa fa-trash-o del" style="color: #b00d07;"></i></p><li>'
+                        childLiStr = '<li><p class="file no-default" cateid='+ childCate[j].id + '><i class="fa fa-file-o file-icon" style="padding-right: 5px;" aria-hidden="true"></i>' + childCate[j].name + '(' + childCate[j].child.length +')' + '<i class="fa fa-trash-o del" style="color: #b00d07;"></i></p><li>';
                         liStr += childLiStr;
                     }
                 }
-                liStr += '</ul></li>'
+                liStr += '</ul></li>';
             }
             str += liStr;
         }
@@ -252,8 +251,8 @@ define(['util', 'data'], function (util, data) {
         for (var i = 0, l = folderEle.length; i < l; i++) {
             util.removeClass(folderEle[i], 'selected');
         }
-        for (var i = 0, l = fileEle.length; i < l; i++) {
-            util.removeClass(fileEle[i], 'selected');
+        for (var j = 0, len = fileEle.length; j < len; j++) {
+            util.removeClass(fileEle[j], 'selected');
         }
         util.removeClass(util.$('#all-tasks'), 'selected');
     };
@@ -278,7 +277,7 @@ define(['util', 'data'], function (util, data) {
         dateArr = dateArr.sort();
         console.log('dateArr:    ' + dateArr);
 
-        for (var i = 0; i < dateArr.length; i++) {
+        for (var j = 0; j < dateArr.length; j++) {
             var obj = {};
             obj.date = dateArr[i];
             obj.task =data. queryTasksByDateInTaskArr(dateArr[i], task);
@@ -488,7 +487,9 @@ define(['util', 'data'], function (util, data) {
         var title = util.$('.input-title').value,
             date = util.$('.input-date').value,
             content = util.$('.text-content').value,
-            taskList = util.$('#task-list');
+            taskList = util.$('#task-list'),
+            temp1,
+            temp2;
 
         if (!(title && date && content)) {
             alert('标题、日期和任务内容都不能为空，请重新输入。');
@@ -496,7 +497,7 @@ define(['util', 'data'], function (util, data) {
             return;
         }
         if (editSave) {
-            var temp1 = currentTaskId;
+            temp1 = currentTaskId;
 
             console.log('before:' + localStorage.task);
             data.updateTaskById(currentTaskId, title, date, content);
@@ -511,7 +512,7 @@ define(['util', 'data'], function (util, data) {
 
             console.log(taskObj);
             //updateTaskList()中调用createTaskList(),再调用createDateSortedData()中会改变currentTaskId
-            var temp2 = data.addTask(taskObj);
+            temp2 = data.addTask(taskObj);
             console.log('after addTask, currentTaskId:  ' + temp2);
         }
 
@@ -556,7 +557,7 @@ define(['util', 'data'], function (util, data) {
         util.$('.button-area').style.display = 'block';
 
         editSave = true;
-    }
+    };
 
     /**
     *设置当前页面
@@ -639,8 +640,7 @@ define(['util', 'data'], function (util, data) {
     *检测是否为touch-device
     **/
      var is_touch_device = function () {
-         return 'ontouchstart' in window
-            || navigator.maxTouchPoints;
+         return 'ontouchstart' in window || navigator.maxTouchPoints;
      };
 
      /**

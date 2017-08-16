@@ -7,7 +7,7 @@ require.config({
         'util': 'helper/util',
         'fastclick': 'helper/fastclick'
     }
-})
+});
 
 require(['control', 'fastclick'], function (control, fastClick) {
     control.initAll();

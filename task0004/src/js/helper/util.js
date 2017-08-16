@@ -1,8 +1,5 @@
 define(function () {
-    /*
-    *我看
-    *不懂
-    */
+    
     var $ = function (selector) {
         var idReg = /^#([\w_\-]+)/;
         var classReg = /^\.([\w_\-]+)/;
@@ -145,7 +142,7 @@ define(function () {
                             }
                             valid = valid && el.hasAttribute(key);
                             if (value) {
-                                valid = valid && (value === el.getAttribute(key))
+                                valid = valid && (value === el.getAttribute(key));
                             }
                             return valid;
                         }
