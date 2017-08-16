@@ -503,12 +503,13 @@ define(['util', 'data'], function (util, data) {
             console.log('after:' + localStorage.task);
         } else {
             var taskObj = {};
-            taskObj.name = title;
-            taskObj.date = date;
-            taskObj.content = content;
+            taskObj.name = util.escape(title);
+            taskObj.date = util.escape(date);
+            taskObj.content = util.escape(content);
             taskObj.done = false;
             taskObj.parent = currentCateId;
 
+            console.log(taskObj);
             //updateTaskList()中调用createTaskList(),再调用createDateSortedData()中会改变currentTaskId
             var temp2 = data.addTask(taskObj);
             console.log('after addTask, currentTaskId:  ' + temp2);

@@ -681,6 +681,17 @@ define(function () {
 
     };
 
+    var escape = function (str) {
+        str = str.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#x27;')
+                .replace(/`/g, '&#x60;')
+                .replace(/\//g, '&#x2f;');
+        return str;
+    };
+
     return {
         $: $,
         isArray: isArray,
@@ -706,6 +717,7 @@ define(function () {
         isIE: isIE,
         setCookie: setCookie,
         getCookie: getCookie,
-        ajax: ajax
+        ajax: ajax,
+        escape: escape
     };
 });
