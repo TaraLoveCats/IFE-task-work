@@ -158,8 +158,10 @@ define(['util', 'data'], function (util, data) {
 
         initCates();
         util.$('#task-list').innerHTML = createTaskList(data.queryAllTasks());
-
-        clickOnCate(util.$('#all-tasks'));
+        
+        if (window.innerWidth > 760) {
+            clickOnCate(util.$('#all-tasks'));
+        }
     };
 
     /**

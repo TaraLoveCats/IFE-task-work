@@ -901,7 +901,9 @@ define('control', [
         }
         initCates();
         util.$('#task-list').innerHTML = createTaskList(data.queryAllTasks());
-        clickOnCate(util.$('#all-tasks'));
+        if (window.innerWidth > 760) {
+            clickOnCate(util.$('#all-tasks'));
+        }
     };
     var ok = function () {
         var optionValue = util.$('#select-cate').value, inputCate = util.$('#input-cate').value;
