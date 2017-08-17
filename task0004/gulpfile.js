@@ -6,8 +6,12 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     notify = require('gulp-notify'),
-    rename = require('gulp-rename');
-    // amdOptimize = require('amd-optimize');
+    rename = require('gulp-rename'),
+    optimize = require('amd-optimize');
+
+var paths = {
+    js: ['./src/js/**/*.js', '!./src/js/require.js']
+};
 
 gulp.task('styles', function () {
     return gulp.src('src/less/*.less')
@@ -20,10 +24,24 @@ gulp.task('styles', function () {
         .pipe(notify({message: 'Styles task complete'}));
 });
 
+gulp.task('requireJS', function () {
+    return gulp.src('src/js/require.js')
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/js'))
+        .pipe(notify({message: 'requireJS task complete'}));
+});
+
 gulp.task('scripts', function () {
-    return gulp.src('src/js/**/*.js')
+    return gulp.src(paths.js)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
+        .pipe(optimize('main', {
+            paths: {
+                'util': './helper/util',
+                'fastclick': './helper/fastclick'
+            }
+        }))
         .pipe(concat('main.js'))
         .pipe(gulp.dest('dist/js'))
         .pipe(rename({suffix: '.min'}))
@@ -32,11 +50,12 @@ gulp.task('scripts', function () {
         .pipe(notify({message: 'Scripts task complete'}));
 });
 
-gulp.task('default', function () {
-    gulp.start('styles', 'scripts');
-});
-
 gulp.task('watch', function () {
+    gulp.watch('src/js/require.js', ['requireJS']);
     gulp.watch('src/less/**/*.less', ['styles']);
     gulp.watch('src/js/**/*.js', ['scripts']);
-})
+});
+
+gulp.task('default', function () {
+    gulp.start('requireJS', 'styles', 'scripts', 'watch');
+});

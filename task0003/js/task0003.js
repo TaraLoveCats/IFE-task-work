@@ -792,7 +792,7 @@ function createDateSortedData(task) {
         obj.task = queryTasksByDateInTaskArr(dateArr[i], task);
         sortedTask.push(obj);
     }
-    //
+    console.log('sortedTask: ' + JSON.stringify(sortedTask));
     currentTaskId = sortedTask[0].task[0].id;
 
     return sortedTask;

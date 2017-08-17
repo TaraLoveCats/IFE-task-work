@@ -4,8 +4,8 @@ console.log('in main.js');
 require.config({
 
     paths: {
-        'util': 'helper/util',
-        'fastclick': 'helper/fastclick'
+        'util': './helper/util',
+        'fastclick': './helper/fastclick'
     }
 });
 

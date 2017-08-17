@@ -279,11 +279,11 @@ define(['util', 'data'], function (util, data) {
 
         for (var j = 0; j < dateArr.length; j++) {
             var obj = {};
-            obj.date = dateArr[i];
-            obj.task =data. queryTasksByDateInTaskArr(dateArr[i], task);
+            obj.date = dateArr[j];
+            obj.task =data. queryTasksByDateInTaskArr(dateArr[j], task);
             sortedTask.push(obj);
         }
-        //
+        console.log('sortedTask: ' + JSON.stringify(sortedTask));
         currentTaskId = sortedTask[0].task[0].id;
 
         return sortedTask;
