@@ -1,4 +1,4 @@
-## task0004是一个个人任务管理系统（Task Management System）的Web App。
+## task0004是一个个人任务管理系统（Task Management System）的Web App
 
 ### 基本说明
 
