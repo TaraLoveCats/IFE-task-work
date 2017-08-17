@@ -1,5 +1,5 @@
 ## task0004是一个个人任务管理系统（Task Management System）的Web App。
------
+
 ### 基本说明
 
  * 基础设计不使用类库和框架
@@ -15,5 +15,6 @@
 ### 查看
 
  * [在线demo](http://www.taralovecats.cn:8000/task0004.html)
- * 移动端，手机扫码：
+ * 移动端，手机扫码:
+ 
  ![二维码](pic.png)
