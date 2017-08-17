@@ -9,9 +9,9 @@
  * 利用CDN分发静态资源
  * 使用Require.js模块化管理代码
  * 使用构建工具gulp
-  * 自动化构建，提高效率
-  * 压缩js和css代码，缩小文件大小
-  * 将不同模块的js代码合并，减少http请求次数
+   * 自动化构建，提高效率
+   * 压缩js和css代码，缩小文件大小
+   * 将不同模块的js代码合并，减少http请求次数
 ### 查看
 
  * [在线demo](http://www.taralovecats.cn:8000/task0004.html)
