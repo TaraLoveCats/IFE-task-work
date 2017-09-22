@@ -1,5 +1,5 @@
 define(function () {
-    
+
     var $ = function (selector) {
         var idReg = /^#([\w_\-]+)/;
         var classReg = /^\.([\w_\-]+)/;
@@ -262,8 +262,8 @@ define(function () {
                 result.push(key);
                 obj[key] = true;
             }
-            return result;
         }
+        return result;
     };
 
     //es5 + hash

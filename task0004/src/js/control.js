@@ -54,7 +54,7 @@ define(['util', 'data'], function (util, data) {
                 util.$('#backto').style.display = 'none';
             } else if (!is_touch_device()){
                 console.log('in window.onresize');
-                clickBackTo(currentPage);
+                showBackTo(currentPage);
             }
         });
     };
@@ -158,7 +158,7 @@ define(['util', 'data'], function (util, data) {
 
         initCates();
         util.$('#task-list').innerHTML = createTaskList(data.queryAllTasks());
-        
+
         if (window.innerWidth > 760) {
             clickOnCate(util.$('#all-tasks'));
         }
@@ -282,7 +282,7 @@ define(['util', 'data'], function (util, data) {
         for (var j = 0; j < dateArr.length; j++) {
             var obj = {};
             obj.date = dateArr[j];
-            obj.task =data. queryTasksByDateInTaskArr(dateArr[j], task);
+            obj.task = data. queryTasksByDateInTaskArr(dateArr[j], task);
             sortedTask.push(obj);
         }
         console.log('sortedTask: ' + JSON.stringify(sortedTask));

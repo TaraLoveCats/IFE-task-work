@@ -183,8 +183,8 @@ define('util', [], function () {
                 result.push(key);
                 obj[key] = true;
             }
-            return result;
         }
+        return result;
     };
     var uniqArray2 = function (arr) {
         var obj = {};
@@ -835,7 +835,7 @@ define('control', [
                 util.$('#backto').style.display = 'none';
             } else if (!is_touch_device()) {
                 console.log('in window.onresize');
-                clickBackTo(currentPage);
+                showBackTo(currentPage);
             }
         });
     };
